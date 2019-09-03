@@ -13,8 +13,13 @@
 		390BDAA722AA0CE600E01411 /* LoopMusic.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 390BDAA522AA0CE600E01411 /* LoopMusic.xcdatamodeld */; };
 		390BDAA922AA0CE700E01411 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 390BDAA822AA0CE700E01411 /* Assets.xcassets */; };
 		390BDAAC22AA0CE700E01411 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 390BDAAA22AA0CE700E01411 /* LaunchScreen.storyboard */; };
-		390BDAB722AA0CE700E01411 /* LoopMusicTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 390BDAB622AA0CE700E01411 /* LoopMusicTests.swift */; };
+		390BDAB722AA0CE700E01411 /* MusicPlayerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 390BDAB622AA0CE700E01411 /* MusicPlayerTests.swift */; };
 		390BDAC222AA0CE700E01411 /* LoopMusicUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 390BDAC122AA0CE700E01411 /* LoopMusicUITests.swift */; };
+		39191C2E22E6BCDB00C09D67 /* MessageError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 39191C2D22E6BCDB00C09D67 /* MessageError.swift */; };
+		391C9AF222BB3959003807A8 /* DL3 Minigame.m4a in Resources */ = {isa = PBXBuildFile; fileRef = 39E9A5E022B496DE00550259 /* DL3 Minigame.m4a */; };
+		3979377722ACA6BA00C5DB09 /* MusicPlayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3979377622ACA6BA00C5DB09 /* MusicPlayer.swift */; };
+		3979377922ACAA9A00C5DB09 /* MusicTrack.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3979377822ACAA9A00C5DB09 /* MusicTrack.swift */; };
+		39F1799A22DBCD4800D3CDFF /* AudioEngine.c in Sources */ = {isa = PBXBuildFile; fileRef = 39F1799922DBCD4800D3CDFF /* AudioEngine.c */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -35,6 +40,8 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		3906880922C1D27400CE5292 /* LoopMusic-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "LoopMusic-Bridging-Header.h"; sourceTree = "<group>"; };
+		3906880C22C1D28C00CE5292 /* AudioEngine.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AudioEngine.h; sourceTree = "<group>"; };
 		390BDA9B22AA0CE600E01411 /* LoopMusic.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = LoopMusic.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		390BDA9E22AA0CE600E01411 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		390BDAA022AA0CE600E01411 /* MusicPlayerViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MusicPlayerViewController.swift; sourceTree = "<group>"; };
@@ -44,11 +51,16 @@
 		390BDAAB22AA0CE700E01411 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		390BDAAD22AA0CE700E01411 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		390BDAB222AA0CE700E01411 /* LoopMusicTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = LoopMusicTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
-		390BDAB622AA0CE700E01411 /* LoopMusicTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoopMusicTests.swift; sourceTree = "<group>"; };
+		390BDAB622AA0CE700E01411 /* MusicPlayerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MusicPlayerTests.swift; sourceTree = "<group>"; };
 		390BDAB822AA0CE700E01411 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		390BDABD22AA0CE700E01411 /* LoopMusicUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = LoopMusicUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		390BDAC122AA0CE700E01411 /* LoopMusicUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoopMusicUITests.swift; sourceTree = "<group>"; };
 		390BDAC322AA0CE700E01411 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		39191C2D22E6BCDB00C09D67 /* MessageError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MessageError.swift; sourceTree = "<group>"; };
+		3979377622ACA6BA00C5DB09 /* MusicPlayer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MusicPlayer.swift; sourceTree = "<group>"; };
+		3979377822ACAA9A00C5DB09 /* MusicTrack.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MusicTrack.swift; sourceTree = "<group>"; };
+		39E9A5E022B496DE00550259 /* DL3 Minigame.m4a */ = {isa = PBXFileReference; lastKnownFileType = file; path = "DL3 Minigame.m4a"; sourceTree = "<group>"; };
+		39F1799922DBCD4800D3CDFF /* AudioEngine.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = AudioEngine.c; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -112,7 +124,7 @@
 			isa = PBXGroup;
 			children = (
 				390BDAB822AA0CE700E01411 /* Info.plist */,
-				390BDAB622AA0CE700E01411 /* LoopMusicTests.swift */,
+				390BDAB622AA0CE700E01411 /* MusicPlayerTests.swift */,
 			);
 			path = LoopMusicTests;
 			sourceTree = "<group>";
@@ -130,7 +142,14 @@
 			isa = PBXGroup;
 			children = (
 				390BDA9E22AA0CE600E01411 /* AppDelegate.swift */,
+				39F1799922DBCD4800D3CDFF /* AudioEngine.c */,
+				3906880C22C1D28C00CE5292 /* AudioEngine.h */,
+				39E9A5E022B496DE00550259 /* DL3 Minigame.m4a */,
+				3906880922C1D27400CE5292 /* LoopMusic-Bridging-Header.h */,
 				390BDAA022AA0CE600E01411 /* MusicPlayerViewController.swift */,
+				3979377622ACA6BA00C5DB09 /* MusicPlayer.swift */,
+				3979377822ACAA9A00C5DB09 /* MusicTrack.swift */,
+				39191C2D22E6BCDB00C09D67 /* MessageError.swift */,
 			);
 			path = Source;
 			sourceTree = "<group>";
@@ -212,6 +231,12 @@
 				TargetAttributes = {
 					390BDA9A22AA0CE600E01411 = {
 						CreatedOnToolsVersion = 10.2.1;
+						LastSwiftMigration = 1020;
+						SystemCapabilities = {
+							com.apple.BackgroundModes = {
+								enabled = 1;
+							};
+						};
 					};
 					390BDAB122AA0CE700E01411 = {
 						CreatedOnToolsVersion = 10.2.1;
@@ -250,6 +275,7 @@
 			files = (
 				390BDAAC22AA0CE700E01411 /* LaunchScreen.storyboard in Resources */,
 				390BDAA922AA0CE700E01411 /* Assets.xcassets in Resources */,
+				391C9AF222BB3959003807A8 /* DL3 Minigame.m4a in Resources */,
 				390BDAA422AA0CE600E01411 /* Main.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -275,8 +301,12 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				39F1799A22DBCD4800D3CDFF /* AudioEngine.c in Sources */,
+				39191C2E22E6BCDB00C09D67 /* MessageError.swift in Sources */,
+				3979377922ACAA9A00C5DB09 /* MusicTrack.swift in Sources */,
 				390BDAA122AA0CE600E01411 /* MusicPlayerViewController.swift in Sources */,
 				390BDAA722AA0CE600E01411 /* LoopMusic.xcdatamodeld in Sources */,
+				3979377722ACA6BA00C5DB09 /* MusicPlayer.swift in Sources */,
 				390BDA9F22AA0CE600E01411 /* AppDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -285,7 +315,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				390BDAB722AA0CE700E01411 /* LoopMusicTests.swift in Sources */,
+				390BDAB722AA0CE700E01411 /* MusicPlayerTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -452,6 +482,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = CTR8N8VQUB;
 				INFOPLIST_FILE = LoopMusic/Info.plist;
@@ -461,6 +492,8 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = LoopMusic.LoopMusicSwift;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_OBJC_BRIDGING_HEADER = "LoopMusic/Source/LoopMusic-Bridging-Header.h";
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
@@ -470,6 +503,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = CTR8N8VQUB;
 				INFOPLIST_FILE = LoopMusic/Info.plist;
@@ -479,6 +513,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = LoopMusic.LoopMusicSwift;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_OBJC_BRIDGING_HEADER = "LoopMusic/Source/LoopMusic-Bridging-Header.h";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
