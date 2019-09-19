@@ -17,7 +17,7 @@ class MusicPlayer {
     /// - parameter trackId: The database track ID of the track to load.
     func loadTrack(trackId: String) throws {
         let url: URL = Bundle.main.url(forResource: "DL3 Minigame", withExtension: "m4a") ?? URL(fileURLWithPath: "")
-        currentTrack = MusicTrack(url: url, loopStart: 160098, loopEnd: 898068)
+        currentTrack = MusicTrack(url: url, loopStart: 174256, loopEnd: 977489)
         let audioFile: AVAudioFile
         do {
             audioFile = try AVAudioFile(forReading: url)
@@ -91,19 +91,22 @@ class MusicPlayer {
         }
         
         var loadStatus: OSStatus = -1
+        let audioLength: AVAudioFramePosition = audioFile.length * Int64(audioDesc.pointee.mChannelsPerFrame);
         if let audioData: UnsafeMutableRawPointer = audioBuffer.pointee.mBuffers.mData {
             // Check for the data type of the audio and load it in the audio engine accordingly.
             if origBuffer.int32ChannelData != nil {
-                loadStatus = load32BitAudio(audioData, audioFile.length, audioDesc)
+                loadStatus = load32BitAudio(audioData, audioLength, audioDesc)
             } else if origBuffer.int16ChannelData != nil {
-                loadStatus = load16BitAudio(audioData, audioFile.length, audioDesc)
+                loadStatus = load16BitAudio(audioData, audioLength, audioDesc)
             } else if origBuffer.floatChannelData != nil {
-                loadStatus = loadFloatAudio(audioData, audioFile.length, audioDesc)
+                loadStatus = loadFloatAudio(audioData, audioLength, audioDesc)
             }
         }
         if loadStatus != 0 {
             throw MessageError(String(format: "Audio data is empty or not supported. Status: %d", loadStatus))
         }
+        
+        setLoopPoints(currentTrack.loopStart, currentTrack.loopEnd)
         
         print("Loaded")
         playAudio()

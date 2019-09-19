@@ -14,13 +14,16 @@ AudioQueueRef queue;
 const AudioStreamBasicDescription *_Nonnull origAudioDesc;
 
 /// The index of the currently playing sample within the audio data.
-unsigned int sampleCounter;
+int64_t sampleCounter;
 /// The total number of samples in the audio data.
 int64_t numSamples;
 /// The currently loaded audio data to be fed into the audio buffer every update.
 void *_Nonnull audioData;
 /// The data type that the currently loaded audio audio is stored in.
 AudioType audioType;
+
+int64_t loopStart;
+int64_t loopEnd;
 
 /// Used to load audio buffer data from any type of stored audio.
 #define loadBuffer(castedBufferData, castedAudioData) \
@@ -29,6 +32,9 @@ for (unsigned int i = 0; i < BUFFER_SIZE / sizeof(castedAudioData[0]); i++) { \
         castedBufferData[i] = 0; \
     } else { \
         castedBufferData[i] = castedAudioData[sampleCounter++]; \
+    } \
+    if (loopEnd > 0 && sampleCounter > loopEnd) { \
+        sampleCounter = loopStart; \
     } \
 } \
 
@@ -52,6 +58,7 @@ void audioCallback(void *customData, AudioQueueRef queue, AudioQueueBufferRef bu
 
 /// Loads audio data into the engine in preparation for audio playback.
 OSStatus loadAudio(void *_Nonnull newAudioData, int64_t newNumSamples, const AudioStreamBasicDescription *_Nonnull audioDesc) {
+    origAudioDesc = audioDesc;
     OSStatus status = AudioQueueNewOutput(audioDesc, audioCallback, NULL, CFRunLoopGetCurrent(), kCFRunLoopCommonModes, 0, &queue);
     if (status != 0) {
         return status;
@@ -83,6 +90,11 @@ OSStatus load16BitAudio(void *_Nonnull newAudioData, int64_t newNumSamples, cons
 OSStatus loadFloatAudio(void *_Nonnull newAudioData, int64_t newNumSamples, const AudioStreamBasicDescription *_Nonnull audioDesc) {
     audioType = FLOAT;
     return loadAudio(newAudioData, newNumSamples, audioDesc);
+}
+
+void setLoopPoints(int64_t newLoopStart, int64_t newLoopEnd) {
+    loopStart = newLoopStart * origAudioDesc->mChannelsPerFrame;
+    loopEnd = newLoopEnd * origAudioDesc->mChannelsPerFrame;
 }
 
 void playAudio() {

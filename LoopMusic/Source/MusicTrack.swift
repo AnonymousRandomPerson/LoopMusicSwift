@@ -7,8 +7,8 @@ struct MusicTrack {
     let url: URL
     
     /// The frame number at the start of the track's loop.
-    let loopStart: Int
+    let loopStart: Int64
     
     /// The frame number at the end of the track's loop.
-    let loopEnd: Int
+    let loopEnd: Int64
 }
