@@ -4,7 +4,7 @@
 /// The number of buffers used in rotation during audio playback.
 #define NUM_BUFFERS 3
 /// The size of each buffer used in audio playback.
-#define BUFFER_SIZE 4096
+#define BUFFER_SIZE 16384
 
 /// All types of audio that are supported.
 typedef enum _AudioType {INT32, INT16, FLOAT} AudioType;
