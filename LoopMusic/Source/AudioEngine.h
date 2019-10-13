@@ -18,9 +18,9 @@ OSStatus loadFloatAudio(void *_Nonnull, int64_t, const AudioStreamBasicDescripti
 void setLoopPoints(int64_t, int64_t);
 
 /// Starts playing the loaded audio.
-void playAudio(void);
+OSStatus playAudio(void);
 
 /// Stops playing the loaded audio.
-void stopAudio(void);
+OSStatus stopAudio(void);
 
 #endif

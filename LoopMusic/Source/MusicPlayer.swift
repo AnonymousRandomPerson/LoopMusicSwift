@@ -7,6 +7,10 @@ class MusicPlayer {
     
     /// The track currently loaded in the music player.
     private(set) var currentTrack: MusicTrack
+    /// True if the player is currently playing a track.
+    private(set) var playing: Bool = false
+    /// If the current audio track was converted manually, this holds the audio buffer so memory can be freed when switching audio tracks.
+    private var manuallyAllocatedBuffer: AudioBuffer?;
     
     /// Initializes a music player with a blank track.
     init() {
@@ -16,6 +20,10 @@ class MusicPlayer {
     /// Loads a track into the music player based on its database track ID.
     /// - parameter trackId: The database track ID of the track to load.
     func loadTrack(trackId: String) throws {
+        try stopTrack()
+        
+        unloadTrack()
+        
         let url: URL = Bundle.main.url(forResource: "DL3 Minigame", withExtension: "m4a") ?? URL(fileURLWithPath: "")
         currentTrack = MusicTrack(url: url, loopStart: 174256, loopEnd: 977489)
         let audioFile: AVAudioFile
@@ -70,8 +78,9 @@ class MusicPlayer {
             let origAudioBuffer: AudioBufferList = origBuffer.audioBufferList.pointee
             let newAudioBufferList: UnsafeMutableAudioBufferListPointer = AudioBufferList.allocate(maximumBuffers: 1)
             let bufferSize: UInt32 = origAudioBuffer.mBuffers.mDataByteSize * origAudioBuffer.mNumberBuffers
-            // TODO Free this data.
+
             newAudioBufferList[0] = AudioBuffer(mNumberChannels: convertedAudioDesc.mChannelsPerFrame, mDataByteSize: bufferSize, mData: malloc(Int(bufferSize)))
+            manuallyAllocatedBuffer = newAudioBufferList[0]
             
             if let converter: AudioConverterRef = converterPointer.pointee {
                 let convertStatus: OSStatus = AudioConverterConvertComplexBuffer(converter, origBuffer.frameLength, audioBuffer, newAudioBufferList.unsafeMutablePointer)
@@ -109,7 +118,36 @@ class MusicPlayer {
         setLoopPoints(currentTrack.loopStart, currentTrack.loopEnd)
         
         print("Loaded")
-        playAudio()
-        print("Playing")
+    }
+    
+    /// Unloads audio data if the current track needed to be converted (and was initialized with malloc).
+    func unloadTrack() {
+        if (manuallyAllocatedBuffer != nil) {
+            free(manuallyAllocatedBuffer?.mData)
+            manuallyAllocatedBuffer = nil
+        }
+    }
+    
+    /// Starts playing the currently loaded track.
+    func playTrack() throws {
+        if (!playing) {
+            print("Playing")
+            playing = true
+            let playStatus: OSStatus = playAudio()
+            if (playStatus != 0) {
+                throw MessageError(String(format: "Failed to play audio. Status: %d", playStatus))
+            }
+        }
+    }
+    
+    /// Stops playing the currently loaded track.
+    func stopTrack() throws {
+        if (playing) {
+            playing = false
+            let stopStatus: OSStatus = stopAudio()
+            if (stopStatus != 0) {
+                throw MessageError(String(format: "Failed to stop audio. Status: %d", stopStatus))
+            }
+        }
     }
 }

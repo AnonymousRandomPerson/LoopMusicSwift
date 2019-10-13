@@ -12,6 +12,7 @@ typedef enum _AudioType {INT32, INT16, FLOAT} AudioType;
 /// The audio queue currently being used to play audio.
 AudioQueueRef queue;
 const AudioStreamBasicDescription *_Nonnull origAudioDesc;
+AudioQueueBufferRef buffers[NUM_BUFFERS];
 
 /// The index of the currently playing sample within the audio data.
 int64_t sampleCounter;
@@ -58,6 +59,16 @@ void audioCallback(void *customData, AudioQueueRef queue, AudioQueueBufferRef bu
 
 /// Loads audio data into the engine in preparation for audio playback.
 OSStatus loadAudio(void *_Nonnull newAudioData, int64_t newNumSamples, const AudioStreamBasicDescription *_Nonnull audioDesc) {
+    if (origAudioDesc != NULL) {
+        // Deallocate any existing audio buffers.
+        for (unsigned int i = 0; i < NUM_BUFFERS; i++) {
+            OSStatus status = AudioQueueFreeBuffer(queue, buffers[i]);
+            if (status != 0) {
+                return status;
+            }
+        }
+    }
+    
     origAudioDesc = audioDesc;
     OSStatus status = AudioQueueNewOutput(audioDesc, audioCallback, NULL, CFRunLoopGetCurrent(), kCFRunLoopCommonModes, 0, &queue);
     if (status != 0) {
@@ -67,12 +78,13 @@ OSStatus loadAudio(void *_Nonnull newAudioData, int64_t newNumSamples, const Aud
     audioData = newAudioData;
     numSamples = newNumSamples;
     
-    // Initializes the audio buffers and preloads the first set of audio data.
-    AudioQueueBufferRef buffers[NUM_BUFFERS];
+    // Initialize audio buffers according to the audio description.
     for (unsigned int i = 0; i < NUM_BUFFERS; i++) {
-        AudioQueueAllocateBuffer(queue, BUFFER_SIZE, &buffers[i]);
+        OSStatus status = AudioQueueAllocateBuffer(queue, BUFFER_SIZE, &buffers[i]);
+        if (status != 0) {
+            return status;
+        }
         buffers[i]->mAudioDataByteSize = BUFFER_SIZE;
-        audioCallback(NULL, queue, buffers[i]);
     }
     return status;
 }
@@ -97,13 +109,19 @@ void setLoopPoints(int64_t newLoopStart, int64_t newLoopEnd) {
     loopEnd = newLoopEnd * origAudioDesc->mChannelsPerFrame;
 }
 
-void playAudio() {
-    AudioQueueStart(queue, NULL);
-    CFRunLoopRun();
+OSStatus playAudio() {
+    // Preload the first set of audio data.
+    for (unsigned int i = 0; i < NUM_BUFFERS; i++) {
+        audioCallback(NULL, queue, buffers[i]);
+    }
+    return AudioQueueStart(queue, NULL);
 }
 
-void stopAudio() {
-    AudioQueueStop(queue, false);
-    AudioQueueDispose(queue, false);
-    CFRunLoopStop(CFRunLoopGetCurrent());
+OSStatus stopAudio() {
+    OSStatus status = AudioQueueStop(queue, true);
+    if (status != 0) {
+        return status;
+    }
+    sampleCounter = 0;
+    return status;
 }
