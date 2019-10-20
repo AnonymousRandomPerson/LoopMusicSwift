@@ -6,6 +6,9 @@ struct MusicTrack {
     /// The URL of the audio file.
     let url: URL
     
+    /// The display name of the track.
+    let name: String
+    
     /// The frame number at the start of the track's loop.
     let loopStart: Int64
     

@@ -14,7 +14,7 @@ class MusicPlayer {
     
     /// Initializes a music player with a blank track.
     init() {
-        currentTrack = MusicTrack(url: URL(fileURLWithPath: ""), loopStart: 0, loopEnd: 0)
+        currentTrack = MusicTrack(url: URL(fileURLWithPath: ""), name: "", loopStart: 0, loopEnd: 0)
     }
     
     /// Loads a track into the music player based on its database track ID.
@@ -25,7 +25,7 @@ class MusicPlayer {
         unloadTrack()
         
         let url: URL = Bundle.main.url(forResource: "DL3 Minigame", withExtension: "m4a") ?? URL(fileURLWithPath: "")
-        currentTrack = MusicTrack(url: url, loopStart: 174256, loopEnd: 977489)
+        currentTrack = MusicTrack(url: url, name: "DL3 Minigame", loopStart: 174256, loopEnd: 977489)
         let audioFile: AVAudioFile
         do {
             audioFile = try AVAudioFile(forReading: url)
@@ -114,10 +114,8 @@ class MusicPlayer {
         if loadStatus != 0 {
             throw MessageError(String(format: "Audio data is empty or not supported. Status: %d", loadStatus))
         }
-        
-        setLoopPoints(currentTrack.loopStart, currentTrack.loopEnd)
-        
-        print("Loaded")
+    
+        updateLoopPoints()
     }
     
     /// Unloads audio data if the current track needed to be converted (and was initialized with malloc).
@@ -131,7 +129,6 @@ class MusicPlayer {
     /// Starts playing the currently loaded track.
     func playTrack() throws {
         if (!playing) {
-            print("Playing")
             playing = true
             let playStatus: OSStatus = playAudio()
             if (playStatus != 0) {
@@ -149,5 +146,10 @@ class MusicPlayer {
                 throw MessageError(String(format: "Failed to stop audio. Status: %d", stopStatus))
             }
         }
+    }
+    
+    /// Updates the points where the track will start and end looping based on the current track metadata.
+    func updateLoopPoints() {
+        setLoopPoints(currentTrack.loopStart, currentTrack.loopEnd)
     }
 }

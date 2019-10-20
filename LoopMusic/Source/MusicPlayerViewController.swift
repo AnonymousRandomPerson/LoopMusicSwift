@@ -4,6 +4,7 @@ import UIKit
 class MusicPlayerViewController: UIViewController {
     
     @IBOutlet weak var playButton: UIButton?
+    @IBOutlet weak var trackLabel: UILabel?
     
     let musicPlayer: MusicPlayer = MusicPlayer()
 
@@ -18,6 +19,7 @@ class MusicPlayerViewController: UIViewController {
         } catch let error as NSError {
             handleNSError(error: error)
         }
+        trackLabel?.text = musicPlayer.currentTrack.name
     }
     
     /// Select an audio track to play.

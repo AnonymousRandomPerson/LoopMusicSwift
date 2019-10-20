@@ -14,7 +14,7 @@ OSStatus load16BitAudio(void *_Nonnull, int64_t, const AudioStreamBasicDescripti
 /// Loads 32-bit float audio samples and playback metadata into the player.
 OSStatus loadFloatAudio(void *_Nonnull, int64_t, const AudioStreamBasicDescription*_Nonnull);
 
-/// Set the points where the track will start and end looping.
+/// Sets the points where the track will start and end looping.
 void setLoopPoints(int64_t, int64_t);
 
 /// Starts playing the loaded audio.
