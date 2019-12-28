@@ -17,6 +17,9 @@ OSStatus loadFloatAudio(void *_Nonnull, int64_t, const AudioStreamBasicDescripti
 /// Sets the points where the track will start and end looping.
 void setLoopPoints(int64_t, int64_t);
 
+/// Sets the multiplier used to alter the volume of the track.
+void setVolumeMultiplier(double);
+
 /// Starts playing the loaded audio.
 OSStatus playAudio(void);
 

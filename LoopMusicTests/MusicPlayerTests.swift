@@ -5,7 +5,6 @@ import XCTest
 class MusicPlayerTests: XCTestCase {
     
     var musicPlayer: MusicPlayer!
-    let TRACK_ID: String = "Thing"
 
     /// Put setup code here. This method is called before the invocation of each test method in the class.
     override func setUp() {
@@ -22,21 +21,20 @@ class MusicPlayerTests: XCTestCase {
         XCTAssertEqual("", musicPlayer.currentTrack.name)
         XCTAssertEqual(0, musicPlayer.currentTrack.loopStart)
         XCTAssertEqual(0, musicPlayer.currentTrack.loopEnd)
-    }
-    
-    /// Tests that a track is loaded into the music player using loadTrack().
-    func testLoadTrack() throws {
-        try musicPlayer.loadTrack(trackId: TRACK_ID)
-        XCTAssertEqual("DL3 Minigame", musicPlayer.currentTrack.name)
-        XCTAssertFalse(musicPlayer.playing)
+        XCTAssertEqual(0, musicPlayer.currentTrack.volumeMultiplier)
     }
     
     /// Tests that the music player starts playing using playTrack() and stops using stopTrack().
     func testPlayStopTrack() throws {
-        try musicPlayer.loadTrack(trackId: TRACK_ID)
         try musicPlayer.playTrack()
         XCTAssertTrue(musicPlayer.playing)
         try musicPlayer.stopTrack()
         XCTAssertFalse(musicPlayer.playing)
+    }
+    
+    /// Tests that randomizeTrack() starts playing a track.
+    func testRandomizeTrack() throws {
+        try musicPlayer.randomizeTrack()
+        XCTAssertTrue(musicPlayer.playing)
     }
 }

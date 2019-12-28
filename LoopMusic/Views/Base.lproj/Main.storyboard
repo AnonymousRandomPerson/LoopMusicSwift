@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="15400" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="BYZ-38-t0r">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="15505" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="BYZ-38-t0r">
     <device id="retina6_1" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="15404"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="15509"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -30,20 +30,40 @@
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="POc-xN-ihv">
+                                <rect key="frame" x="50" y="782" width="46" height="30"/>
+                                <state key="normal" title="Tracks"/>
+                                <connections>
+                                    <action selector="chooseTracks:" destination="BYZ-38-t0r" eventType="touchUpInside" id="lGr-qU-Yw9"/>
+                                </connections>
+                            </button>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="PFV-4N-Rnj">
+                                <rect key="frame" x="192" y="194" width="30" height="70"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="48"/>
+                                <state key="normal" title="R"/>
+                                <connections>
+                                    <action selector="randomizeTrack" destination="BYZ-38-t0r" eventType="touchUpInside" id="K9p-bt-MPJ"/>
+                                </connections>
+                            </button>
                         </subviews>
                         <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <constraints>
+                            <constraint firstItem="PFV-4N-Rnj" firstAttribute="top" secondItem="sOX-8u-f3x" secondAttribute="bottom" constant="9" id="BSw-ce-Vd1"/>
                             <constraint firstItem="3Kj-gi-vbC" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" constant="20" id="L3o-OY-1wm"/>
                             <constraint firstItem="sOX-8u-f3x" firstAttribute="centerYWithinMargins" secondItem="8bC-Xf-vdC" secondAttribute="top" constant="150" id="Mxw-RM-e0U"/>
                             <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" secondItem="3Kj-gi-vbC" secondAttribute="trailing" constant="20" id="UPu-sC-BOT"/>
+                            <constraint firstItem="6Tk-OE-BBY" firstAttribute="bottom" secondItem="POc-xN-ihv" secondAttribute="bottom" constant="50" id="jU6-GQ-4vp"/>
                             <constraint firstItem="3Kj-gi-vbC" firstAttribute="top" secondItem="6Tk-OE-BBY" secondAttribute="top" constant="21" id="mQC-zN-Fwk"/>
+                            <constraint firstItem="PFV-4N-Rnj" firstAttribute="centerX" secondItem="6Tk-OE-BBY" secondAttribute="centerX" id="sIl-OK-ATk"/>
                             <constraint firstItem="sOX-8u-f3x" firstAttribute="centerXWithinMargins" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="syT-Lf-yPG"/>
+                            <constraint firstItem="POc-xN-ihv" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" constant="50" id="upg-gA-GnU"/>
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
                     </view>
                     <connections>
                         <outlet property="playButton" destination="sOX-8u-f3x" id="bnV-BZ-pwz"/>
                         <outlet property="trackLabel" destination="3Kj-gi-vbC" id="hks-x8-wQ7"/>
+                        <outlet property="tracksButton" destination="POc-xN-ihv" id="Xcy-KV-Ds9"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>

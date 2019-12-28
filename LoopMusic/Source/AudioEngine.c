@@ -26,13 +26,15 @@ AudioType audioType;
 int64_t loopStart;
 int64_t loopEnd;
 
+double volumeMultiplier;
+
 /// Used to load audio buffer data from any type of stored audio.
 #define loadBuffer(castedBufferData, castedAudioData) \
 for (unsigned int i = 0; i < BUFFER_SIZE / sizeof(castedAudioData[0]); i++) { \
     if (sampleCounter >= numSamples) { \
         castedBufferData[i] = 0; \
     } else { \
-        castedBufferData[i] = castedAudioData[sampleCounter++]; \
+        castedBufferData[i] = castedAudioData[sampleCounter++] * volumeMultiplier; \
     } \
     if (loopEnd > 0 && sampleCounter > loopEnd) { \
         sampleCounter = loopStart; \
@@ -107,6 +109,10 @@ OSStatus loadFloatAudio(void *_Nonnull newAudioData, int64_t newNumSamples, cons
 void setLoopPoints(int64_t newLoopStart, int64_t newLoopEnd) {
     loopStart = newLoopStart * origAudioDesc->mChannelsPerFrame;
     loopEnd = newLoopEnd * origAudioDesc->mChannelsPerFrame;
+}
+
+void setVolumeMultiplier(double newVolumeMultiplier) {
+    volumeMultiplier = newVolumeMultiplier;
 }
 
 OSStatus playAudio() {

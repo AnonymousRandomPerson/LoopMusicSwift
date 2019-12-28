@@ -1,6 +1,7 @@
 import AVFoundation
 import CoreAudio
 import Foundation
+import MediaPlayer
 
 /// Handles playback and looping of music tracks.
 class MusicPlayer {
@@ -10,25 +11,26 @@ class MusicPlayer {
     /// True if the player is currently playing a track.
     private(set) var playing: Bool = false
     /// If the current audio track was converted manually, this holds the audio buffer so memory can be freed when switching audio tracks.
-    private var manuallyAllocatedBuffer: AudioBuffer?;
+    private var manuallyAllocatedBuffer: AudioBuffer?
+    /// Sample rate of the currently loaded track.
+    private var sampleRate: Double = 44100
     
     /// Initializes a music player with a blank track.
     init() {
-        currentTrack = MusicTrack(url: URL(fileURLWithPath: ""), name: "", loopStart: 0, loopEnd: 0)
+        currentTrack = MusicTrack.BLANK_MUSIC_TRACK
     }
     
-    /// Loads a track into the music player based on its database track ID.
-    /// - parameter trackId: The database track ID of the track to load.
-    func loadTrack(trackId: String) throws {
+    /// Loads a track into the music player.
+    /// - parameter mediaItem: The audio track to play.
+    func loadTrack(mediaItem: MPMediaItem) throws {
         try stopTrack()
         
         unloadTrack()
         
-        let url: URL = Bundle.main.url(forResource: "DL3 Minigame", withExtension: "m4a") ?? URL(fileURLWithPath: "")
-        currentTrack = MusicTrack(url: url, name: "DL3 Minigame", loopStart: 174256, loopEnd: 977489)
+        currentTrack = try MusicData.data.loadTrack(mediaItem: mediaItem)
         let audioFile: AVAudioFile
         do {
-            audioFile = try AVAudioFile(forReading: url)
+            audioFile = try AVAudioFile(forReading: currentTrack.url)
         } catch let error as NSError {
             throw MessageError(error.localizedDescription)
         }
@@ -70,7 +72,7 @@ class MusicPlayer {
             let converterPointer: UnsafeMutablePointer<AudioConverterRef?> = UnsafeMutablePointer<AudioConverterRef?>.allocate(capacity: MemoryLayout<AudioConverterRef>.size)
             let createStatus: OSStatus = AudioConverterNew(origAudioDescPointer, audioDesc, converterPointer)
             if createStatus != 0 {
-                throw MessageError(String(format: "Failed to create converter for interleaved audio. Status: %d", createStatus))
+                throw MessageError(message: "Failed to create converter for interleaved audio.", statusCode: createStatus)
             }
             
             // Allocate memory for a buffer to store the converted audio data.
@@ -85,14 +87,14 @@ class MusicPlayer {
             if let converter: AudioConverterRef = converterPointer.pointee {
                 let convertStatus: OSStatus = AudioConverterConvertComplexBuffer(converter, origBuffer.frameLength, audioBuffer, newAudioBufferList.unsafeMutablePointer)
                 if convertStatus != 0 {
-                    throw MessageError(String(format: "Failed to convert to interleaved audio. Status: %d", convertStatus))
+                    throw MessageError(message: "Failed to convert to interleaved audio.", statusCode: convertStatus)
                 }
                 
                 audioBuffer = newAudioBufferList.unsafePointer
                 
                 let deallocateStatus: OSStatus = AudioConverterDispose(converter)
                 if deallocateStatus != 0 {
-                    throw MessageError(String(format: "Failed to deallocate converter for interleaved audio. Status: %d", deallocateStatus))
+                    throw MessageError(message: "Failed to deallocate converter for interleaved audio.", statusCode: deallocateStatus)
                 }
             } else {
                 throw MessageError("Failed to load converter for interleaved audio.")
@@ -101,6 +103,7 @@ class MusicPlayer {
         
         var loadStatus: OSStatus = -1
         let audioLength: AVAudioFramePosition = audioFile.length * Int64(audioDesc.pointee.mChannelsPerFrame);
+        sampleRate = audioDesc.pointee.mSampleRate
         if let audioData: UnsafeMutableRawPointer = audioBuffer.pointee.mBuffers.mData {
             // Check for the data type of the audio and load it in the audio engine accordingly.
             if origBuffer.int32ChannelData != nil {
@@ -112,15 +115,15 @@ class MusicPlayer {
             }
         }
         if loadStatus != 0 {
-            throw MessageError(String(format: "Audio data is empty or not supported. Status: %d", loadStatus))
+            throw MessageError(message: "Audio data is empty or not supported.", statusCode: loadStatus)
         }
     
-        updateLoopPoints()
+        updateTrackSettings()
     }
     
     /// Unloads audio data if the current track needed to be converted (and was initialized with malloc).
     func unloadTrack() {
-        if (manuallyAllocatedBuffer != nil) {
+        if manuallyAllocatedBuffer != nil {
             free(manuallyAllocatedBuffer?.mData)
             manuallyAllocatedBuffer = nil
         }
@@ -128,28 +131,59 @@ class MusicPlayer {
     
     /// Starts playing the currently loaded track.
     func playTrack() throws {
-        if (!playing) {
+        if !playing {
             playing = true
             let playStatus: OSStatus = playAudio()
             if (playStatus != 0) {
-                throw MessageError(String(format: "Failed to play audio. Status: %d", playStatus))
+                throw MessageError(message: "Failed to play audio.", statusCode: playStatus)
             }
         }
     }
     
     /// Stops playing the currently loaded track.
     func stopTrack() throws {
-        if (playing) {
+        if playing {
             playing = false
             let stopStatus: OSStatus = stopAudio()
-            if (stopStatus != 0) {
-                throw MessageError(String(format: "Failed to stop audio. Status: %d", stopStatus))
+            if stopStatus != 0 {
+                throw MessageError(message: "Failed to stop audio.", statusCode: stopStatus)
             }
         }
     }
     
-    /// Updates the points where the track will start and end looping based on the current track metadata.
-    func updateLoopPoints() {
-        setLoopPoints(currentTrack.loopStart, currentTrack.loopEnd)
+    /// Updates the loop start/end and volume multipliers within the audio engine.
+    func updateTrackSettings() {
+        setLoopPoints((Int64) (currentTrack.loopStart * sampleRate), (Int64) (currentTrack.loopEnd * sampleRate))
+        setVolumeMultiplier(currentTrack.volumeMultiplier)
+    }
+    
+    /// Chooses a random track from the current playlist and starts playing it.
+    func randomizeTrack() throws {
+        let query: MPMediaQuery = MPMediaQuery.playlists()
+        query.filterPredicates = NSSet(object: MPMediaPropertyPredicate(value: "LoopMusic", forProperty: MPMediaItemPropertyTitle)) as? Set<MPMediaPredicate>
+        var playlistTracks: [MPMediaItem]?
+        if let playlists: [MPMediaItemCollection] = query.collections {
+            for playlist in playlists {
+                playlistTracks = playlist.items
+                break
+            }
+        }
+        
+        var tracks: [MPMediaItem]
+        if let playlistTracks: [MPMediaItem] = playlistTracks {
+            tracks = playlistTracks
+        } else if let allTracks = MPMediaQuery.songs().items {
+            tracks = allTracks
+        } else {
+            throw MessageError("No tracks found.")
+        }
+        if tracks.count == 0 {
+            throw MessageError("No tracks found.")
+        }
+        
+        let randomTrack: MPMediaItem = tracks[Int.random(in: 0..<tracks.count)]
+
+        try loadTrack(mediaItem: randomTrack)
+        try playTrack()
     }
 }

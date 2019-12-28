@@ -7,6 +7,10 @@ struct MessageError: Error {
         self.message = message
     }
     
+    init(message: String, statusCode: Int32) {
+        self.message = String(format: "%@ Status code: %d", message, statusCode)
+    }
+    
     public var localizedDescription: String {
         return message
     }
