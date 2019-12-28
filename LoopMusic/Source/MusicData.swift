@@ -36,7 +36,7 @@ class MusicData {
     
     /// Closes the currently open connection to the database.
     func closeConnection() throws {
-        if (!open) {
+        if !open {
             return
         }
         
@@ -52,9 +52,16 @@ class MusicData {
         if let trackURL: URL = mediaItem.assetURL, let trackName: String = mediaItem.title {
             let trackCallback = {(statement: OpaquePointer?) -> Void in
                 track = MusicTrack(url: trackURL, name: trackName, loopStart: sqlite3_column_double(statement, 0), loopEnd: sqlite3_column_double(statement, 1), volumeMultiplier: sqlite3_column_double(statement, 2))
+                let dbTrackName: String = String(cString: sqlite3_column_text(statement, 3))
+                if dbTrackName != trackName {
+                    // If the media item name has changed since last loaded from the database, update it.
+                    // This can happen if the item is renamed outside the app.
+                    try self.executeSql(query: String(format: "UPDATE Tracks SET name = '%@' WHERE id = '%i'", self.escapeStringForDb(string: trackName), sqlite3_column_int(statement, 4)),
+                                        errorMessage: String(format: "Failed to update name for %@", trackName))
+                }
             }
             try executeSql(
-                query: String(format: "SELECT loopStart, loopEnd, volumeMultiplier FROM Tracks WHERE url = '%@'", trackURL.absoluteString),
+                query: String(format: "SELECT loopStart, loopEnd, volumeMultiplier, name, id FROM Tracks WHERE url = '%@'", trackURL.absoluteString),
                 stepCallback: trackCallback,
                 noResultCallback: {() -> Void in
                     // Try to fallback on name. If the track is changed at all, the URL may change.
@@ -63,7 +70,7 @@ class MusicData {
                         query: String(format: "SELECT loopStart, loopEnd, volumeMultiplier, id FROM Tracks WHERE name = '%@'", trackName),
                         stepCallback: {(statement: OpaquePointer?) -> Void in
                             // Update the stored track URL if a name match is found.
-                            trackCallback(statement)
+                            try trackCallback(statement)
                             try self.executeSql(query: String(format: "UPDATE Tracks SET url = '%@' WHERE id = '%i'", trackURL.absoluteString, sqlite3_column_int(statement, 3)),
                                                 errorMessage: String(format: "Failed to update URL for %@", trackName))
                         },
@@ -139,5 +146,12 @@ class MusicData {
         if !hasResults, let noResultCallback: () throws -> Void = noResultCallback {
             try noResultCallback()
         }
+    }
+    
+    /// Escapes a string to write it to the database. This includes doubling-up single quotes.
+    /// - parameter string: The string to escape.
+    /// - returns: The escaped string.
+    func escapeStringForDb(string: String) -> String {
+        return string.replacingOccurrences(of: "'", with: "''")
     }
 }

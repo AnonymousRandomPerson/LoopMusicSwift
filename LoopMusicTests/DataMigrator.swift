@@ -15,8 +15,8 @@ class DataMigrator: XCTestCase {
     override func tearDown() {
     }
 
-    /// To run, place the old database in the test folder and rename it to "TracksOld.db". Then change this method to a test and run it.
-    /// WARNING: This will replace the existing contents of the Tracks table in the app's database.
+    /// To run, place the old database in the test folder and rename it to "TracksOld.db". Then add "test" in front of this function's name and run it.
+    /// WARNING: This will replace the contents of the Tracks table in the app's database with the migrated data.
     func migrateOldDb() throws {
         try data.closeConnection()
         let dbUrl: URL = Bundle(for: DataMigrator.self).url(forResource: "TracksOld", withExtension: "db")!
@@ -33,7 +33,7 @@ class DataMigrator: XCTestCase {
                 } else {
                     insertQuery += ","
                 }
-                let name: String = String(cString: sqlite3_column_text(statement, 0)).replacingOccurrences(of: "'", with: "''")
+                let name: String = self.data.escapeStringForDb(string: String(cString: sqlite3_column_text(statement, 0)))
                 insertQuery += String(format: "('%s', '%@', %f, %f, %f)", sqlite3_column_text(statement, 4), name, sqlite3_column_double(statement, 1), sqlite3_column_double(statement, 2), sqlite3_column_double(statement, 3))
             },
             noResultCallback: nil,
