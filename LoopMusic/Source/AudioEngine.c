@@ -24,7 +24,7 @@ AudioType audioType;
 
 /// The audio queue currently being used to play audio.
 AudioQueueRef queue;
-const AudioStreamBasicDescription *_Nonnull origAudioDesc;
+AudioStreamBasicDescription origAudioDesc;
 AudioQueueBufferRef buffers[NUM_BUFFERS];
 
 /// True if audio is currently playing.
@@ -32,7 +32,7 @@ bool playing = false;
 
 double volumeMultiplier;
 
-bool areAudioDescsEqual(AudioStreamBasicDescription *desc1, AudioStreamBasicDescription *desc2);
+bool areAudioDescsEqual(AudioStreamBasicDescription desc1, AudioStreamBasicDescription desc2);
 
 /// Used to load audio buffer data from any type of stored audio.
 #define loadBuffer(castedBufferData, castedAudioData) \
@@ -66,7 +66,7 @@ void audioCallback(void *customData, AudioQueueRef queue, AudioQueueBufferRef bu
 }
 
 /// Loads audio data into the engine in preparation for audio playback.
-OSStatus loadAudio(void *_Nonnull newAudioData, int64_t newNumSamples, const AudioStreamBasicDescription *_Nonnull audioDesc, AudioType newAudioType) {
+OSStatus loadAudio(void *_Nonnull newAudioData, int64_t newNumSamples, const AudioStreamBasicDescription audioDesc, AudioType newAudioType) {
     if (newAudioType == audioType && areAudioDescsEqual(audioDesc, origAudioDesc)) {
         // If audio format is the same, no need to recreate the audio queue.
         audioData = newAudioData;
@@ -74,7 +74,7 @@ OSStatus loadAudio(void *_Nonnull newAudioData, int64_t newNumSamples, const Aud
         audioType = newAudioType;
         return 0;
     } else {
-        if (origAudioDesc != NULL) {
+        if (queue != NULL) {
             // Deallocate any existing audio buffers.
             for (unsigned int i = 0; i < NUM_BUFFERS; i++) {
                 OSStatus status = AudioQueueFreeBuffer(queue, buffers[i]);
@@ -84,7 +84,7 @@ OSStatus loadAudio(void *_Nonnull newAudioData, int64_t newNumSamples, const Aud
             }
         }
         
-        OSStatus status = AudioQueueNewOutput(audioDesc, audioCallback, NULL, CFRunLoopGetCurrent(), kCFRunLoopCommonModes, 0, &queue);
+        OSStatus status = AudioQueueNewOutput(&audioDesc, audioCallback, NULL, CFRunLoopGetCurrent(), kCFRunLoopCommonModes, 0, &queue);
         if (status != 0) {
             return status;
         }
@@ -107,21 +107,21 @@ OSStatus loadAudio(void *_Nonnull newAudioData, int64_t newNumSamples, const Aud
     }
 }
 
-OSStatus load32BitAudio(void *_Nonnull newAudioData, int64_t newNumSamples, const AudioStreamBasicDescription *_Nonnull audioDesc) {
+OSStatus load32BitAudio(void *_Nonnull newAudioData, int64_t newNumSamples, const AudioStreamBasicDescription audioDesc) {
     return loadAudio(newAudioData, newNumSamples, audioDesc, INT32);
 }
 
-OSStatus load16BitAudio(void *_Nonnull newAudioData, int64_t newNumSamples, const AudioStreamBasicDescription *_Nonnull audioDesc) {
+OSStatus load16BitAudio(void *_Nonnull newAudioData, int64_t newNumSamples, const AudioStreamBasicDescription audioDesc) {
     return loadAudio(newAudioData, newNumSamples, audioDesc, INT16);
 }
 
-OSStatus loadFloatAudio(void *_Nonnull newAudioData, int64_t newNumSamples, const AudioStreamBasicDescription *_Nonnull audioDesc) {
+OSStatus loadFloatAudio(void *_Nonnull newAudioData, int64_t newNumSamples, const AudioStreamBasicDescription audioDesc) {
     return loadAudio(newAudioData, newNumSamples, audioDesc, FLOAT);
 }
 
 void setLoopPoints(int64_t newLoopStart, int64_t newLoopEnd) {
-    loopStart = newLoopStart * origAudioDesc->mChannelsPerFrame;
-    loopEnd = newLoopEnd * origAudioDesc->mChannelsPerFrame;
+    loopStart = newLoopStart * origAudioDesc.mChannelsPerFrame;
+    loopEnd = newLoopEnd * origAudioDesc.mChannelsPerFrame;
 }
 
 void setVolumeMultiplier(double newVolumeMultiplier) {
@@ -148,15 +148,14 @@ OSStatus stopAudio() {
 }
 
 /// Checks if two audio stream descriptions are equal. Returns false if either description is null.
-bool areAudioDescsEqual(AudioStreamBasicDescription *desc1, AudioStreamBasicDescription *desc2) {
-    return desc1 != NULL && desc2 != NULL &&
-        desc1->mBitsPerChannel == desc2->mBitsPerChannel &&
-        desc1->mBytesPerFrame == desc2->mBytesPerFrame &&
-        desc1->mBytesPerPacket == desc2->mBytesPerPacket &&
-        desc1->mChannelsPerFrame == desc2->mChannelsPerFrame &&
-        desc1->mFormatFlags == desc2->mFormatFlags &&
-        desc1->mFormatID == desc2->mFormatID &&
-        desc1->mFramesPerPacket == desc2->mFramesPerPacket &&
-        desc1->mReserved == desc2->mReserved &&
-        desc1->mSampleRate == desc2->mSampleRate;
+bool areAudioDescsEqual(AudioStreamBasicDescription desc1, AudioStreamBasicDescription desc2) {
+    return desc1.mBitsPerChannel == desc2.mBitsPerChannel &&
+        desc1.mBytesPerFrame == desc2.mBytesPerFrame &&
+        desc1.mBytesPerPacket == desc2.mBytesPerPacket &&
+        desc1.mChannelsPerFrame == desc2.mChannelsPerFrame &&
+        desc1.mFormatFlags == desc2.mFormatFlags &&
+        desc1.mFormatID == desc2.mFormatID &&
+        desc1.mFramesPerPacket == desc2.mFramesPerPacket &&
+        desc1.mReserved == desc2.mReserved &&
+        desc1.mSampleRate == desc2.mSampleRate;
 }

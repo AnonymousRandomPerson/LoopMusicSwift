@@ -29,7 +29,7 @@ class MusicPlayer {
     /// Loads a track into the music player.
     /// - parameter mediaItem: The audio track to play.
     func loadTrack(mediaItem: MPMediaItem) throws {
-        stopAudio()
+        try stopTrack()
         
         if (manuallyAllocatedBuffer != nil) {
             // New audio has been loaded, so it is safe to unload the old audio now.
@@ -116,11 +116,11 @@ class MusicPlayer {
         if let audioData: UnsafeMutableRawPointer = audioBuffer.pointee.mBuffers.mData {
             // Check for the data type of the audio and load it in the audio engine accordingly.
             if origBuffer.int32ChannelData != nil {
-                loadStatus = load32BitAudio(audioData, audioLength, audioDesc)
+                loadStatus = load32BitAudio(audioData, audioLength, audioDesc.pointee)
             } else if origBuffer.int16ChannelData != nil {
-                loadStatus = load16BitAudio(audioData, audioLength, audioDesc)
+                loadStatus = load16BitAudio(audioData, audioLength, audioDesc.pointee)
             } else if origBuffer.floatChannelData != nil {
-                loadStatus = loadFloatAudio(audioData, audioLength, audioDesc)
+                loadStatus = loadFloatAudio(audioData, audioLength, audioDesc.pointee)
             }
         }
         if loadStatus != 0 {
@@ -130,6 +130,8 @@ class MusicPlayer {
         updateTrackSettings()
         
         NotificationCenter.default.post(name: .trackName, object: nil)
+        
+        try playTrack()
     }
     
     /// Starts playing the currently loaded track.

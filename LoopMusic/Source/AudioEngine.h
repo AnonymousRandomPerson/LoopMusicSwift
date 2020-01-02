@@ -6,13 +6,13 @@
 #import <CoreFoundation/CFRunLoop.h>
 
 /// Loads 32-bit audio samples and playback metadata into the player.
-OSStatus load32BitAudio(void *_Nonnull, int64_t, const AudioStreamBasicDescription*_Nonnull);
+OSStatus load32BitAudio(void *_Nonnull, int64_t, AudioStreamBasicDescription);
 
 /// Loads 16-bit audio samples and playback metadata into the player.
-OSStatus load16BitAudio(void *_Nonnull, int64_t, const AudioStreamBasicDescription*_Nonnull);
+OSStatus load16BitAudio(void *_Nonnull, int64_t, AudioStreamBasicDescription);
 
 /// Loads 32-bit float audio samples and playback metadata into the player.
-OSStatus loadFloatAudio(void *_Nonnull, int64_t, const AudioStreamBasicDescription*_Nonnull);
+OSStatus loadFloatAudio(void *_Nonnull, int64_t, AudioStreamBasicDescription);
 
 /// Sets the points where the track will start and end looping.
 void setLoopPoints(int64_t, int64_t);
