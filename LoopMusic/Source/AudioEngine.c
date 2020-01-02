@@ -103,7 +103,6 @@ OSStatus loadAudio(void *_Nonnull newAudioData, int64_t newNumSamples, const Aud
             buffers[i]->mAudioDataByteSize = BUFFER_SIZE;
         }
         return status;
-        
     }
 }
 
