@@ -10,6 +10,12 @@ class MusicPlayer {
     private(set) var currentTrack: MusicTrack
     /// True if the player is currently playing a track.
     private(set) var playing: Bool = false
+    /// The playlist to use for selecting tracks.
+    private(set) var currentPlaylist: String = "LoopMusic"
+
+    /// Timer used to shuffle tracks after playing for a while.
+    private var shuffleTimer: Timer?
+    
     /// If the current audio track was converted manually, this holds the audio buffer so memory can be freed when switching audio tracks.
     private var manuallyAllocatedBuffer: AudioBuffer?
     /// Sample rate of the currently loaded track.
@@ -23,9 +29,12 @@ class MusicPlayer {
     /// Loads a track into the music player.
     /// - parameter mediaItem: The audio track to play.
     func loadTrack(mediaItem: MPMediaItem) throws {
-        try stopTrack()
+        stopAudio()
         
-        unloadTrack()
+        if (manuallyAllocatedBuffer != nil) {
+            // New audio has been loaded, so it is safe to unload the old audio now.
+            free(manuallyAllocatedBuffer?.mData)
+        }
         
         currentTrack = try MusicData.data.loadTrack(mediaItem: mediaItem)
         let audioFile: AVAudioFile
@@ -117,16 +126,10 @@ class MusicPlayer {
         if loadStatus != 0 {
             throw MessageError(message: "Audio data is empty or not supported.", statusCode: loadStatus)
         }
-    
+        
         updateTrackSettings()
-    }
-    
-    /// Unloads audio data if the current track needed to be converted (and was initialized with malloc).
-    func unloadTrack() {
-        if manuallyAllocatedBuffer != nil {
-            free(manuallyAllocatedBuffer?.mData)
-            manuallyAllocatedBuffer = nil
-        }
+        
+        NotificationCenter.default.post(name: .trackName, object: nil)
     }
     
     /// Starts playing the currently loaded track.
@@ -160,7 +163,7 @@ class MusicPlayer {
     /// Chooses a random track from the current playlist and starts playing it.
     func randomizeTrack() throws {
         let query: MPMediaQuery = MPMediaQuery.playlists()
-        query.filterPredicates = NSSet(object: MPMediaPropertyPredicate(value: "LoopMusic", forProperty: MPMediaItemPropertyTitle)) as? Set<MPMediaPredicate>
+        query.filterPredicates = NSSet(object: MPMediaPropertyPredicate(value: currentPlaylist, forProperty: MPMediaItemPropertyTitle)) as? Set<MPMediaPredicate>
         var playlistTracks: [MPMediaItem]?
         if let playlists: [MPMediaItemCollection] = query.collections {
             for playlist in playlists {

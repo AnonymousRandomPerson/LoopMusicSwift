@@ -4,6 +4,8 @@ import UIKit
 /// Controller for the music player (home screen) of the app.
 class MusicPlayerViewController: UIViewController, MPMediaPickerControllerDelegate {
     
+    static let NOTIFICATION_TRACK_NAME: NSNotification.Name = NSNotification.Name("trackName")
+    
     @IBOutlet weak var playButton: UIButton?
     @IBOutlet weak var tracksButton: UIButton?
     @IBOutlet weak var trackLabel: UILabel?
@@ -13,6 +15,8 @@ class MusicPlayerViewController: UIViewController, MPMediaPickerControllerDelega
     /// Do any additional setup after loading the view.
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        NotificationCenter.default.addObserver(self, selector: #selector(updateTrackName(notification:)), name: .trackName, object: nil)
         
         do {
             try MusicData.data.openConnection()
@@ -41,6 +45,7 @@ class MusicPlayerViewController: UIViewController, MPMediaPickerControllerDelega
         }
     }
     
+    /// Plays a random track from the current playlist.
     @IBAction func randomizeTrack() {
         do {
             try musicPlayer.randomizeTrack()
@@ -66,7 +71,7 @@ class MusicPlayerViewController: UIViewController, MPMediaPickerControllerDelega
         print(message)
     }
     
-    /// Select an audio track to play.
+    /// Selects an audio track to play.
     @IBAction func chooseTracks(_ sender: UIButton) {
         let myMediaPickerVC = MPMediaPickerController(mediaTypes: MPMediaType.music)
         myMediaPickerVC.popoverPresentationController?.sourceView = sender
@@ -74,6 +79,7 @@ class MusicPlayerViewController: UIViewController, MPMediaPickerControllerDelega
         self.present(myMediaPickerVC, animated: true, completion: nil)
     }
     
+    /// Plays the track selected from the media picker.
     func mediaPicker(_ mediaPicker: MPMediaPickerController, didPickMediaItems mediaItemCollection: MPMediaItemCollection) {
         if mediaItemCollection.count > 0 {
             do {
@@ -87,9 +93,14 @@ class MusicPlayerViewController: UIViewController, MPMediaPickerControllerDelega
         }
         mediaPicker.dismiss(animated: true, completion: nil)
     }
-
+    
+    /// Dismisses the music player without selecting a track.
     func mediaPickerDidCancel(_ mediaPicker: MPMediaPickerController) {
         mediaPicker.dismiss(animated: true, completion: nil)
     }
 
+    /// Updates the track label according to the currently playing track.
+    @objc func updateTrackName(notification: NSNotification) {
+        trackLabel?.text = musicPlayer.currentTrack.name
+    }
 }

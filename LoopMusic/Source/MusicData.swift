@@ -56,7 +56,7 @@ class MusicData {
                 if dbTrackName != trackName {
                     // If the media item name has changed since last loaded from the database, update it.
                     // This can happen if the item is renamed outside the app.
-                    try self.executeSql(query: String(format: "UPDATE Tracks SET name = '%@' WHERE id = '%i'", self.escapeStringForDb(string: trackName), sqlite3_column_int(statement, 4)),
+                    try self.executeSql(query: String(format: "UPDATE Tracks SET name = '%@' WHERE id = '%i'", self.escapeStringForDb(trackName), sqlite3_column_int(statement, 4)),
                                         errorMessage: String(format: "Failed to update name for %@", trackName))
                 }
             }
@@ -151,7 +151,7 @@ class MusicData {
     /// Escapes a string to write it to the database. This includes doubling-up single quotes.
     /// - parameter string: The string to escape.
     /// - returns: The escaped string.
-    func escapeStringForDb(string: String) -> String {
+    func escapeStringForDb(_ string: String) -> String {
         return string.replacingOccurrences(of: "'", with: "''")
     }
 }

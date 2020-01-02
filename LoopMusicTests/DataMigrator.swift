@@ -33,7 +33,7 @@ class DataMigrator: XCTestCase {
                 } else {
                     insertQuery += ","
                 }
-                let name: String = self.data.escapeStringForDb(string: String(cString: sqlite3_column_text(statement, 0)))
+                let name: String = self.data.escapeStringForDb(String(cString: sqlite3_column_text(statement, 0)))
                 insertQuery += String(format: "('%s', '%@', %f, %f, %f)", sqlite3_column_text(statement, 4), name, sqlite3_column_double(statement, 1), sqlite3_column_double(statement, 2), sqlite3_column_double(statement, 3))
             },
             noResultCallback: nil,

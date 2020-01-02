@@ -83,6 +83,11 @@ class MusicDataTests: XCTestCase {
             noResultCallback: nil, errorMessage: "")
     }
     
+    /// Tests that escapeStringForDb() escapes single quotes.
+    func testEscapeStringForDb() {
+        XCTAssertEqual("Let''s Go", data.escapeStringForDb(string: "Let's Go"))
+    }
+    
     class TestMPMediaItem: MPMediaItem {
         
         var _assetURL: URL? = URL(string: MusicDataTests.TRACK_URL)
