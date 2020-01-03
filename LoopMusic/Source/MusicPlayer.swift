@@ -10,7 +10,7 @@ class MusicPlayer {
     static let START_READ_FRAMES: AVAudioFramePosition = AVAudioFramePosition(100000)
     
     /// The track currently loaded in the music player.
-    private(set) var currentTrack: MusicTrack
+    private(set) var currentTrack: MusicTrack = MusicTrack.BLANK_MUSIC_TRACK
     /// True if the player is currently playing a track.
     private(set) var playing: Bool = false
     /// The playlist to use for selecting tracks.
@@ -27,9 +27,8 @@ class MusicPlayer {
     /// True if the current audio track was converted manually.
     private var manuallyAllocatedBuffer: Bool = false
     
-    /// Initializes a music player with a blank track.
     init() {
-        currentTrack = MusicTrack.BLANK_MUSIC_TRACK
+        enableBackgroundAudio()
     }
     
     /// Loads a track into the music player.
@@ -127,7 +126,7 @@ class MusicPlayer {
         
         NotificationCenter.default.post(name: .trackName, object: nil)
         
-        // DispatchQueue.async(execute: )
+        //DispatchQueue.async(execute: )
     }
     
     /// Takes noninterleaved audio data from a buffer and converts it to interleaved audio data. This data is stored in the class-level audio buffer.
@@ -223,5 +222,15 @@ class MusicPlayer {
 
         try loadTrack(mediaItem: randomTrack)
         try playTrack()
+    }
+    
+    /// Enables background audio playback for the app.
+    func enableBackgroundAudio() {
+        do {
+            try AVAudioSession.sharedInstance().setCategory(.playback, mode: .default, options: [.mixWithOthers, .allowAirPlay])
+            try AVAudioSession.sharedInstance().setActive(true)
+        } catch {
+            print(error.localizedDescription)
+        }
     }
 }
