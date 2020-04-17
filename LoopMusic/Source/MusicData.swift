@@ -2,6 +2,7 @@ import Foundation
 import MediaPlayer
 import SQLite3
 
+/// Interfaces with the SQLite database that stores track metadata.
 class MusicData {
     
     /// Singleton instance.

@@ -1,4 +1,4 @@
-import Foundation;
+import Foundation
 
 /// Metadata for a music track, relevant for playback and looping.
 struct MusicTrack {

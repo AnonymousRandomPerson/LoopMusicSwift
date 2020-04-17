@@ -20,6 +20,10 @@ class MusicPlayerViewController: UIViewController, MPMediaPickerControllerDelega
         
         do {
             try MusicData.data.openConnection()
+            
+            if (MusicSettings.settings.playOnInit) {
+                randomizeTrack()
+            }
         } catch let error as MessageError {
             handleMessageError(error: error)
         } catch let error as NSError {

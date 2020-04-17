@@ -29,6 +29,11 @@ class MusicPlayer {
     /// True if the current audio track was converted manually.
     private var manuallyAllocatedBuffer: Bool = false
     
+    /// Lock to prevent the audio buffer from being loaded and freed at the same time.
+    private var bufferLock: DispatchSemaphore = DispatchSemaphore(value: 1)
+    /// Passed to the dispatch queue tasks so the audio loading task knows if the track changes while it's still loading.
+    private var trackUuid: UUID = UUID()
+    
     init() {
         enableBackgroundAudio()
     }
@@ -39,9 +44,12 @@ class MusicPlayer {
         try stopTrack()
         
         // Unload the buffer for the previous track.
+        bufferLock.wait()
         if let audioBuffer: AudioBuffer = audioBuffer {
             free(audioBuffer.mData)
         }
+        trackUuid = UUID()
+        bufferLock.signal()
         
         currentTrack = try MusicData.data.loadTrack(mediaItem: mediaItem)
         let audioFile: AVAudioFile
@@ -99,7 +107,7 @@ class MusicPlayer {
         try convertAndAddAudio(origBuffer: origBuffer, audioDesc: audioDesc, converter: converter, noninterleaved: noninterleaved, offset: 0)
         
         var loadStatus: OSStatus = -1
-        let audioLength: AVAudioFramePosition = audioFile.length * Int64(audioDesc.mChannelsPerFrame);
+        let audioLength: AVAudioFramePosition = audioFile.length * Int64(audioDesc.mChannelsPerFrame)
         sampleRate = audioDesc.mSampleRate
         
         let audioData: UnsafeMutableRawPointer = audioBuffer!.mData!
@@ -116,7 +124,7 @@ class MusicPlayer {
             throw MessageError(message: "Audio data is empty or not supported.", statusCode: loadStatus)
         }
         
-        try loadAudioAsync(audioFile: audioFile, loadBuffer: origBuffer, audioDesc: audioDesc, converter: converter, noninterleaved: noninterleaved, currentFramesRead: startReadFrames);
+        try loadAudioAsync(audioFile: audioFile, loadBuffer: origBuffer, audioDesc: audioDesc, converter: converter, noninterleaved: noninterleaved, currentFramesRead: startReadFrames, processUuid: trackUuid)
         
         updateTrackSettings()
         
@@ -173,30 +181,54 @@ class MusicPlayer {
     /// - parameter converter: Audio converter to convert non-interleaved audio.
     /// - parameter noninterleaved: True if the audio is non-interleaved.
     /// - parameter currentFramesRead: The number of audio frames that have been read so far.
-    func loadAudioAsync(audioFile: AVAudioFile, loadBuffer: AVAudioPCMBuffer, audioDesc: AudioStreamBasicDescription, converter: AudioConverterRef?, noninterleaved: Bool, currentFramesRead: AVAudioFrameCount) throws {
+    /// - parameter processUuid: The UUID of the audio track process. If the track changes, this will not match and the async task will cancel.
+    func loadAudioAsync(audioFile: AVAudioFile, loadBuffer: AVAudioPCMBuffer, audioDesc: AudioStreamBasicDescription, converter: AudioConverterRef?, noninterleaved: Bool, currentFramesRead: AVAudioFrameCount, processUuid: UUID) throws {
         if currentFramesRead >= audioFile.length {
-            if let converter: AudioConverterRef = converter {
-                let deallocateStatus: OSStatus = AudioConverterDispose(converter)
-                if deallocateStatus != 0 {
-                    throw MessageError(message: "Failed to deallocate converter for interleaved audio.", statusCode: deallocateStatus)
-                }
-            }
+            try disposeConverter(converter: converter)
             return
         }
         DispatchQueue.global(qos: DispatchQoS.background.qosClass).async {
             do {
                 try audioFile.read(into: loadBuffer, frameCount: MusicPlayer.FRAME_READ_INCREMENT)
-                
-                try self.convertAndAddAudio(origBuffer: loadBuffer, audioDesc: audioDesc, converter: converter, noninterleaved: noninterleaved, offset: Int(currentFramesRead * audioDesc.mBytesPerFrame))
+
+                self.bufferLock.wait()
+                if (processUuid == self.trackUuid) {
+                    try self.convertAndAddAudio(origBuffer: loadBuffer, audioDesc: audioDesc, converter: converter, noninterleaved: noninterleaved, offset: Int(currentFramesRead * audioDesc.mBytesPerFrame))
+                    self.bufferLock.signal()
+                } else {
+                    // If the process UUID doesn't match, the track has changed. Cancel loading the audio.
+                    self.bufferLock.signal()
+                    try self.disposeConverter(converter: converter);
+                    return;
+                }
             
                 // Recursively load audio until the file is fully read.
-                try self.loadAudioAsync(audioFile: audioFile, loadBuffer: loadBuffer, audioDesc: audioDesc, converter: converter, noninterleaved: noninterleaved, currentFramesRead: currentFramesRead + MusicPlayer.FRAME_READ_INCREMENT)
+                try self.loadAudioAsync(audioFile: audioFile, loadBuffer: loadBuffer, audioDesc: audioDesc, converter: converter, noninterleaved: noninterleaved, currentFramesRead: currentFramesRead + MusicPlayer.FRAME_READ_INCREMENT, processUuid: processUuid)
             } catch let error as MessageError {
                 print("Error loading audio asynchronously:", error.localizedDescription)
-                return;
+                return
             } catch let error as NSError {
                 print("Error loading audio asynchronously:", error.localizedDescription)
-                return;
+                return
+            }
+        }
+    }
+    
+    func addAudioAsync(loadBuffer: AVAudioPCMBuffer, audioDesc: AudioStreamBasicDescription, converter: AudioConverterRef?, noninterleaved: Bool, currentFramesRead: AVAudioFrameCount, processUuid: UUID) throws {
+        defer { bufferLock.signal() }
+        if (processUuid == self.trackUuid) {
+            try self.convertAndAddAudio(origBuffer: loadBuffer, audioDesc: audioDesc, converter: converter, noninterleaved: noninterleaved, offset: Int(currentFramesRead * audioDesc.mBytesPerFrame))
+        } else {
+            // If the process UUID doesn't match, the track has changed. Cancel loading the audio.
+            try self.disposeConverter(converter: converter);
+        }
+    }
+    
+    func disposeConverter(converter: AudioConverterRef?) throws {
+        if let converter: AudioConverterRef = converter {
+            let deallocateStatus: OSStatus = AudioConverterDispose(converter)
+            if deallocateStatus != 0 {
+                throw MessageError(message: "Failed to deallocate converter for interleaved audio.", statusCode: deallocateStatus)
             }
         }
     }
