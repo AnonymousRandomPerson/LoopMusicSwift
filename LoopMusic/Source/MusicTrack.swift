@@ -14,10 +14,10 @@ struct MusicTrack {
     /// Display name of the track.
     let name: String
     
-    /// Frame number at the start of the track's loop.
+    /// Time (seconds) at the start of the track's loop.
     let loopStart: Double
     
-    /// Frame number at the end of the track's loop.
+    /// Time (seconds) at the end of the track's loop.
     let loopEnd: Double
     
     /// Multiplier used to alter the volume of the track.

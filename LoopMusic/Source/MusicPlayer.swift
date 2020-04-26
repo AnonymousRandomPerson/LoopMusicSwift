@@ -134,7 +134,7 @@ class MusicPlayer {
     }
     
     func convertAndAddAudio(origBuffer: AVAudioPCMBuffer, audioDesc: AudioStreamBasicDescription, converter: AudioConverterRef?, noninterleaved: Bool, offset: Int) throws {
-        if (noninterleaved) {
+        if noninterleaved {
             try convertToInterleavedAudio(origBuffer: origBuffer, audioDesc: audioDesc, converter: converter!, offset: offset)
         } else {
             addToAudioBuffer(buffer: origBuffer.audioBufferList.pointee.mBuffers, offset: offset)
@@ -192,14 +192,14 @@ class MusicPlayer {
                 try audioFile.read(into: loadBuffer, frameCount: MusicPlayer.FRAME_READ_INCREMENT)
 
                 self.bufferLock.wait()
-                if (processUuid == self.trackUuid) {
+                if processUuid == self.trackUuid {
                     try self.convertAndAddAudio(origBuffer: loadBuffer, audioDesc: audioDesc, converter: converter, noninterleaved: noninterleaved, offset: Int(currentFramesRead * audioDesc.mBytesPerFrame))
                     self.bufferLock.signal()
                 } else {
                     // If the process UUID doesn't match, the track has changed. Cancel loading the audio.
                     self.bufferLock.signal()
-                    try self.disposeConverter(converter: converter);
-                    return;
+                    try self.disposeConverter(converter: converter)
+                    return
                 }
             
                 // Recursively load audio until the file is fully read.
@@ -216,11 +216,11 @@ class MusicPlayer {
     
     func addAudioAsync(loadBuffer: AVAudioPCMBuffer, audioDesc: AudioStreamBasicDescription, converter: AudioConverterRef?, noninterleaved: Bool, currentFramesRead: AVAudioFrameCount, processUuid: UUID) throws {
         defer { bufferLock.signal() }
-        if (processUuid == self.trackUuid) {
+        if processUuid == self.trackUuid {
             try self.convertAndAddAudio(origBuffer: loadBuffer, audioDesc: audioDesc, converter: converter, noninterleaved: noninterleaved, offset: Int(currentFramesRead * audioDesc.mBytesPerFrame))
         } else {
             // If the process UUID doesn't match, the track has changed. Cancel loading the audio.
-            try self.disposeConverter(converter: converter);
+            try self.disposeConverter(converter: converter)
         }
     }
     
@@ -238,9 +238,10 @@ class MusicPlayer {
         if !playing {
             playing = true
             let playStatus: OSStatus = playAudio()
-            if (playStatus != 0) {
+            if playStatus != 0 {
                 throw MessageError(message: "Failed to play audio.", statusCode: playStatus)
             }
+            startShuffleTimer()
         }
     }
     
@@ -248,6 +249,7 @@ class MusicPlayer {
     func stopTrack() throws {
         if playing {
             playing = false
+            stopShuffleTimer()
             let stopStatus: OSStatus = stopAudio()
             if stopStatus != 0 {
                 throw MessageError(message: "Failed to stop audio.", statusCode: stopStatus)
@@ -276,7 +278,7 @@ class MusicPlayer {
         var tracks: [MPMediaItem]
         if let playlistTracks: [MPMediaItem] = playlistTracks {
             tracks = playlistTracks
-        } else if let allTracks = MPMediaQuery.songs().items {
+        } else if let allTracks: [MPMediaItem] = MPMediaQuery.songs().items {
             tracks = allTracks
         } else {
             throw MessageError("No tracks found.")
@@ -299,5 +301,27 @@ class MusicPlayer {
         } catch {
             print("Error enabling background audio:", error.localizedDescription)
         }
+    }
+    
+    /// Starts the timer used to shuffle tracks.
+    func startShuffleTimer() {
+        if shuffleTimer != nil {
+            return
+        }
+        if let shuffleTime: Double = MusicSettings.settings.calculateShuffleTime(track: currentTrack) {
+            shuffleTimer = Timer.scheduledTimer(withTimeInterval: shuffleTime, repeats: false) { timer in
+                do {
+                    try self.randomizeTrack()
+                } catch {
+                    print("Error shuffling track:", error.localizedDescription)
+                }
+            }
+        }
+    }
+    
+    /// Stops the timer used to shuffle tracks.
+    func stopShuffleTimer() {
+        shuffleTimer?.invalidate()
+        shuffleTimer = nil
     }
 }

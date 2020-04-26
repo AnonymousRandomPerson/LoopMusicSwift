@@ -18,18 +18,19 @@ class MusicPlayerViewController: UIViewController, MPMediaPickerControllerDelega
         
         NotificationCenter.default.addObserver(self, selector: #selector(updateTrackName(notification:)), name: .trackName, object: nil)
         
+        MusicSettings.settings.loadSettingsFile()
+        
         do {
             try MusicData.data.openConnection()
-            
-            if (MusicSettings.settings.playOnInit) {
-                randomizeTrack()
-            }
         } catch let error as MessageError {
             handleMessageError(error: error)
         } catch let error as NSError {
             handleNSError(error: error)
         }
-        trackLabel?.text = musicPlayer.currentTrack.name
+        
+        if (MusicSettings.settings.playOnInit) {
+            randomizeTrack()
+        }
     }
     
     /// Toggles whether audio is playing.
@@ -37,11 +38,10 @@ class MusicPlayerViewController: UIViewController, MPMediaPickerControllerDelega
         do {
             if musicPlayer.playing {
                 try musicPlayer.stopTrack()
-                playButton?.setTitle("▶", for: .normal)
             } else {
                 try musicPlayer.playTrack()
-                playButton?.setTitle("■", for: .normal)
             }
+            updatePlayButtonIcon()
         } catch let error as MessageError {
             handleMessageError(error: error)
         } catch let error as NSError {
@@ -53,10 +53,20 @@ class MusicPlayerViewController: UIViewController, MPMediaPickerControllerDelega
     @IBAction func randomizeTrack() {
         do {
             try musicPlayer.randomizeTrack()
+            updatePlayButtonIcon()
         } catch let error as MessageError {
             handleMessageError(error: error)
         } catch let error as NSError {
             handleNSError(error: error)
+        }
+    }
+    
+    /// Sets the play button icon depending on whether music is playing.
+    func updatePlayButtonIcon() {
+        if musicPlayer.playing {
+            playButton?.setTitle("■", for: .normal)
+        } else {
+            playButton?.setTitle("▶", for: .normal)
         }
     }
     

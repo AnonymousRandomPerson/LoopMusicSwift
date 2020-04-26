@@ -18,6 +18,9 @@
 		39191C2E22E6BCDB00C09D67 /* MessageError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 39191C2D22E6BCDB00C09D67 /* MessageError.swift */; };
 		3979377722ACA6BA00C5DB09 /* MusicPlayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3979377622ACA6BA00C5DB09 /* MusicPlayer.swift */; };
 		3979377922ACAA9A00C5DB09 /* MusicTrack.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3979377822ACAA9A00C5DB09 /* MusicTrack.swift */; };
+		398666BE24514030008AC748 /* MusicSettingsTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 398666BD24514030008AC748 /* MusicSettingsTests.swift */; };
+		398666C024514367008AC748 /* ShuffleSetting.swift in Sources */ = {isa = PBXBuildFile; fileRef = 398666BF24514366008AC748 /* ShuffleSetting.swift */; };
+		398666C224514527008AC748 /* TestUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 398666C124514527008AC748 /* TestUtils.swift */; };
 		39B5B31F23B97A1C0091D2E1 /* Notifications.swift in Sources */ = {isa = PBXBuildFile; fileRef = 39B5B31E23B97A1C0091D2E1 /* Notifications.swift */; };
 		39C03A69235BFB34004BD0DA /* MusicData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 39C03A68235BFB34004BD0DA /* MusicData.swift */; };
 		39C4651E24440AC3002CBBB8 /* MusicSettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 39C4651D24440AC3002CBBB8 /* MusicSettings.swift */; };
@@ -64,6 +67,9 @@
 		39191C2D22E6BCDB00C09D67 /* MessageError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MessageError.swift; sourceTree = "<group>"; };
 		3979377622ACA6BA00C5DB09 /* MusicPlayer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MusicPlayer.swift; sourceTree = "<group>"; };
 		3979377822ACAA9A00C5DB09 /* MusicTrack.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MusicTrack.swift; sourceTree = "<group>"; };
+		398666BD24514030008AC748 /* MusicSettingsTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MusicSettingsTests.swift; sourceTree = "<group>"; };
+		398666BF24514366008AC748 /* ShuffleSetting.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShuffleSetting.swift; sourceTree = "<group>"; };
+		398666C124514527008AC748 /* TestUtils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestUtils.swift; sourceTree = "<group>"; };
 		39B5B31E23B97A1C0091D2E1 /* Notifications.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Notifications.swift; sourceTree = "<group>"; };
 		39C03A68235BFB34004BD0DA /* MusicData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MusicData.swift; sourceTree = "<group>"; };
 		39C4651D24440AC3002CBBB8 /* MusicSettings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MusicSettings.swift; sourceTree = "<group>"; };
@@ -135,8 +141,10 @@
 			children = (
 				39E2CC3823AF12A4001FE0BF /* DataMigrator.swift */,
 				390BDAB822AA0CE700E01411 /* Info.plist */,
-				390BDAB622AA0CE700E01411 /* MusicPlayerTests.swift */,
 				39D198E22376669B00680EE3 /* MusicDataTests.swift */,
+				390BDAB622AA0CE700E01411 /* MusicPlayerTests.swift */,
+				398666BD24514030008AC748 /* MusicSettingsTests.swift */,
+				398666C124514527008AC748 /* TestUtils.swift */,
 				39C519292390E86C00B7FE26 /* TracksOld.db */,
 			);
 			path = LoopMusicTests;
@@ -165,6 +173,7 @@
 				3979377822ACAA9A00C5DB09 /* MusicTrack.swift */,
 				39B5B31E23B97A1C0091D2E1 /* Notifications.swift */,
 				39C4651D24440AC3002CBBB8 /* MusicSettings.swift */,
+				398666BF24514366008AC748 /* ShuffleSetting.swift */,
 			);
 			path = Source;
 			sourceTree = "<group>";
@@ -323,6 +332,7 @@
 				39B5B31F23B97A1C0091D2E1 /* Notifications.swift in Sources */,
 				390BDAA122AA0CE600E01411 /* MusicPlayerViewController.swift in Sources */,
 				390BDAA722AA0CE600E01411 /* LoopMusic.xcdatamodeld in Sources */,
+				398666C024514367008AC748 /* ShuffleSetting.swift in Sources */,
 				39C03A69235BFB34004BD0DA /* MusicData.swift in Sources */,
 				3979377722ACA6BA00C5DB09 /* MusicPlayer.swift in Sources */,
 				390BDA9F22AA0CE600E01411 /* AppDelegate.swift in Sources */,
@@ -333,8 +343,10 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				398666BE24514030008AC748 /* MusicSettingsTests.swift in Sources */,
 				390BDAB722AA0CE700E01411 /* MusicPlayerTests.swift in Sources */,
 				39E2CC3923AF12A4001FE0BF /* DataMigrator.swift in Sources */,
+				398666C224514527008AC748 /* TestUtils.swift in Sources */,
 				39D198E32376669B00680EE3 /* MusicDataTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

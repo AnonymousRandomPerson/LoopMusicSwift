@@ -23,18 +23,4 @@ class MusicPlayerTests: XCTestCase {
         XCTAssertEqual(0, musicPlayer.currentTrack.loopEnd)
         XCTAssertEqual(0, musicPlayer.currentTrack.volumeMultiplier)
     }
-    
-    /// Tests that the music player starts playing using playTrack() and stops using stopTrack().
-    func testPlayStopTrack() throws {
-        try musicPlayer.playTrack()
-        XCTAssertTrue(musicPlayer.playing)
-        try musicPlayer.stopTrack()
-        XCTAssertFalse(musicPlayer.playing)
-    }
-    
-    /// Tests that randomizeTrack() starts playing a track.
-    func testRandomizeTrack() throws {
-        try musicPlayer.randomizeTrack()
-        XCTAssertTrue(musicPlayer.playing)
-    }
 }
