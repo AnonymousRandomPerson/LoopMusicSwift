@@ -4,14 +4,13 @@ import XCTest
 /// Tests the music player.
 class MusicPlayerTests: XCTestCase {
     
+    /// Music player instance for testing.
     var musicPlayer: MusicPlayer!
 
-    /// Put setup code here. This method is called before the invocation of each test method in the class.
     override func setUp() {
         musicPlayer = MusicPlayer()
     }
 
-    /// Put teardown code here. This method is called after the invocation of each test method in the class.
     override func tearDown() {
     }
 

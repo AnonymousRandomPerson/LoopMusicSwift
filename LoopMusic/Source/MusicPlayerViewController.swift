@@ -2,17 +2,21 @@ import MediaPlayer
 import UIKit
 
 /// Controller for the music player (home screen) of the app.
-class MusicPlayerViewController: UIViewController, MPMediaPickerControllerDelegate {
+class MusicPlayerViewController: UIViewController {
     
+    /// Notification for updating the track name when the current track changes.
     static let NOTIFICATION_TRACK_NAME: NSNotification.Name = NSNotification.Name("trackName")
     
+    /// Button for playing or stopping music playback.
     @IBOutlet weak var playButton: UIButton?
+    /// Button for choosing a track to play.
     @IBOutlet weak var tracksButton: UIButton?
+    /// Displays the current track name.
     @IBOutlet weak var trackLabel: UILabel?
     
+    /// Handles music loading and playback.
     let musicPlayer: MusicPlayer = MusicPlayer()
 
-    /// Do any additional setup after loading the view.
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -71,50 +75,45 @@ class MusicPlayerViewController: UIViewController, MPMediaPickerControllerDelega
     }
     
     /// Displays a MessageError to the user.
+    /// - parameter error: Error to display.
     func handleMessageError(error: MessageError) {
         showErrorMessage(message: "Error: " + error.message)
     }
     
     /// Displays an NSError to the user.
+    /// - parameter error: Error to display.
     func handleNSError(error: NSError) {
         showErrorMessage(message: "Error: " + error.code.description)
     }
     
     /// Displays an error to the user.
+    /// - parameter message: Error message to display.
     func showErrorMessage(message: String) {
         print(message)
     }
-    
-    /// Selects an audio track to play.
-    @IBAction func chooseTracks(_ sender: UIButton) {
-        let myMediaPickerVC = MPMediaPickerController(mediaTypes: MPMediaType.music)
-        myMediaPickerVC.popoverPresentationController?.sourceView = sender
-        myMediaPickerVC.delegate = self
-        self.present(myMediaPickerVC, animated: true, completion: nil)
-    }
-    
-    /// Plays the track selected from the media picker.
-    func mediaPicker(_ mediaPicker: MPMediaPickerController, didPickMediaItems mediaItemCollection: MPMediaItemCollection) {
-        if mediaItemCollection.count > 0 {
-            do {
-                try musicPlayer.loadTrack(mediaItem: mediaItemCollection.items[0])
-                try musicPlayer.playTrack()
-            } catch let error as MessageError {
-                handleMessageError(error: error)
-            } catch let error as NSError {
-                handleNSError(error: error)
-            }
-        }
-        mediaPicker.dismiss(animated: true, completion: nil)
-    }
-    
-    /// Dismisses the music player without selecting a track.
-    func mediaPickerDidCancel(_ mediaPicker: MPMediaPickerController) {
-        mediaPicker.dismiss(animated: true, completion: nil)
-    }
 
     /// Updates the track label according to the currently playing track.
+    /// - parameter notification: Notification triggering the update.
     @objc func updateTrackName(notification: NSNotification) {
         trackLabel?.text = musicPlayer.currentTrack.name
+    }
+    
+    /// Marks the music player screen as unwindable for segues.
+    /// - parameter segue: Segue object performing the segue.
+    @IBAction func unwindToMusicPlayer(segue: UIStoryboardSegue) {
+    }
+    
+    /// Starts playing the chosen track.
+    /// - parameter mediaItem: Track to play.
+    func chooseTrack(mediaItem: MPMediaItem) {
+        do {
+            try musicPlayer.loadTrack(mediaItem: mediaItem)
+            try musicPlayer.playTrack()
+            updatePlayButtonIcon()
+        } catch let error as MessageError {
+            handleMessageError(error: error)
+        } catch let error as NSError {
+            handleNSError(error: error)
+        }
     }
 }

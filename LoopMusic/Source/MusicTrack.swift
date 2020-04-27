@@ -5,7 +5,7 @@ struct MusicTrack {
     
     /// The default volume multiplier for new tracks.
     static let DEFAULT_VOLUME_MULTIPLIER: Double = 0.3
-    /// Indicates the absence of a music track.
+    /// Null object pattern indicating the absence of a music track.
     static let BLANK_MUSIC_TRACK: MusicTrack = MusicTrack(url: URL(fileURLWithPath: ""), name: "", loopStart: 0, loopEnd: 0, volumeMultiplier: DEFAULT_VOLUME_MULTIPLIER)
     
     /// URL of the audio file.

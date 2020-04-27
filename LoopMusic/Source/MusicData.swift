@@ -8,10 +8,12 @@ class MusicData {
     /// Singleton instance.
     static let data: MusicData = MusicData()
     
+    /// Database connection.
     private var db: OpaquePointer?
     /// True if the database connection is open.
     private var open: Bool = false
 
+    /// Private constructor for singleton.
     private init() {
     }
     
@@ -49,6 +51,7 @@ class MusicData {
     /// Loads track metadata corresponding with the given media item.
     /// - parameter mediaItem: The media item to load metadata for.
     func loadTrack(mediaItem: MPMediaItem) throws -> MusicTrack {
+        /// The track to return.
         var track: MusicTrack = MusicTrack.BLANK_MUSIC_TRACK
         if let trackURL: URL = mediaItem.assetURL, let trackName: String = mediaItem.title {
             let trackCallback = {(statement: OpaquePointer?) -> Void in
@@ -114,10 +117,14 @@ class MusicData {
     /// - parameter errorMessage: The error message to display if the query fails.
     /// - returns: True if results were returned from the SQL query (e.g., non-empty SELECT).
     func executeSql(query: String, stepCallback: ((_: OpaquePointer?) throws -> Void)?, noResultCallback: (() throws -> Void)?, errorMessage: String) throws {
+        /// Error message if a SQL query has an error.
         var sqlErrorMessage: UnsafeMutablePointer<Int8>? = nil
+        /// The status code returned from the latest SQL query.
         var execCode: Int32
+        /// True if the SQL query returned a row.
         var hasResults: Bool = false
         if let stepCallback: (_: OpaquePointer?) throws -> Void = stepCallback {
+            /// Prepared SQL statement.
             var statement: OpaquePointer? = nil
             execCode = sqlite3_prepare_v2(db, query, -1, &statement, nil)
             try validateSqlResult(statusCode: execCode, errorMessage: errorMessage)

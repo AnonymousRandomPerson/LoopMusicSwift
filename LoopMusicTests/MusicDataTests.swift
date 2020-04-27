@@ -11,7 +11,6 @@ class MusicDataTests: XCTestCase {
     
     let data: MusicData = MusicData.data
     
-    /// Put setup code here. This method is called before the invocation of each test method in the class.
     override func setUp() {
         do {
             try data.openConnection()
@@ -20,7 +19,6 @@ class MusicDataTests: XCTestCase {
         }
     }
     
-    /// Put teardown code here. This method is called after the invocation of each test method in the class.
     override func tearDown() {
         do {
             try data.executeSql(query: String(format: "DELETE FROM Tracks WHERE name = '%@'", TRACK_NAME), errorMessage: "")
@@ -33,6 +31,7 @@ class MusicDataTests: XCTestCase {
     func testLoadTrackWithURL() throws {
         try data.executeSql(query: String(format: "INSERT INTO Tracks (url, name, loopStart, loopEnd, volumeMultiplier) VALUES ('%@', '%@', 2, 3, 0.5)", TRACK_URL, TRACK_NAME), errorMessage: "")
         
+        /// Loaded track to assert on from the database.
         let loadedTrack: LoopMusic.MusicTrack = try data.loadTrack(mediaItem: TestMPMediaItem())
         XCTAssertEqual(TRACK_URL, loadedTrack.url.absoluteString)
         XCTAssertEqual(TRACK_NAME, loadedTrack.name)
@@ -45,6 +44,7 @@ class MusicDataTests: XCTestCase {
     func testLoadTrackWithURLAndNameChange() throws {
         try data.executeSql(query: String(format: "INSERT INTO Tracks (url, name, loopStart, loopEnd, volumeMultiplier) VALUES ('%@', '%@', 2, 3, 0.5)", TRACK_URL, TRACK_NAME + "2"), errorMessage: "")
         
+        /// Loaded track to assert on from the database.
         let loadedTrack: LoopMusic.MusicTrack = try data.loadTrack(mediaItem: TestMPMediaItem())
         XCTAssertEqual(TRACK_URL, loadedTrack.url.absoluteString)
         XCTAssertEqual(TRACK_NAME, loadedTrack.name)
@@ -54,6 +54,7 @@ class MusicDataTests: XCTestCase {
     func testLoadTrackWithName() throws {
         try data.executeSql(query: String(format: "INSERT INTO Tracks (url, name) VALUES ('notTest', '%@')", TRACK_NAME), errorMessage: "")
         
+        /// Loaded track to assert on from the database.
         let loadedTrack: LoopMusic.MusicTrack = try data.loadTrack(mediaItem: TestMPMediaItem())
         XCTAssertEqual(TRACK_URL, loadedTrack.url.absoluteString)
         XCTAssertEqual(TRACK_NAME, loadedTrack.name)
@@ -69,6 +70,7 @@ class MusicDataTests: XCTestCase {
     
     /// Tests that a new track is stored when attempting to load a track that doesn't exist in the database.
     func testLoadTrackNotFound() throws {
+        /// Loaded track to assert on from the database.
         let loadedTrack: LoopMusic.MusicTrack = try data.loadTrack(mediaItem: TestMPMediaItem())
         XCTAssertEqual(TRACK_URL, loadedTrack.url.absoluteString)
         XCTAssertEqual(TRACK_NAME, loadedTrack.name)
@@ -87,9 +89,12 @@ class MusicDataTests: XCTestCase {
         XCTAssertEqual("Let''s Go", data.escapeStringForDb("Let's Go"))
     }
     
+    /// Mocks MPMediaItem for testing.
     class TestMPMediaItem: MPMediaItem {
         
+        /// Mock asset URL for testing.
         var _assetURL: URL? = URL(string: TRACK_URL)
+        /// Mock item title for testing.
         var _title: String? = TRACK_NAME
         
         override init() {
@@ -100,12 +105,14 @@ class MusicDataTests: XCTestCase {
             super.init(coder: coder)
         }
         
+        /// Overrides asset URL with mock field.
         override var assetURL: URL? {
             get {
                 return _assetURL
             }
         }
         
+        /// Overrides title with mock field.
         override var title: String? {
             get {
                 return _title

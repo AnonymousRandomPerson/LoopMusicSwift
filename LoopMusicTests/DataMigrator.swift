@@ -5,13 +5,12 @@ import XCTest
 /// Used to migrate a database from the old app schema to the current schema.
 class DataMigrator: XCTestCase {
     
+    /// Music data instance.
     let data: MusicData = MusicData.data
     
-    /// Put setup code here. This method is called before the invocation of each test method in the class.
     override func setUp() {
     }
     
-    /// Put teardown code here. This method is called after the invocation of each test method in the class.
     override func tearDown() {
     }
 
@@ -19,10 +18,13 @@ class DataMigrator: XCTestCase {
     /// WARNING: This will replace the contents of the Tracks table in the app's database with the migrated data.
     func migrateOldDb() throws {
         try data.closeConnection()
+        /// Old database URL.
         let dbUrl: URL = Bundle(for: DataMigrator.self).url(forResource: "TracksOld", withExtension: "db")!
         try data.openConnection(dbUrl: dbUrl)
         
+        /// Query for inserting tracks into the new database.
         var insertQuery: String = "INSERT INTO Tracks (url, name, loopStart, loopEnd, volumeMultiplier) VALUES "
+        /// True for the first track. Used for comma formatting.
         var first: Bool = true
         
         try data.executeSql(
@@ -33,6 +35,7 @@ class DataMigrator: XCTestCase {
                 } else {
                     insertQuery += ","
                 }
+                /// Current track name.
                 let name: String = self.data.escapeStringForDb(String(cString: sqlite3_column_text(statement, 0)))
                 insertQuery += String(format: "('%s', '%@', %f, %f, %f)", sqlite3_column_text(statement, 4), name, sqlite3_column_double(statement, 1), sqlite3_column_double(statement, 2), sqlite3_column_double(statement, 3))
             },

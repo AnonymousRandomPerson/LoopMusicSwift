@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="15505" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="BYZ-38-t0r">
-    <device id="retina6_1" orientation="portrait" appearance="light"/>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="15705" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="BYZ-38-t0r">
+    <device id="retina5_5" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="15509"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="15706"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -13,36 +13,36 @@
             <objects>
                 <viewController id="BYZ-38-t0r" customClass="MusicPlayerViewController" customModule="LoopMusic" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="8bC-Xf-vdC">
-                        <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="736"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <button opaque="NO" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="sOX-8u-f3x">
-                                <rect key="frame" x="176" y="114" width="62" height="70"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="48"/>
-                                <state key="normal" title="▶"/>
-                                <connections>
-                                    <action selector="toggleAudio" destination="BYZ-38-t0r" eventType="touchUpInside" id="4IK-9V-82r"/>
-                                </connections>
-                            </button>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="3Kj-gi-vbC">
-                                <rect key="frame" x="20" y="65" width="374" height="21"/>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="No track selected" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="3Kj-gi-vbC">
+                                <rect key="frame" x="20" y="21" width="374" height="21"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="POc-xN-ihv">
-                                <rect key="frame" x="50" y="782" width="46" height="30"/>
+                                <rect key="frame" x="50" y="656" width="46" height="30"/>
                                 <state key="normal" title="Tracks"/>
                                 <connections>
-                                    <action selector="chooseTracks:" destination="BYZ-38-t0r" eventType="touchUpInside" id="lGr-qU-Yw9"/>
+                                    <segue destination="RV0-ie-7M0" kind="show" id="CmE-O8-RS3"/>
                                 </connections>
                             </button>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="PFV-4N-Rnj">
-                                <rect key="frame" x="192" y="194" width="30" height="70"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="48"/>
-                                <state key="normal" title="R"/>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="PFV-4N-Rnj" userLabel="Random Button">
+                                <rect key="frame" x="163.66666666666666" y="194" width="87" height="41"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="24"/>
+                                <state key="normal" title="Random"/>
                                 <connections>
                                     <action selector="randomizeTrack" destination="BYZ-38-t0r" eventType="touchUpInside" id="K9p-bt-MPJ"/>
+                                </connections>
+                            </button>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="sOX-8u-f3x">
+                                <rect key="frame" x="187.66666666666666" y="115" width="39" height="70"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="48"/>
+                                <state key="normal" title="▶"/>
+                                <connections>
+                                    <action selector="toggleAudio" destination="BYZ-38-t0r" eventType="touchUpInside" id="4IK-9V-82r"/>
                                 </connections>
                             </button>
                         </subviews>
@@ -52,10 +52,10 @@
                             <constraint firstItem="3Kj-gi-vbC" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" constant="20" id="L3o-OY-1wm"/>
                             <constraint firstItem="sOX-8u-f3x" firstAttribute="centerYWithinMargins" secondItem="8bC-Xf-vdC" secondAttribute="top" constant="150" id="Mxw-RM-e0U"/>
                             <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" secondItem="3Kj-gi-vbC" secondAttribute="trailing" constant="20" id="UPu-sC-BOT"/>
+                            <constraint firstItem="sOX-8u-f3x" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="gFZ-5h-bMU"/>
                             <constraint firstItem="6Tk-OE-BBY" firstAttribute="bottom" secondItem="POc-xN-ihv" secondAttribute="bottom" constant="50" id="jU6-GQ-4vp"/>
                             <constraint firstItem="3Kj-gi-vbC" firstAttribute="top" secondItem="6Tk-OE-BBY" secondAttribute="top" constant="21" id="mQC-zN-Fwk"/>
                             <constraint firstItem="PFV-4N-Rnj" firstAttribute="centerX" secondItem="6Tk-OE-BBY" secondAttribute="centerX" id="sIl-OK-ATk"/>
-                            <constraint firstItem="sOX-8u-f3x" firstAttribute="centerXWithinMargins" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="syT-Lf-yPG"/>
                             <constraint firstItem="POc-xN-ihv" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" constant="50" id="upg-gA-GnU"/>
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
@@ -69,6 +69,78 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="131.8840579710145" y="88.392857142857139"/>
+        </scene>
+        <!--Track List View Controller-->
+        <scene sceneID="XuB-y8-7L4">
+            <objects>
+                <viewController id="RV0-ie-7M0" customClass="TrackListViewController" customModule="LoopMusic" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="Hxg-D9-hYC">
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="716"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="usL-Dw-78H">
+                                <rect key="frame" x="0.0" y="56" width="414" height="660"/>
+                                <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
+                                <prototypes>
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="cell" textLabel="fSI-eU-nU2" style="IBUITableViewCellStyleDefault" id="wyh-HV-sHX">
+                                        <rect key="frame" x="0.0" y="28" width="414" height="43.666667938232422"/>
+                                        <autoresizingMask key="autoresizingMask"/>
+                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="wyh-HV-sHX" id="Ehb-N8-CWE">
+                                            <rect key="frame" x="0.0" y="0.0" width="414" height="43.666667938232422"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                            <subviews>
+                                                <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" insetsLayoutMarginsFromSafeArea="NO" text="Title" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="fSI-eU-nU2">
+                                                    <rect key="frame" x="20" y="0.0" width="374" height="43.666667938232422"/>
+                                                    <autoresizingMask key="autoresizingMask"/>
+                                                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                                    <nil key="textColor"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
+                                            </subviews>
+                                        </tableViewCellContentView>
+                                    </tableViewCell>
+                                </prototypes>
+                                <connections>
+                                    <outlet property="dataSource" destination="RV0-ie-7M0" id="sy5-ci-FKF"/>
+                                    <outlet property="delegate" destination="RV0-ie-7M0" id="LrR-6M-be0"/>
+                                </connections>
+                            </tableView>
+                            <searchBar contentMode="redraw" translatesAutoresizingMaskIntoConstraints="NO" id="s4W-0K-u5r">
+                                <rect key="frame" x="68" y="0.0" width="346" height="56"/>
+                                <textInputTraits key="textInputTraits"/>
+                            </searchBar>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="1BP-E3-Rxz">
+                                <rect key="frame" x="10" y="13" width="48" height="30"/>
+                                <state key="normal" title="Cancel"/>
+                                <connections>
+                                    <segue destination="BjX-tW-hjS" kind="unwind" identifier="cancelChooseTrack" unwindAction="unwindToMusicPlayerWithSegue:" id="Mx8-jg-BNr"/>
+                                </connections>
+                            </button>
+                        </subviews>
+                        <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
+                        <constraints>
+                            <constraint firstItem="1BP-E3-Rxz" firstAttribute="leading" secondItem="OTi-8V-vcQ" secondAttribute="leading" constant="10" id="2ex-FF-O1p"/>
+                            <constraint firstItem="usL-Dw-78H" firstAttribute="bottom" secondItem="OTi-8V-vcQ" secondAttribute="bottom" id="3Q4-5X-gvC"/>
+                            <constraint firstItem="usL-Dw-78H" firstAttribute="leading" secondItem="OTi-8V-vcQ" secondAttribute="leading" id="AaW-e4-Rwt"/>
+                            <constraint firstItem="OTi-8V-vcQ" firstAttribute="trailing" secondItem="s4W-0K-u5r" secondAttribute="trailing" id="Elo-qi-8Pc"/>
+                            <constraint firstItem="1BP-E3-Rxz" firstAttribute="centerY" secondItem="s4W-0K-u5r" secondAttribute="centerY" id="G3c-qB-UKQ"/>
+                            <constraint firstItem="s4W-0K-u5r" firstAttribute="leading" secondItem="1BP-E3-Rxz" secondAttribute="trailing" constant="10" id="G5Z-Pu-oiO"/>
+                            <constraint firstItem="usL-Dw-78H" firstAttribute="top" secondItem="s4W-0K-u5r" secondAttribute="bottom" id="TYM-yv-YZV"/>
+                            <constraint firstItem="OTi-8V-vcQ" firstAttribute="trailing" secondItem="usL-Dw-78H" secondAttribute="trailing" id="VPj-Cd-K9v"/>
+                            <constraint firstItem="s4W-0K-u5r" firstAttribute="top" secondItem="OTi-8V-vcQ" secondAttribute="top" id="c9P-oT-Se3"/>
+                        </constraints>
+                        <viewLayoutGuide key="safeArea" id="OTi-8V-vcQ"/>
+                    </view>
+                    <navigationItem key="navigationItem" id="EFi-T2-XvS"/>
+                    <connections>
+                        <outlet property="table" destination="usL-Dw-78H" id="lCm-nv-INt"/>
+                        <segue destination="BjX-tW-hjS" kind="unwind" identifier="chooseTrack" unwindAction="unwindToMusicPlayerWithSegue:" id="p63-LJ-uj2"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="ng4-II-cwy" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+                <exit id="BjX-tW-hjS" userLabel="Exit" sceneMemberID="exit"/>
+            </objects>
+            <point key="canvasLocation" x="858" y="88"/>
         </scene>
     </scenes>
 </document>

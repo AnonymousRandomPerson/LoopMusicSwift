@@ -15,8 +15,6 @@ class MusicPlayer {
     private(set) var currentTrack: MusicTrack = MusicTrack.BLANK_MUSIC_TRACK
     /// True if the player is currently playing a track.
     private(set) var playing: Bool = false
-    /// The playlist to use for selecting tracks.
-    private(set) var currentPlaylist: String = "LoopMusic"
 
     /// Timer used to shuffle tracks after playing for a while.
     private var shuffleTimer: Timer?
@@ -34,6 +32,7 @@ class MusicPlayer {
     /// Passed to the dispatch queue tasks so the audio loading task knows if the track changes while it's still loading.
     private var trackUuid: UUID = UUID()
     
+    /// Sets up audio playback.
     init() {
         enableBackgroundAudio()
     }
@@ -52,6 +51,7 @@ class MusicPlayer {
         bufferLock.signal()
         
         currentTrack = try MusicData.data.loadTrack(mediaItem: mediaItem)
+        /// Audio file containing the track to load.
         let audioFile: AVAudioFile
         do {
             audioFile = try AVAudioFile(forReading: currentTrack.url)
@@ -59,18 +59,25 @@ class MusicPlayer {
             throw MessageError(error.localizedDescription)
         }
         
+        /// Initial number of audio frames to read before starting audio playback.
         let startReadFrames: AVAudioFrameCount = AVAudioFrameCount(min(audioFile.length, MusicPlayer.START_READ_FRAMES))
         guard let origBuffer: AVAudioPCMBuffer = AVAudioPCMBuffer(pcmFormat: audioFile.processingFormat, frameCapacity: startReadFrames) else {
             throw MessageError("Audio is not in PCM format.")
         }
         
+        /// Pointer to the audio file's audio description.
         let origAudioDescPointer: UnsafePointer<AudioStreamBasicDescription> = audioFile.processingFormat.streamDescription
+        /// Audio file's audio description.
         let origAudioDesc: AudioStreamBasicDescription = origAudioDescPointer.pointee
+        /// Audio description for the track to play, including interleaved conversion.
         var audioDesc: AudioStreamBasicDescription = origAudioDesc
         
+        /// True if the audio is non-interleaved.
         let noninterleaved: Bool = origAudioDesc.mFormatFlags & kAudioFormatFlagIsNonInterleaved > 0
+        /// Audio converter to convert non-interleaved audio.
         var converter: AudioConverterRef?
         // If the audio data is non-interleaved, it needs to be converted to interleaved format to be streamed.
+        /// Audio description for the converted audio if non-interleaved is converted to interleaved. Initialized outside the if clause to prevent deallocation.
         var convertedAudioDesc: AudioStreamBasicDescription = AudioStreamBasicDescription()
         if noninterleaved {
             convertedAudioDesc.mSampleRate = origAudioDesc.mSampleRate
@@ -87,7 +94,9 @@ class MusicPlayer {
             
             audioDesc = convertedAudioDesc
             
+            /// Pointer to the non-interleaved audio converter.
             let converterPointer: UnsafeMutablePointer<AudioConverterRef?> = UnsafeMutablePointer<AudioConverterRef?>.allocate(capacity: MemoryLayout<AudioConverterRef>.size)
+            /// Status code for creating an audio converter.
             let createStatus: OSStatus = AudioConverterNew(origAudioDescPointer, UnsafePointer(&audioDesc), converterPointer)
             if createStatus != 0 {
                 throw MessageError(message: "Failed to create converter for interleaved audio.", statusCode: createStatus)
@@ -101,12 +110,15 @@ class MusicPlayer {
             throw MessageError(error.localizedDescription)
         }
         
+        /// Size of the audio buffer in bytes.
         let bufferSize: UInt32 = audioDesc.mBytesPerFrame * UInt32(audioFile.length)
         audioBuffer = AudioBuffer(mNumberChannels: audioDesc.mChannelsPerFrame, mDataByteSize: bufferSize, mData: malloc(Int(bufferSize)))
         
         try convertAndAddAudio(origBuffer: origBuffer, audioDesc: audioDesc, converter: converter, noninterleaved: noninterleaved, offset: 0)
         
+        /// Status code for loading audio into the music player.
         var loadStatus: OSStatus = -1
+        /// Number of frames in the audio file across all channels.
         let audioLength: AVAudioFramePosition = audioFile.length * Int64(audioDesc.mChannelsPerFrame)
         sampleRate = audioDesc.mSampleRate
         
@@ -133,6 +145,12 @@ class MusicPlayer {
         NotificationCenter.default.post(name: .trackName, object: nil)
     }
     
+    /// Adds the next portion of audio to the audio buffer. Converts non-interleaved to interleaved audio if necessary.
+    /// - parameter origBuffer: Audio buffer to get audio data from.
+    /// - parameter audioDesc: Audio description of the audio file.
+    /// - parameter converter: Audio converter to convert non-interleaved audio.
+    /// - parameter noninterleaved: True if the audio is non-interleaved.
+    /// - parameter offset: Offset for inserting converted data into the class-level audio buffer.
     func convertAndAddAudio(origBuffer: AVAudioPCMBuffer, audioDesc: AudioStreamBasicDescription, converter: AudioConverterRef?, noninterleaved: Bool, offset: Int) throws {
         if noninterleaved {
             try convertToInterleavedAudio(origBuffer: origBuffer, audioDesc: audioDesc, converter: converter!, offset: offset)
@@ -148,15 +166,20 @@ class MusicPlayer {
     /// - parameter converter: Audio converter to convert audio data with.
     /// - parameter offset: Offset for inserting converted data into the class-level audio buffer.
     func convertToInterleavedAudio(origBuffer: AVAudioPCMBuffer, audioDesc: AudioStreamBasicDescription, converter: AudioConverterRef, offset: Int) throws {
+        /// Internal audio buffer list from the audio buffer.
         let origAudioBuffer: AudioBufferList = origBuffer.audioBufferList.pointee
         // Allocate memory for a buffer to store the converted audio data.
         // Combine all buffers from the non-interleaved audio into a single buffer.
+        /// Audio buffer list to store converted interleaved audio in.
         let newAudioBufferList: UnsafeMutableAudioBufferListPointer = AudioBufferList.allocate(maximumBuffers: 1)
+        /// Size of the converted audio buffer in bytes.
         let newBufferSize: UInt32 = origAudioBuffer.mBuffers.mDataByteSize * origAudioBuffer.mNumberBuffers
 
+        /// Audio buffer to store converted interleaved audio in.
         let newAudioBuffer: AudioBuffer = AudioBuffer(mNumberChannels: audioDesc.mChannelsPerFrame, mDataByteSize: newBufferSize, mData: malloc(Int(newBufferSize)))
         newAudioBufferList[0] = newAudioBuffer
     
+        /// Status code from audio converter for interleaved audio.
         let convertStatus: OSStatus = AudioConverterConvertComplexBuffer(converter, origBuffer.frameLength, origBuffer.audioBufferList, newAudioBufferList.unsafeMutablePointer)
         if convertStatus != 0 {
             throw MessageError(message: "Failed to convert to interleaved audio.", statusCode: convertStatus)
@@ -170,6 +193,7 @@ class MusicPlayer {
     /// - parameter buffer: Audio buffer to transfer data from.
     /// - parameter offset: Offset for inserting data into the class-level audio buffer.
     func addToAudioBuffer(buffer: AudioBuffer, offset: Int) {
+        /// Memory address to start copying audio data into the class-level buffer.
         let dataOffset: UnsafeMutableRawPointer = audioBuffer!.mData! + offset
         dataOffset.copyMemory(from: buffer.mData!, byteCount: Int(buffer.mDataByteSize))
     }
@@ -214,6 +238,13 @@ class MusicPlayer {
         }
     }
     
+    /// Adds the next portion of audio to the audio buffer.
+    /// - parameter loadBuffer: Audio buffer to load audio samples into.
+    /// - parameter audioDesc: Audio description of the audio file.
+    /// - parameter converter: Audio converter to convert non-interleaved audio.
+    /// - parameter noninterleaved: True if the audio is non-interleaved.
+    /// - parameter currentFramesRead: The number of audio frames that have been read so far.
+    /// - parameter processUuid: The UUID of the audio track process. If the track changes, this will not match and the async task will cancel.
     func addAudioAsync(loadBuffer: AVAudioPCMBuffer, audioDesc: AudioStreamBasicDescription, converter: AudioConverterRef?, noninterleaved: Bool, currentFramesRead: AVAudioFrameCount, processUuid: UUID) throws {
         defer { bufferLock.signal() }
         if processUuid == self.trackUuid {
@@ -224,8 +255,11 @@ class MusicPlayer {
         }
     }
     
+    /// Disposes an audio converter.
+    /// - parameter converter: The converter to dispose.
     func disposeConverter(converter: AudioConverterRef?) throws {
         if let converter: AudioConverterRef = converter {
+            /// Status code for disposing the audio converter.
             let deallocateStatus: OSStatus = AudioConverterDispose(converter)
             if deallocateStatus != 0 {
                 throw MessageError(message: "Failed to deallocate converter for interleaved audio.", statusCode: deallocateStatus)
@@ -237,6 +271,7 @@ class MusicPlayer {
     func playTrack() throws {
         if !playing {
             playing = true
+            /// Status code for playing audio.
             let playStatus: OSStatus = playAudio()
             if playStatus != 0 {
                 throw MessageError(message: "Failed to play audio.", statusCode: playStatus)
@@ -250,6 +285,7 @@ class MusicPlayer {
         if playing {
             playing = false
             stopShuffleTimer()
+            /// Status code for stopping audio.
             let stopStatus: OSStatus = stopAudio()
             if stopStatus != 0 {
                 throw MessageError(message: "Failed to stop audio.", statusCode: stopStatus)
@@ -265,28 +301,14 @@ class MusicPlayer {
     
     /// Chooses a random track from the current playlist and starts playing it.
     func randomizeTrack() throws {
-        let query: MPMediaQuery = MPMediaQuery.playlists()
-        query.filterPredicates = NSSet(object: MPMediaPropertyPredicate(value: currentPlaylist, forProperty: MPMediaItemPropertyTitle)) as? Set<MPMediaPredicate>
-        var playlistTracks: [MPMediaItem]?
-        if let playlists: [MPMediaItemCollection] = query.collections {
-            for playlist in playlists {
-                playlistTracks = playlist.items
-                break
-            }
-        }
+        /// Tracks list to randomly choose from.
+        let tracks: [MPMediaItem] = MediaPlayerUtils.getTracksInPlaylist()
         
-        var tracks: [MPMediaItem]
-        if let playlistTracks: [MPMediaItem] = playlistTracks {
-            tracks = playlistTracks
-        } else if let allTracks: [MPMediaItem] = MPMediaQuery.songs().items {
-            tracks = allTracks
-        } else {
-            throw MessageError("No tracks found.")
-        }
         if tracks.count == 0 {
             throw MessageError("No tracks found.")
         }
         
+        /// Randomly chosen track to play.
         let randomTrack: MPMediaItem = tracks[Int.random(in: 0..<tracks.count)]
 
         try loadTrack(mediaItem: randomTrack)
