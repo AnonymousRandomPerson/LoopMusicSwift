@@ -2,29 +2,36 @@ import MediaPlayer
 
 class MediaPlayerUtils {
     
+    /// The default "All tracks" playlist that causes all tracks in the media library to be used.
+    static let ALL_TRACKS_PLAYLIST: AllTracksPlaylist = AllTracksPlaylist(items: []);
+    
     /// Gets a list of tracks in the current playlist, or all tracks if no playlist is selected.
     /// - returns: List of tracks in the current playlist.
     static func getTracksInPlaylist() -> [MPMediaItem] {
+        return MusicSettings.settings.currentPlaylist.items.filter { $0.assetURL != nil }
+    }
+    
+    /// Gets all playlists in the media library, plus the "All tracks" default playlist.
+    /// - returns: List of playlists in the media library plus "All tracks".
+    static func getPlaylists() -> [MPMediaPlaylist] {
+        var playlists: [MPMediaPlaylist] = [MediaPlayerUtils.ALL_TRACKS_PLAYLIST]
+        if let queryPlaylists: [MPMediaPlaylist] = MPMediaQuery.playlists().collections as? [MPMediaPlaylist] {
+            playlists.append(contentsOf: queryPlaylists)
+        }
+        return playlists
+    }
+    
+    /// Gets a playlist from the media library by name.
+    /// - parameter playlistName: Name of the playlist to get.
+    /// - returns: Playlist with the specified name, or "All tracks" if the playlist can't be found.
+    static func getPlaylist(playlistName: String) -> MPMediaPlaylist {
         let query: MPMediaQuery = MPMediaQuery.playlists()
-        if let currentPlaylist: String = MusicSettings.settings.currentPlaylist {
-            query.filterPredicates = NSSet(object: MPMediaPropertyPredicate(value: currentPlaylist, forProperty: MPMediaItemPropertyTitle)) as? Set<MPMediaPredicate>
-            var playlistTracks: [MPMediaItem]?
-            if let playlists: [MPMediaItemCollection] = query.collections {
-                for playlist in playlists {
-                    playlistTracks = playlist.items
-                    break
-                }
-            }
-            
-            if let playlistTracks: [MPMediaItem] = playlistTracks {
-                return playlistTracks
+        query.filterPredicates = NSSet(object: MPMediaPropertyPredicate(value: playlistName, forProperty: MPMediaItemPropertyTitle)) as? Set<MPMediaPredicate>
+        if let playlists: [MPMediaPlaylist] = query.collections as? [MPMediaPlaylist] {
+            for playlist in playlists {
+                return playlist
             }
         }
-        
-        if let allTracks: [MPMediaItem] = MPMediaQuery.songs().items {
-            return allTracks
-        } else {
-            return []
-        }
+        return ALL_TRACKS_PLAYLIST
     }
 }

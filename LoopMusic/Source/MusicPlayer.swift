@@ -305,7 +305,7 @@ class MusicPlayer {
         let tracks: [MPMediaItem] = MediaPlayerUtils.getTracksInPlaylist()
         
         if tracks.count == 0 {
-            throw MessageError("No tracks found.")
+            throw MessageError("No compatible tracks found.")
         }
         
         /// Randomly chosen track to play.

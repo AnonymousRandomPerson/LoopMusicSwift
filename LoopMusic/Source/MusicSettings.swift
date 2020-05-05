@@ -1,4 +1,4 @@
-import Foundation
+import MediaPlayer
 
 /// Stores and loads app-level settings.
 class MusicSettings {
@@ -6,8 +6,8 @@ class MusicSettings {
     /// Singleton instance.
     static let settings: MusicSettings = MusicSettings()
     
-    /// Name of the current playlist being used to choose tracks.
-    var currentPlaylist: String?
+    /// Playlist being used to choose tracks.
+    var currentPlaylist: MPMediaPlaylist = MediaPlayerUtils.ALL_TRACKS_PLAYLIST
     
     /// If true, music will start playing immediately when the app starts.
     var playOnInit: Bool = false
@@ -39,7 +39,8 @@ class MusicSettings {
     
     /// Loads all settings from the settings file.
     func loadSettingsFile() {
-        currentPlaylist = "LoopMusic"
+        let playlistName: String = "LoopMusic"
+        currentPlaylist = MediaPlayerUtils.getPlaylist(playlistName: playlistName)
         playOnInit = false
         shuffleSetting = ShuffleSetting.time
         shuffleTime = 5

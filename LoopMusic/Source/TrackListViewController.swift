@@ -39,7 +39,7 @@ class TrackListViewController: UIViewController, UITableViewDelegate, UITableVie
                 return
             }
             if let selectedTrack: MPMediaItem = sender as? MPMediaItem {
-                destination.chooseTrack(mediaItem: selectedTrack)
+                destination.chooseTrack(track: selectedTrack)
             }
         }
     }

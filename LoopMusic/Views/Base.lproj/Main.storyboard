@@ -16,19 +16,12 @@
                         <rect key="frame" x="0.0" y="0.0" width="414" height="736"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="No track selected" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="3Kj-gi-vbC">
-                                <rect key="frame" x="20" y="21" width="374" height="21"/>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="No track selected" textAlignment="center" lineBreakMode="wordWrap" numberOfLines="3" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="3Kj-gi-vbC">
+                                <rect key="frame" x="20" y="21" width="374" height="65"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="POc-xN-ihv">
-                                <rect key="frame" x="50" y="656" width="46" height="30"/>
-                                <state key="normal" title="Tracks"/>
-                                <connections>
-                                    <segue destination="RV0-ie-7M0" kind="show" id="CmE-O8-RS3"/>
-                                </connections>
-                            </button>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="PFV-4N-Rnj" userLabel="Random Button">
                                 <rect key="frame" x="163.66666666666666" y="194" width="87" height="41"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="24"/>
@@ -45,18 +38,34 @@
                                     <action selector="toggleAudio" destination="BYZ-38-t0r" eventType="touchUpInside" id="4IK-9V-82r"/>
                                 </connections>
                             </button>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="oky-Ed-D5H" userLabel="Playlists Button">
+                                <rect key="frame" x="35" y="658" width="56" height="30"/>
+                                <state key="normal" title="Playlists"/>
+                                <connections>
+                                    <segue destination="bsV-Li-3Na" kind="show" id="caM-XC-e0X"/>
+                                </connections>
+                            </button>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="POc-xN-ihv">
+                                <rect key="frame" x="40" y="620" width="46" height="30"/>
+                                <state key="normal" title="Tracks"/>
+                                <connections>
+                                    <segue destination="RV0-ie-7M0" kind="show" id="CmE-O8-RS3"/>
+                                </connections>
+                            </button>
                         </subviews>
                         <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <constraints>
                             <constraint firstItem="PFV-4N-Rnj" firstAttribute="top" secondItem="sOX-8u-f3x" secondAttribute="bottom" constant="9" id="BSw-ce-Vd1"/>
                             <constraint firstItem="3Kj-gi-vbC" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" constant="20" id="L3o-OY-1wm"/>
                             <constraint firstItem="sOX-8u-f3x" firstAttribute="centerYWithinMargins" secondItem="8bC-Xf-vdC" secondAttribute="top" constant="150" id="Mxw-RM-e0U"/>
+                            <constraint firstItem="oky-Ed-D5H" firstAttribute="top" secondItem="POc-xN-ihv" secondAttribute="bottom" constant="8" id="TlM-5I-hBG"/>
                             <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" secondItem="3Kj-gi-vbC" secondAttribute="trailing" constant="20" id="UPu-sC-BOT"/>
+                            <constraint firstItem="oky-Ed-D5H" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" constant="35" id="bfh-tN-oqq"/>
                             <constraint firstItem="sOX-8u-f3x" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="gFZ-5h-bMU"/>
-                            <constraint firstItem="6Tk-OE-BBY" firstAttribute="bottom" secondItem="POc-xN-ihv" secondAttribute="bottom" constant="50" id="jU6-GQ-4vp"/>
+                            <constraint firstItem="6Tk-OE-BBY" firstAttribute="bottom" secondItem="oky-Ed-D5H" secondAttribute="bottom" constant="48" id="mJe-oh-jMh"/>
                             <constraint firstItem="3Kj-gi-vbC" firstAttribute="top" secondItem="6Tk-OE-BBY" secondAttribute="top" constant="21" id="mQC-zN-Fwk"/>
                             <constraint firstItem="PFV-4N-Rnj" firstAttribute="centerX" secondItem="6Tk-OE-BBY" secondAttribute="centerX" id="sIl-OK-ATk"/>
-                            <constraint firstItem="POc-xN-ihv" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" constant="50" id="upg-gA-GnU"/>
+                            <constraint firstItem="POc-xN-ihv" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" constant="40" id="upg-gA-GnU"/>
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
                     </view>
@@ -68,7 +77,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="131.8840579710145" y="88.392857142857139"/>
+            <point key="canvasLocation" x="131.8840579710145" y="88.043478260869577"/>
         </scene>
         <!--Track List View Controller-->
         <scene sceneID="XuB-y8-7L4">
@@ -101,8 +110,9 @@
                                     </tableViewCell>
                                 </prototypes>
                                 <connections>
-                                    <outlet property="dataSource" destination="RV0-ie-7M0" id="sy5-ci-FKF"/>
-                                    <outlet property="delegate" destination="RV0-ie-7M0" id="LrR-6M-be0"/>
+                                    <outlet property="dataSource" destination="RV0-ie-7M0" id="p3l-Kt-x2h"/>
+                                    <outlet property="delegate" destination="RV0-ie-7M0" id="aER-14-z2z"/>
+                                    <outlet property="prefetchDataSource" destination="RV0-ie-7M0" id="fEx-J2-pCk"/>
                                 </connections>
                             </tableView>
                             <searchBar contentMode="redraw" translatesAutoresizingMaskIntoConstraints="NO" id="s4W-0K-u5r">
@@ -133,14 +143,87 @@
                     </view>
                     <navigationItem key="navigationItem" id="EFi-T2-XvS"/>
                     <connections>
-                        <outlet property="table" destination="usL-Dw-78H" id="lCm-nv-INt"/>
                         <segue destination="BjX-tW-hjS" kind="unwind" identifier="chooseTrack" unwindAction="unwindToMusicPlayerWithSegue:" id="p63-LJ-uj2"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="ng4-II-cwy" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
                 <exit id="BjX-tW-hjS" userLabel="Exit" sceneMemberID="exit"/>
             </objects>
-            <point key="canvasLocation" x="858" y="88"/>
+            <point key="canvasLocation" x="890" y="-275"/>
+        </scene>
+        <!--Playlist List View Controller-->
+        <scene sceneID="Axf-tX-4dD">
+            <objects>
+                <viewController id="bsV-Li-3Na" customClass="PlaylistListViewController" customModule="LoopMusic" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="fid-PB-N1b">
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="716"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="af8-QO-GeJ">
+                                <rect key="frame" x="0.0" y="56" width="414" height="660"/>
+                                <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
+                                <prototypes>
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="cell" textLabel="xef-lc-X1i" style="IBUITableViewCellStyleDefault" id="Luu-OO-wTt">
+                                        <rect key="frame" x="0.0" y="28" width="414" height="43.666667938232422"/>
+                                        <autoresizingMask key="autoresizingMask"/>
+                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="Luu-OO-wTt" id="Jwt-GS-RJ9">
+                                            <rect key="frame" x="0.0" y="0.0" width="414" height="43.666667938232422"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                            <subviews>
+                                                <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" insetsLayoutMarginsFromSafeArea="NO" text="Title" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="xef-lc-X1i">
+                                                    <rect key="frame" x="20" y="0.0" width="374" height="43.666667938232422"/>
+                                                    <autoresizingMask key="autoresizingMask"/>
+                                                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                                    <nil key="textColor"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
+                                            </subviews>
+                                        </tableViewCellContentView>
+                                        <connections>
+                                            <segue destination="pPm-EO-OM7" kind="unwind" unwindAction="unwindToMusicPlayerWithSegue:" id="cj9-h5-Aax"/>
+                                        </connections>
+                                    </tableViewCell>
+                                </prototypes>
+                                <connections>
+                                    <outlet property="dataSource" destination="bsV-Li-3Na" id="6bg-pX-1kv"/>
+                                    <outlet property="delegate" destination="bsV-Li-3Na" id="OEg-B7-kna"/>
+                                </connections>
+                            </tableView>
+                            <searchBar contentMode="redraw" translatesAutoresizingMaskIntoConstraints="NO" id="I0h-Qq-Htc">
+                                <rect key="frame" x="68" y="0.0" width="346" height="56"/>
+                                <textInputTraits key="textInputTraits"/>
+                            </searchBar>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="xy1-3W-ln2">
+                                <rect key="frame" x="10" y="13" width="48" height="30"/>
+                                <state key="normal" title="Cancel"/>
+                                <connections>
+                                    <segue destination="pPm-EO-OM7" kind="unwind" unwindAction="unwindToMusicPlayerWithSegue:" id="pWK-59-gYd"/>
+                                </connections>
+                            </button>
+                        </subviews>
+                        <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
+                        <constraints>
+                            <constraint firstItem="I0h-Qq-Htc" firstAttribute="top" secondItem="eZO-rj-GhF" secondAttribute="top" id="38l-c1-B7i"/>
+                            <constraint firstItem="xy1-3W-ln2" firstAttribute="centerY" secondItem="I0h-Qq-Htc" secondAttribute="centerY" id="9Ma-4J-CwK"/>
+                            <constraint firstItem="eZO-rj-GhF" firstAttribute="trailing" secondItem="af8-QO-GeJ" secondAttribute="trailing" id="AEl-fq-JEG"/>
+                            <constraint firstItem="eZO-rj-GhF" firstAttribute="trailing" secondItem="I0h-Qq-Htc" secondAttribute="trailing" id="FgZ-5N-4HY"/>
+                            <constraint firstItem="I0h-Qq-Htc" firstAttribute="leading" secondItem="xy1-3W-ln2" secondAttribute="trailing" constant="10" id="HEO-aC-twB"/>
+                            <constraint firstItem="af8-QO-GeJ" firstAttribute="leading" secondItem="eZO-rj-GhF" secondAttribute="leading" id="KD3-9d-dm7"/>
+                            <constraint firstItem="af8-QO-GeJ" firstAttribute="top" secondItem="I0h-Qq-Htc" secondAttribute="bottom" id="TW3-WG-mIU"/>
+                            <constraint firstItem="xy1-3W-ln2" firstAttribute="leading" secondItem="eZO-rj-GhF" secondAttribute="leading" constant="10" id="bF7-TU-pfS"/>
+                            <constraint firstItem="af8-QO-GeJ" firstAttribute="bottom" secondItem="eZO-rj-GhF" secondAttribute="bottom" id="xDd-at-76i"/>
+                        </constraints>
+                        <viewLayoutGuide key="safeArea" id="eZO-rj-GhF"/>
+                    </view>
+                    <navigationItem key="navigationItem" id="Mbx-h7-l5I"/>
+                    <connections>
+                        <outlet property="table" destination="af8-QO-GeJ" id="RRp-PZ-tC3"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="dfQ-JY-sAj" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+                <exit id="pPm-EO-OM7" userLabel="Exit" sceneMemberID="exit"/>
+            </objects>
+            <point key="canvasLocation" x="890" y="402"/>
         </scene>
     </scenes>
 </document>

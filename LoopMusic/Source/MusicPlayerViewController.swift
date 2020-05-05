@@ -90,6 +90,9 @@ class MusicPlayerViewController: UIViewController {
     /// - parameter message: Error message to display.
     func showErrorMessage(message: String) {
         print(message)
+        let alert = UIAlertController(title: "Error", message: message, preferredStyle: UIAlertController.Style.alert)
+        alert.addAction(UIAlertAction(title: "Okay", style: UIAlertAction.Style.default, handler: nil))
+        self.present(alert, animated: true, completion: nil)
     }
 
     /// Updates the track label according to the currently playing track.
@@ -104,10 +107,10 @@ class MusicPlayerViewController: UIViewController {
     }
     
     /// Starts playing the chosen track.
-    /// - parameter mediaItem: Track to play.
-    func chooseTrack(mediaItem: MPMediaItem) {
+    /// - parameter track: Track to play.
+    func chooseTrack(track: MPMediaItem) {
         do {
-            try musicPlayer.loadTrack(mediaItem: mediaItem)
+            try musicPlayer.loadTrack(mediaItem: track)
             try musicPlayer.playTrack()
             updatePlayButtonIcon()
         } catch let error as MessageError {
