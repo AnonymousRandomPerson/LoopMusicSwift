@@ -3,11 +3,12 @@ import MediaPlayer
 class MediaPlayerUtils {
     
     /// The default "All tracks" playlist that causes all tracks in the media library to be used.
-    static let ALL_TRACKS_PLAYLIST: AllTracksPlaylist = AllTracksPlaylist(items: []);
+    static let ALL_TRACKS_PLAYLIST: AllTracksPlaylist = AllTracksPlaylist(items: [])
     
     /// Gets a list of tracks in the current playlist, or all tracks if no playlist is selected.
     /// - returns: List of tracks in the current playlist.
     static func getTracksInPlaylist() -> [MPMediaItem] {
+        // Apple Music tracks have DRM protection and inaccessible asset URLs. This app cannot support them.
         return MusicSettings.settings.currentPlaylist.items.filter { $0.assetURL != nil }
     }
     

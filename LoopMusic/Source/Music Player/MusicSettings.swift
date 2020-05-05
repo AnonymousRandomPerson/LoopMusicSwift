@@ -39,6 +39,7 @@ class MusicSettings {
     
     /// Loads all settings from the settings file.
     func loadSettingsFile() {
+        if 
         let playlistName: String = "LoopMusic"
         currentPlaylist = MediaPlayerUtils.getPlaylist(playlistName: playlistName)
         playOnInit = false
