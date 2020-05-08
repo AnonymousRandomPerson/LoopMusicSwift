@@ -19,7 +19,7 @@ class MusicData {
     
     /// Opens the connection to the database.
     func openConnection() throws {
-        try openConnection(dbUrl: try FileManager.default.url(for: .documentDirectory, in: .userDomainMask, appropriateFor: nil, create: false).appendingPathComponent("Tracks.db"))
+        try openConnection(dbUrl: try FileUtils.getFileUrl(fileName: "Tracks.db"))
     }
     
     /// Opens the connection to the database.
@@ -99,7 +99,7 @@ class MusicData {
     /// - parameter errorMessage: The main body of the error message in the MessageError.
     private func validateSqlResult(statusCode: Int32, errorMessage: String) throws {
         if statusCode != SQLITE_OK && statusCode != SQLITE_DONE && statusCode != SQLITE_ROW {
-            throw MessageError(message: String(format: "%@ SQL error message: %@.", errorMessage, String(cString: sqlite3_errmsg(db))), statusCode: statusCode)
+            throw MessageError(String(format: "%@ SQL error message: %@.", errorMessage, String(cString: sqlite3_errmsg(db))), statusCode)
         }
     }
     
@@ -147,7 +147,7 @@ class MusicData {
         if let sqlErrorMessage: UnsafeMutablePointer<Int8> = sqlErrorMessage {
             let sqlError: String = String(cString: sqlErrorMessage)
             sqlite3_free(sqlErrorMessage)
-            throw MessageError(message: String(format: "%@ SQL error message: %@.", errorMessage, sqlError), statusCode: execCode)
+            throw MessageError(String(format: "%@ SQL error message: %@.", errorMessage, sqlError), execCode)
         } else {
             try validateSqlResult(statusCode: execCode, errorMessage: errorMessage)
         }

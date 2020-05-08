@@ -22,14 +22,12 @@ class MusicPlayerViewController: UIViewController {
         
         NotificationCenter.default.addObserver(self, selector: #selector(updateTrackName(notification:)), name: .trackName, object: nil)
         
-        MusicSettings.settings.loadSettingsFile()
         
         do {
+            try MusicSettings.settings.loadSettingsFile()
             try MusicData.data.openConnection()
-        } catch let error as MessageError {
-            handleMessageError(error: error)
-        } catch let error as NSError {
-            handleNSError(error: error)
+        } catch {
+           showErrorMessage(error: error)
         }
         
         if (MusicSettings.settings.playOnInit) {
@@ -46,10 +44,8 @@ class MusicPlayerViewController: UIViewController {
                 try musicPlayer.playTrack()
             }
             updatePlayButtonIcon()
-        } catch let error as MessageError {
-            handleMessageError(error: error)
-        } catch let error as NSError {
-            handleNSError(error: error)
+        } catch {
+           showErrorMessage(error: error)
         }
     }
     
@@ -58,10 +54,8 @@ class MusicPlayerViewController: UIViewController {
         do {
             try musicPlayer.randomizeTrack()
             updatePlayButtonIcon()
-        } catch let error as MessageError {
-            handleMessageError(error: error)
-        } catch let error as NSError {
-            handleNSError(error: error)
+        } catch {
+            showErrorMessage(error: error)
         }
     }
     
@@ -74,25 +68,10 @@ class MusicPlayerViewController: UIViewController {
         }
     }
     
-    /// Displays a MessageError to the user.
-    /// - parameter error: Error to display.
-    func handleMessageError(error: MessageError) {
-        showErrorMessage(message: "Error: " + error.message)
-    }
-    
-    /// Displays an NSError to the user.
-    /// - parameter error: Error to display.
-    func handleNSError(error: NSError) {
-        showErrorMessage(message: "Error: " + error.code.description)
-    }
-    
     /// Displays an error to the user.
     /// - parameter message: Error message to display.
-    func showErrorMessage(message: String) {
-        print(message)
-        let alert = UIAlertController(title: "Error", message: message, preferredStyle: UIAlertController.Style.alert)
-        alert.addAction(UIAlertAction(title: "Okay", style: UIAlertAction.Style.default, handler: nil))
-        self.present(alert, animated: true, completion: nil)
+    func showErrorMessage(error: Error) {
+        ErrorUtils.showErrorMessage(error: error, viewController: self)
     }
 
     /// Updates the track label according to the currently playing track.
@@ -113,10 +92,8 @@ class MusicPlayerViewController: UIViewController {
             try musicPlayer.loadTrack(mediaItem: track)
             try musicPlayer.playTrack()
             updatePlayButtonIcon()
-        } catch let error as MessageError {
-            handleMessageError(error: error)
-        } catch let error as NSError {
-            handleNSError(error: error)
+        } catch {
+           showErrorMessage(error: error)
         }
     }
 }

@@ -34,5 +34,10 @@ class PlaylistListViewController: UIViewController, UITableViewDelegate, UITable
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         MusicSettings.settings.currentPlaylist = playlists[indexPath.row]
+        do {
+            try MusicSettings.settings.saveSettingsFile()
+        } catch {
+            ErrorUtils.showErrorMessage(error: error, viewController: self)
+        }
     }
 }

@@ -1,5 +1,5 @@
 /// Possible settings for shuffling tracks.
-enum ShuffleSetting {
+enum ShuffleSetting: String {
     /// No automatic shuffle.
     case none
     /// Shuffle after an amount of time.

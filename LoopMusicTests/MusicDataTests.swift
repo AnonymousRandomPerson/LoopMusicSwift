@@ -13,16 +13,16 @@ class MusicDataTests: XCTestCase {
     override func setUp() {
         do {
             try data.openConnection()
-        } catch let error as NSError {
-            XCTFail(String(format: "Failed to open database connection. %@", error.code.description))
+        } catch {
+            XCTFail(String(format: "Failed to open database connection. %@", error.localizedDescription))
         }
     }
     
     override func tearDown() {
         do {
             try data.executeSql(query: String(format: "DELETE FROM Tracks WHERE name = '%@'", TRACK_NAME), errorMessage: "")
-        } catch let error as NSError {
-            XCTFail(String(format: "Failed to clean up database. %@", error.code.description))
+        } catch {
+            XCTFail(String(format: "Failed to clean up database. %@", error.localizedDescription))
         }
     }
     

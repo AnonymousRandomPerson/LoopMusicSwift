@@ -55,8 +55,8 @@ class MusicPlayer {
         let audioFile: AVAudioFile
         do {
             audioFile = try AVAudioFile(forReading: currentTrack.url)
-        } catch let error as NSError {
-            throw MessageError(error.localizedDescription)
+        } catch {
+            throw MessageError("Failed to read audio file.", error)
         }
         
         /// Initial number of audio frames to read before starting audio playback.
@@ -99,15 +99,15 @@ class MusicPlayer {
             /// Status code for creating an audio converter.
             let createStatus: OSStatus = AudioConverterNew(origAudioDescPointer, UnsafePointer(&audioDesc), converterPointer)
             if createStatus != 0 {
-                throw MessageError(message: "Failed to create converter for interleaved audio.", statusCode: createStatus)
+                throw MessageError("Failed to create converter for interleaved audio.", createStatus)
             }
             converter = converterPointer.pointee
         }
         
         do {
             try audioFile.read(into: origBuffer, frameCount: startReadFrames)
-        } catch let error as NSError {
-            throw MessageError(error.localizedDescription)
+        } catch {
+            throw MessageError("Failed to load audio file into buffer.", error)
         }
         
         /// Size of the audio buffer in bytes.
@@ -133,7 +133,7 @@ class MusicPlayer {
         }
         
         if loadStatus != 0 {
-            throw MessageError(message: "Audio data is empty or not supported.", statusCode: loadStatus)
+            throw MessageError("Audio data is empty or not supported.", loadStatus)
         }
         
         try loadAudioAsync(audioFile: audioFile, loadBuffer: origBuffer, audioDesc: audioDesc, converter: converter, noninterleaved: noninterleaved, currentFramesRead: startReadFrames, processUuid: trackUuid)
@@ -182,7 +182,7 @@ class MusicPlayer {
         /// Status code from audio converter for interleaved audio.
         let convertStatus: OSStatus = AudioConverterConvertComplexBuffer(converter, origBuffer.frameLength, origBuffer.audioBufferList, newAudioBufferList.unsafeMutablePointer)
         if convertStatus != 0 {
-            throw MessageError(message: "Failed to convert to interleaved audio.", statusCode: convertStatus)
+            throw MessageError("Failed to convert to interleaved audio.", convertStatus)
         }
         
         addToAudioBuffer(buffer: newAudioBuffer, offset: offset)
@@ -228,10 +228,7 @@ class MusicPlayer {
             
                 // Recursively load audio until the file is fully read.
                 try self.loadAudioAsync(audioFile: audioFile, loadBuffer: loadBuffer, audioDesc: audioDesc, converter: converter, noninterleaved: noninterleaved, currentFramesRead: currentFramesRead + MusicPlayer.FRAME_READ_INCREMENT, processUuid: processUuid)
-            } catch let error as MessageError {
-                print("Error loading audio asynchronously:", error.localizedDescription)
-                return
-            } catch let error as NSError {
+            } catch {
                 print("Error loading audio asynchronously:", error.localizedDescription)
                 return
             }
@@ -262,7 +259,7 @@ class MusicPlayer {
             /// Status code for disposing the audio converter.
             let deallocateStatus: OSStatus = AudioConverterDispose(converter)
             if deallocateStatus != 0 {
-                throw MessageError(message: "Failed to deallocate converter for interleaved audio.", statusCode: deallocateStatus)
+                throw MessageError("Failed to deallocate converter for interleaved audio.", deallocateStatus)
             }
         }
     }
@@ -274,7 +271,7 @@ class MusicPlayer {
             /// Status code for playing audio.
             let playStatus: OSStatus = playAudio()
             if playStatus != 0 {
-                throw MessageError(message: "Failed to play audio.", statusCode: playStatus)
+                throw MessageError("Failed to play audio.", playStatus)
             }
             startShuffleTimer()
         }
@@ -288,7 +285,7 @@ class MusicPlayer {
             /// Status code for stopping audio.
             let stopStatus: OSStatus = stopAudio()
             if stopStatus != 0 {
-                throw MessageError(message: "Failed to stop audio.", statusCode: stopStatus)
+                throw MessageError("Failed to stop audio.", stopStatus)
             }
         }
     }

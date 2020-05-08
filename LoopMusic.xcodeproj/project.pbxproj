@@ -24,6 +24,8 @@
 		398666BE24514030008AC748 /* MusicSettingsTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 398666BD24514030008AC748 /* MusicSettingsTests.swift */; };
 		398666C024514367008AC748 /* ShuffleSetting.swift in Sources */ = {isa = PBXBuildFile; fileRef = 398666BF24514366008AC748 /* ShuffleSetting.swift */; };
 		398666C224514527008AC748 /* TestUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 398666C124514527008AC748 /* TestUtils.swift */; };
+		39A8D8FC246262FD00652E70 /* MusicSettingsCodable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 39A8D8FB246262FD00652E70 /* MusicSettingsCodable.swift */; };
+		39A8D8FE24626DC600652E70 /* ErrorUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 39A8D8FD24626DC600652E70 /* ErrorUtils.swift */; };
 		39B5B31F23B97A1C0091D2E1 /* Notifications.swift in Sources */ = {isa = PBXBuildFile; fileRef = 39B5B31E23B97A1C0091D2E1 /* Notifications.swift */; };
 		39BF34C8245FB9D50063AEF1 /* TestMPMediaItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 39BF34C7245FB9D50063AEF1 /* TestMPMediaItem.swift */; };
 		39BF34CA245FBA920063AEF1 /* AllTracksPlaylist.swift in Sources */ = {isa = PBXBuildFile; fileRef = 39BF34C9245FBA920063AEF1 /* AllTracksPlaylist.swift */; };
@@ -79,6 +81,8 @@
 		398666BD24514030008AC748 /* MusicSettingsTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MusicSettingsTests.swift; sourceTree = "<group>"; };
 		398666BF24514366008AC748 /* ShuffleSetting.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShuffleSetting.swift; sourceTree = "<group>"; };
 		398666C124514527008AC748 /* TestUtils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestUtils.swift; sourceTree = "<group>"; };
+		39A8D8FB246262FD00652E70 /* MusicSettingsCodable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MusicSettingsCodable.swift; sourceTree = "<group>"; };
+		39A8D8FD24626DC600652E70 /* ErrorUtils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ErrorUtils.swift; sourceTree = "<group>"; };
 		39B5B31E23B97A1C0091D2E1 /* Notifications.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Notifications.swift; sourceTree = "<group>"; };
 		39BF34C7245FB9D50063AEF1 /* TestMPMediaItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestMPMediaItem.swift; sourceTree = "<group>"; };
 		39BF34C9245FBA920063AEF1 /* AllTracksPlaylist.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AllTracksPlaylist.swift; sourceTree = "<group>"; };
@@ -116,20 +120,20 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		390A6C3D246118EE00234882 /* View Controllers */ = {
+		390A6C3D246118EE00234882 /* ViewControllers */ = {
 			isa = PBXGroup;
 			children = (
 				390BDAA022AA0CE600E01411 /* MusicPlayerViewController.swift */,
 				39EC8AE1245A6E0F00D5240D /* PlaylistListViewController.swift */,
 				393F1B4F2455283A005E1583 /* TrackListViewController.swift */,
 			);
-			path = "View Controllers";
+			path = ViewControllers;
 			sourceTree = "<group>";
 		};
 		390A6C3E2461190800234882 /* Utils */ = {
 			isa = PBXGroup;
 			children = (
-				39BF34C9245FBA920063AEF1 /* AllTracksPlaylist.swift */,
+				39A8D8FD24626DC600652E70 /* ErrorUtils.swift */,
 				390A6C3B246118D300234882 /* FileUtils.swift */,
 				3928C38624553D560007A4FE /* MediaPlayerUtils.swift */,
 				39191C2D22E6BCDB00C09D67 /* MessageError.swift */,
@@ -149,18 +153,21 @@
 			path = Utils;
 			sourceTree = "<group>";
 		};
-		390A6C402461195300234882 /* Music Player */ = {
+		390A6C402461195300234882 /* MusicPlayer */ = {
 			isa = PBXGroup;
 			children = (
+				39BF34C9245FBA920063AEF1 /* AllTracksPlaylist.swift */,
 				39F1799922DBCD4800D3CDFF /* AudioEngine.c */,
 				3906880C22C1D28C00CE5292 /* AudioEngine.h */,
+				3906880922C1D27400CE5292 /* LoopMusic-Bridging-Header.h */,
 				39C03A68235BFB34004BD0DA /* MusicData.swift */,
 				3979377622ACA6BA00C5DB09 /* MusicPlayer.swift */,
 				39C4651D24440AC3002CBBB8 /* MusicSettings.swift */,
+				39A8D8FB246262FD00652E70 /* MusicSettingsCodable.swift */,
 				3979377822ACAA9A00C5DB09 /* MusicTrack.swift */,
 				398666BF24514366008AC748 /* ShuffleSetting.swift */,
 			);
-			path = "Music Player";
+			path = MusicPlayer;
 			sourceTree = "<group>";
 		};
 		390BDA9222AA0CE600E01411 = {
@@ -219,11 +226,10 @@
 		391F734422AA0E5A00FAC111 /* Source */ = {
 			isa = PBXGroup;
 			children = (
-				390A6C402461195300234882 /* Music Player */,
+				390A6C402461195300234882 /* MusicPlayer */,
 				390A6C3E2461190800234882 /* Utils */,
-				390A6C3D246118EE00234882 /* View Controllers */,
+				390A6C3D246118EE00234882 /* ViewControllers */,
 				390BDA9E22AA0CE600E01411 /* AppDelegate.swift */,
-				3906880922C1D27400CE5292 /* LoopMusic-Bridging-Header.h */,
 			);
 			path = Source;
 			sourceTree = "<group>";
@@ -379,9 +385,11 @@
 				393F1B502455283A005E1583 /* TrackListViewController.swift in Sources */,
 				39C4651E24440AC3002CBBB8 /* MusicSettings.swift in Sources */,
 				39F1799A22DBCD4800D3CDFF /* AudioEngine.c in Sources */,
+				39A8D8FE24626DC600652E70 /* ErrorUtils.swift in Sources */,
 				39191C2E22E6BCDB00C09D67 /* MessageError.swift in Sources */,
 				3979377922ACAA9A00C5DB09 /* MusicTrack.swift in Sources */,
 				39B5B31F23B97A1C0091D2E1 /* Notifications.swift in Sources */,
+				39A8D8FC246262FD00652E70 /* MusicSettingsCodable.swift in Sources */,
 				390BDAA122AA0CE600E01411 /* MusicPlayerViewController.swift in Sources */,
 				390BDAA722AA0CE600E01411 /* LoopMusic.xcdatamodeld in Sources */,
 				39EC8AE2245A6E0F00D5240D /* PlaylistListViewController.swift in Sources */,
@@ -580,7 +588,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = LoopMusic.LoopMusicSwift;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_OBJC_BRIDGING_HEADER = "LoopMusic/Source/LoopMusic-Bridging-Header.h";
+				SWIFT_OBJC_BRIDGING_HEADER = "LoopMusic/Source/MusicPlayer/LoopMusic-Bridging-Header.h";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -601,7 +609,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = LoopMusic.LoopMusicSwift;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_OBJC_BRIDGING_HEADER = "LoopMusic/Source/LoopMusic-Bridging-Header.h";
+				SWIFT_OBJC_BRIDGING_HEADER = "LoopMusic/Source/MusicPlayer/LoopMusic-Bridging-Header.h";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};

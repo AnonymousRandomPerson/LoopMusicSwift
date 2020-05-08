@@ -1,5 +1,6 @@
 import MediaPlayer
 
+/// Utility function for media queries.
 class MediaPlayerUtils {
     
     /// The default "All tracks" playlist that causes all tracks in the media library to be used.

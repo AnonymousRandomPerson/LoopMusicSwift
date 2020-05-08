@@ -8,10 +8,22 @@ class MusicSettingsTests: XCTestCase {
     var settings: MusicSettings = MusicSettings.settings
     /// Constant test music track.
     let TEST_TRACK: MusicTrack = MusicTrack(url: URL(fileURLWithPath: ""), name: "", loopStart: 5, loopEnd: 20, volumeMultiplier: 1)
+    
     /// Pre-calculated repeat length of TEST_TRACK.
     let REPEAT_LENGTH: Double = 15
+    
+    /// Settings file to write to for testing.
+    let TEST_SETTINGS_FILE: String = "TestSettings.plist"
+    var testSettingsUrl: URL?
 
     override func setUp() {
+        do {
+            testSettingsUrl = try FileUtils.getFileUrl(fileName: TEST_SETTINGS_FILE)
+        } catch {
+            XCTFail(String(format: "Failed to load settings file. %@", error.localizedDescription))
+        }
+        settings.settingsFileName = TEST_SETTINGS_FILE
+        settings.playOnInit = false
         settings.shuffleSetting = ShuffleSetting.none
         settings.shuffleTime = nil
         settings.shuffleRepeats = nil
@@ -24,6 +36,13 @@ class MusicSettingsTests: XCTestCase {
     }
 
     override func tearDown() {
+        do {
+            if FileManager.default.fileExists(atPath: testSettingsUrl!.path) {
+                try FileManager.default.removeItem(at: testSettingsUrl!)
+            }
+        } catch {
+            XCTFail(String(format: "Failed to clean up settings file. %@", error.localizedDescription))
+        }
     }
 
     /// Tests that calculateShuffleTime() returns nil on no shuffle.
@@ -170,5 +189,77 @@ class MusicSettingsTests: XCTestCase {
         let shuffleTime = settings.calculateShuffleTime(track: TEST_TRACK)!
         XCTAssertGreaterThanOrEqual(60, shuffleTime)
         XCTAssertLessThanOrEqual(180, shuffleTime)
+    }
+    
+    /// Tests that the settings file can be loaded.
+    func testLoadSettingsFile() throws {
+        let encoder: PropertyListEncoder = PropertyListEncoder()
+        encoder.outputFormat = .xml
+        
+        var settingsFile: MusicSettingsCodable = MusicSettingsCodable()
+        settingsFile.playOnInit = true
+        settingsFile.shuffleSetting = "time"
+        settingsFile.shuffleTime = 1
+        settingsFile.shuffleTimeVariance = 2
+        settingsFile.minShuffleRepeats = 3
+        settingsFile.maxShuffleRepeats = 4
+        settingsFile.shuffleRepeats = 5
+        settingsFile.shuffleRepeatsVariance = 6
+        settingsFile.minShuffleTime = 7
+        settingsFile.maxShuffleTime = 8
+        try encoder.encode(settingsFile).write(to: testSettingsUrl!)
+        
+        try settings.loadSettingsFile()
+        XCTAssertTrue(settings.currentPlaylist === MediaPlayerUtils.ALL_TRACKS_PLAYLIST)
+        XCTAssertTrue(settings.playOnInit)
+        XCTAssertEqual(settings.shuffleSetting, ShuffleSetting.time)
+        XCTAssertEqual(settings.shuffleTime!, 1, accuracy: EPSILON)
+        XCTAssertEqual(settings.shuffleTimeVariance!, 2, accuracy: EPSILON)
+        XCTAssertEqual(settings.minShuffleRepeats!, 3, accuracy: EPSILON)
+        XCTAssertEqual(settings.maxShuffleRepeats!, 4, accuracy: EPSILON)
+        XCTAssertEqual(settings.shuffleRepeats!, 5, accuracy: EPSILON)
+        XCTAssertEqual(settings.shuffleRepeatsVariance!, 6, accuracy: EPSILON)
+        XCTAssertEqual(settings.minShuffleTime!, 7, accuracy: EPSILON)
+        XCTAssertEqual(settings.maxShuffleTime!, 8, accuracy: EPSILON)
+    }
+    
+    /// Tests that the settings file can be saved.
+    func testSaveSettingsFile() throws {
+        settings.playOnInit = true
+        settings.shuffleSetting = ShuffleSetting.time
+        settings.shuffleTime = 1
+        settings.shuffleTimeVariance = 2
+        settings.minShuffleRepeats = 3
+        settings.maxShuffleRepeats = 4
+        settings.shuffleRepeats = 5
+        settings.shuffleRepeatsVariance = 6
+        settings.minShuffleTime = 7
+        settings.maxShuffleTime = 8
+        
+        try settings.saveSettingsFile()
+        
+        let settingsFile: MusicSettingsCodable = try PropertyListDecoder().decode(MusicSettingsCodable.self, from: try Data(contentsOf: testSettingsUrl!))
+        
+        XCTAssertNil(settingsFile.currentPlaylist)
+        XCTAssertTrue(settingsFile.playOnInit)
+        XCTAssertEqual(settingsFile.shuffleSetting, "time")
+        XCTAssertEqual(settingsFile.shuffleTime!, 1, accuracy: EPSILON)
+        XCTAssertEqual(settingsFile.shuffleTimeVariance!, 2, accuracy: EPSILON)
+        XCTAssertEqual(settingsFile.minShuffleRepeats!, 3, accuracy: EPSILON)
+        XCTAssertEqual(settingsFile.maxShuffleRepeats!, 4, accuracy: EPSILON)
+        XCTAssertEqual(settingsFile.shuffleRepeats!, 5, accuracy: EPSILON)
+        XCTAssertEqual(settingsFile.shuffleRepeatsVariance!, 6, accuracy: EPSILON)
+        XCTAssertEqual(settingsFile.minShuffleTime!, 7, accuracy: EPSILON)
+        XCTAssertEqual(settingsFile.maxShuffleTime!, 8, accuracy: EPSILON)
+    }
+    
+    /// Tests that the settings file is created when attempting to load settings without a file.
+    func testSaveSettingsFileOnLoad() throws {
+        try settings.loadSettingsFile()
+        
+        XCTAssertTrue(FileManager.default.fileExists(atPath: testSettingsUrl!.path))
+        let settingsFile: MusicSettingsCodable = try PropertyListDecoder().decode(MusicSettingsCodable.self, from: try Data(contentsOf: testSettingsUrl!))
+        
+        XCTAssertFalse(settingsFile.playOnInit)
     }
 }

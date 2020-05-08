@@ -3,8 +3,14 @@ import MediaPlayer
 /// Stores and loads app-level settings.
 class MusicSettings {
     
+    /// File to write settings to.
+    static let SETTINGS_FILE: String = "Settings.plist"
+    
     /// Singleton instance.
     static let settings: MusicSettings = MusicSettings()
+    
+    /// File to write settings to.
+    var settingsFileName: String = SETTINGS_FILE
     
     /// Playlist being used to choose tracks.
     var currentPlaylist: MPMediaPlaylist = MediaPlayerUtils.ALL_TRACKS_PLAYLIST
@@ -33,21 +39,58 @@ class MusicSettings {
     /// For repeats shuffle, the maximum amount of time (minutes) for a track, regardless of the shuffle repeats.
     var maxShuffleTime: Double?
     
-    /// Private constructor for singleton.
     private init() {
     }
     
     /// Loads all settings from the settings file.
-    func loadSettingsFile() {
-        if 
-        let playlistName: String = "LoopMusic"
-        currentPlaylist = MediaPlayerUtils.getPlaylist(playlistName: playlistName)
-        playOnInit = false
-        shuffleSetting = ShuffleSetting.time
-        shuffleTime = 5
-        shuffleTimeVariance = 1
-        minShuffleRepeats = 1
-        maxShuffleRepeats = 5
+    func loadSettingsFile() throws {
+        do {
+            /// Deserialized settings file.
+            let settingsFile: MusicSettingsCodable = try PropertyListDecoder().decode(MusicSettingsCodable.self, from: try Data(contentsOf: try FileUtils.getFileUrl(fileName: settingsFileName)))
+            
+            if let playlistName = settingsFile.currentPlaylist {
+                currentPlaylist = MediaPlayerUtils.getPlaylist(playlistName: playlistName)
+            }
+            playOnInit = settingsFile.playOnInit
+            shuffleSetting = ShuffleSetting(rawValue: settingsFile.shuffleSetting ?? "") ?? ShuffleSetting.none
+            shuffleTime = settingsFile.shuffleTime
+            shuffleTimeVariance = settingsFile.shuffleTimeVariance
+            minShuffleRepeats = settingsFile.minShuffleRepeats
+            maxShuffleRepeats = settingsFile.maxShuffleRepeats
+            shuffleRepeats = settingsFile.shuffleRepeats
+            shuffleRepeatsVariance = settingsFile.shuffleRepeatsVariance
+            minShuffleTime = settingsFile.minShuffleTime
+            maxShuffleTime = settingsFile.maxShuffleTime
+        } catch {
+            print("Settings file not found. Creating a new one.", error)
+            try saveSettingsFile()
+        }
+    }
+    
+    /// Saves all settings to the settings file.
+    func saveSettingsFile() throws {
+        let encoder: PropertyListEncoder = PropertyListEncoder()
+        encoder.outputFormat = .xml
+        do {
+            var settingsFile: MusicSettingsCodable = MusicSettingsCodable()
+            if currentPlaylist !== MediaPlayerUtils.ALL_TRACKS_PLAYLIST {
+                settingsFile.currentPlaylist = currentPlaylist.name
+            }
+            settingsFile.playOnInit = playOnInit
+            settingsFile.shuffleSetting = shuffleSetting.rawValue
+            settingsFile.shuffleTime = shuffleTime
+            settingsFile.shuffleTimeVariance = shuffleTimeVariance
+            settingsFile.minShuffleRepeats = minShuffleRepeats
+            settingsFile.maxShuffleRepeats = maxShuffleRepeats
+            settingsFile.shuffleRepeats = shuffleRepeats
+            settingsFile.shuffleRepeatsVariance = shuffleRepeatsVariance
+            settingsFile.minShuffleTime = minShuffleTime
+            settingsFile.maxShuffleTime = maxShuffleTime
+            
+            try encoder.encode(settingsFile).write(to: FileUtils.getFileUrl(fileName: settingsFileName))
+        } catch {
+            throw MessageError("Failed to save settings.", error)
+        }
     }
     
     /// Calculates shuffle time based on the track and shuffle settings.
