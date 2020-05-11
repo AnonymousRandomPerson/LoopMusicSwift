@@ -8,6 +8,7 @@ let TRACK_NAME: String = "Test Name"
 /// Tests the music data layer.
 class MusicDataTests: XCTestCase {
     
+    /// Singleton instance.
     let data: MusicData = MusicData.data
     
     override func setUp() {

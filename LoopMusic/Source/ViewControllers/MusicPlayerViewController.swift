@@ -8,11 +8,11 @@ class MusicPlayerViewController: UIViewController {
     static let NOTIFICATION_TRACK_NAME: NSNotification.Name = NSNotification.Name("trackName")
     
     /// Button for playing or stopping music playback.
-    @IBOutlet weak var playButton: UIButton?
+    @IBOutlet weak var playButton: UIButton!
     /// Button for choosing a track to play.
-    @IBOutlet weak var tracksButton: UIButton?
+    @IBOutlet weak var tracksButton: UIButton!
     /// Displays the current track name.
-    @IBOutlet weak var trackLabel: UILabel?
+    @IBOutlet weak var trackLabel: UILabel!
     
     /// Handles music loading and playback.
     let musicPlayer: MusicPlayer = MusicPlayer()

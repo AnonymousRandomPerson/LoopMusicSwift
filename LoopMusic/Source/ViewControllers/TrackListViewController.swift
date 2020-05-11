@@ -2,35 +2,29 @@ import MediaPlayer
 import UIKit
 
 /// Controller for the track selection screen.
-class TrackListViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
+class TrackListViewController: BaseListViewController<MPMediaItem> {
     
-    /// Table displaying the track list.
-    @IBOutlet weak var table: UITableView?
+    /// Title label at the top of the screen.
+    @IBOutlet weak var titleLabel: UINavigationItem!
     
     /// Segue identifier for choosing a track.
     private var SEGUE_CHOOSE_TRACK: String = "chooseTrack"
-    
-    /// Tracks to display. Represents all tracks in the current playlist.
-    private var tracks: [MPMediaItem] = []
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        tracks = MediaPlayerUtils.getTracksInPlaylist()
+        titleLabel?.title = MusicSettings.settings.currentPlaylist.name
+    }
+    
+    override func getItems() -> [MPMediaItem] {
+        return MediaPlayerUtils.getTracksInPlaylist()
+    }
+    
+    override func getItemName(_ item: MPMediaItem) -> String {
+        return item.title ?? ""
     }
 
-    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return tracks.count
-    }
-    
-    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        /// Table cell to modify.
-        let cell = tableView.dequeueReusableCell(withIdentifier: "cell", for: indexPath)
-        cell.textLabel!.text = tracks[indexPath.row].title
-        return cell
-    }
-    
-    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        self.performSegue(withIdentifier: SEGUE_CHOOSE_TRACK, sender: tracks[indexPath.row])
+    override func selectItem(_ item: MPMediaItem) {
+        self.performSegue(withIdentifier: SEGUE_CHOOSE_TRACK, sender: item)
     }
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {

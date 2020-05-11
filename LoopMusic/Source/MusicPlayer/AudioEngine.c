@@ -84,7 +84,7 @@ OSStatus loadAudio(void *_Nonnull newAudioData, int64_t newNumSamples, const Aud
             }
         }
         
-        OSStatus status = AudioQueueNewOutput(&audioDesc, audioCallback, NULL, CFRunLoopGetCurrent(), kCFRunLoopCommonModes, 0, &queue);
+        OSStatus status = AudioQueueNewOutput(&audioDesc, audioCallback, NULL, NULL, NULL, 0, &queue);
         if (status != 0) {
             return status;
         }
