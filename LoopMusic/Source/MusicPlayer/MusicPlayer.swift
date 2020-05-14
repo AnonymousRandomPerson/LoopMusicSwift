@@ -11,6 +11,9 @@ class MusicPlayer {
     /// The number of frames to be read from an audio file each time it is read from asynchronously.
     static let FRAME_READ_INCREMENT: AVAudioFrameCount = AVAudioFrameCount(100000)
     
+    /// Singleton instance.
+    static let player: MusicPlayer = MusicPlayer()
+    
     /// The track currently loaded in the music player.
     private(set) var currentTrack: MusicTrack = MusicTrack.BLANK_MUSIC_TRACK
     /// True if the player is currently playing a track.
@@ -33,8 +36,8 @@ class MusicPlayer {
     private var trackUuid: UUID = UUID()
     
     /// Sets up audio playback.
-    init() {
-        enableBackgroundAudio()
+    func initialize() throws {
+        try enableBackgroundAudio()
     }
     
     /// Loads a track into the music player.
@@ -138,7 +141,8 @@ class MusicPlayer {
         
         try loadAudioAsync(audioFile: audioFile, loadBuffer: origBuffer, audioDesc: audioDesc, converter: converter, noninterleaved: noninterleaved, currentFramesRead: startReadFrames, processUuid: trackUuid)
         
-        updateTrackSettings()
+        updateLoopPoints()
+        updateVolume()
         
         try playTrack()
         
@@ -290,10 +294,14 @@ class MusicPlayer {
         }
     }
     
-    /// Updates the loop start/end and volume multipliers within the audio engine.
-    func updateTrackSettings() {
+    /// Updates the loop start/end within the audio engine.
+    func updateLoopPoints() {
         setLoopPoints((Int64) (currentTrack.loopStart * sampleRate), (Int64) (currentTrack.loopEnd * sampleRate))
-        setVolumeMultiplier(currentTrack.volumeMultiplier)
+    }
+    
+    /// Updates the volume multiplier within the audio engine.
+    func updateVolume() {
+        setVolumeMultiplier(currentTrack.volumeMultiplier * MusicSettings.settings.masterVolume)
     }
     
     /// Chooses a random track from the current playlist and starts playing it.
@@ -313,12 +321,12 @@ class MusicPlayer {
     }
     
     /// Enables background audio playback for the app.
-    func enableBackgroundAudio() {
+    func enableBackgroundAudio() throws {
         do {
             try AVAudioSession.sharedInstance().setCategory(.playback, mode: .default, options: [.mixWithOthers])
             try AVAudioSession.sharedInstance().setActive(true)
         } catch {
-            print("Error enabling background audio:", error.localizedDescription)
+            throw MessageError("Error enabling background audio.", error)
         }
     }
     

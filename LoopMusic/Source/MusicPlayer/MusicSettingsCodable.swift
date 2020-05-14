@@ -8,6 +8,10 @@ struct MusicSettingsCodable: Codable {
     
     /// Setting for the time between shuffling tracks.
     var shuffleSetting: String?
+    /// Global volume multiplier for all tracks.
+    var masterVolume: Double = 1
+    /// Default relative volume for newly added tracks.
+    var defaultRelativeVolume: Double = MusicTrack.DEFAULT_VOLUME_MULTIPLIER
     
     /// For time shuffle, the base amount of time (minutes) to shuffle tracks at.
     var shuffleTime: Double?

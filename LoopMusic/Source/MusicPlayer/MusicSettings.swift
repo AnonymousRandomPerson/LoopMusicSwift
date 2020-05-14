@@ -17,6 +17,10 @@ class MusicSettings {
     
     /// If true, music will start playing immediately when the app starts.
     var playOnInit: Bool = false
+    /// Global volume multiplier for all tracks.
+    var masterVolume: Double = 1
+    /// Default relative volume for newly added tracks.
+    var defaultRelativeVolume: Double = MusicTrack.DEFAULT_VOLUME_MULTIPLIER
     
     /// Setting for the time between shuffling tracks.
     var shuffleSetting: ShuffleSetting = ShuffleSetting.none
@@ -52,6 +56,8 @@ class MusicSettings {
                 currentPlaylist = MediaPlayerUtils.getPlaylist(playlistName: playlistName)
             }
             playOnInit = settingsFile.playOnInit
+            masterVolume = settingsFile.masterVolume
+            defaultRelativeVolume = settingsFile.defaultRelativeVolume
             shuffleSetting = ShuffleSetting(rawValue: settingsFile.shuffleSetting ?? "") ?? ShuffleSetting.none
             shuffleTime = settingsFile.shuffleTime
             shuffleTimeVariance = settingsFile.shuffleTimeVariance
@@ -77,6 +83,8 @@ class MusicSettings {
                 settingsFile.currentPlaylist = currentPlaylist.name
             }
             settingsFile.playOnInit = playOnInit
+            settingsFile.masterVolume = masterVolume
+            settingsFile.defaultRelativeVolume = defaultRelativeVolume
             settingsFile.shuffleSetting = shuffleSetting.rawValue
             settingsFile.shuffleTime = shuffleTime
             settingsFile.shuffleTimeVariance = shuffleTimeVariance

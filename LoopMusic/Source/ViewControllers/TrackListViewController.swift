@@ -1,7 +1,7 @@
 import MediaPlayer
 import UIKit
 
-/// Controller for the track selection screen.
+/// View controller for the track selection screen.
 class TrackListViewController: BaseListViewController<MPMediaItem> {
     
     /// Title label at the top of the screen.

@@ -11,7 +11,7 @@
         <!--Settings Home-->
         <scene sceneID="vMp-d7-fdz">
             <objects>
-                <tableViewController id="Ttk-63-pyP" userLabel="Settings Home" customClass="BaseSettingsViewController" customModule="LoopMusic" customModuleProvider="target" sceneMemberID="viewController">
+                <tableViewController id="Ttk-63-pyP" userLabel="Settings Home" customClass="SettingsHomeViewController" customModule="LoopMusic" customModuleProvider="target" sceneMemberID="viewController">
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="static" style="grouped" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="18" sectionFooterHeight="18" id="X50-AL-PT9">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="647"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -48,6 +48,9 @@
                                                 </label>
                                             </subviews>
                                         </tableViewCellContentView>
+                                        <connections>
+                                            <segue destination="vyH-Q5-luI" kind="show" id="8Pp-VZ-1Um"/>
+                                        </connections>
                                     </tableViewCell>
                                 </cells>
                             </tableViewSection>
@@ -104,7 +107,151 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="2MW-bO-gne" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
                 <exit id="b3i-NY-vUY" userLabel="Exit" sceneMemberID="exit"/>
             </objects>
-            <point key="canvasLocation" x="-591" y="-264"/>
+            <point key="canvasLocation" x="-553" y="88"/>
+        </scene>
+        <!--General Settings-->
+        <scene sceneID="3ty-mv-Yxy">
+            <objects>
+                <tableViewController id="vyH-Q5-luI" userLabel="General Settings" customClass="GeneralSettingsViewController" customModule="LoopMusic" customModuleProvider="target" sceneMemberID="viewController">
+                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="static" style="grouped" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="18" sectionFooterHeight="18" id="C90-pC-KSH">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="647"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <color key="backgroundColor" systemColor="systemGray5Color" red="0.8980392157" green="0.8980392157" blue="0.91764705879999997" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                        <navigationBar key="tableHeaderView" contentMode="scaleToFill" id="fLm-zn-bwJ">
+                            <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
+                            <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxY="YES"/>
+                            <items>
+                                <navigationItem title="General Settings" id="Ftv-bE-E7e">
+                                    <barButtonItem key="leftBarButtonItem" title="Back" id="7aQ-cf-bFu">
+                                        <connections>
+                                            <segue destination="weW-GY-mHm" kind="unwind" unwindAction="unwindToSettingsHomeWithSegue:" id="Edu-lZ-Iqs"/>
+                                        </connections>
+                                    </barButtonItem>
+                                </navigationItem>
+                            </items>
+                        </navigationBar>
+                        <sections>
+                            <tableViewSection footerTitle="Start playing a random track from the current playlist as soon as LoopMusic starts up." id="UOD-JS-ehd">
+                                <cells>
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" id="uhb-18-2u0">
+                                        <rect key="frame" x="0.0" y="62" width="375" height="43.5"/>
+                                        <autoresizingMask key="autoresizingMask"/>
+                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="uhb-18-2u0" id="TXU-t5-e5e">
+                                            <rect key="frame" x="0.0" y="0.0" width="375" height="43.5"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                            <subviews>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Play on App Start" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="9fE-i0-chS">
+                                                    <rect key="frame" x="16" y="11" width="133" height="21.5"/>
+                                                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                                    <nil key="textColor"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
+                                                <switch opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" contentHorizontalAlignment="center" contentVerticalAlignment="center" on="YES" translatesAutoresizingMaskIntoConstraints="NO" id="9Sb-on-1wc">
+                                                    <rect key="frame" x="308" y="6" width="51" height="31.5"/>
+                                                    <connections>
+                                                        <action selector="playOnInitChanged" destination="vyH-Q5-luI" eventType="valueChanged" id="XIS-li-XV5"/>
+                                                    </connections>
+                                                </switch>
+                                            </subviews>
+                                            <constraints>
+                                                <constraint firstAttribute="bottom" secondItem="9Sb-on-1wc" secondAttribute="bottom" constant="6.5" id="1Wj-Qs-gEl"/>
+                                                <constraint firstItem="9Sb-on-1wc" firstAttribute="top" secondItem="TXU-t5-e5e" secondAttribute="top" constant="6" id="SPf-Nd-g86"/>
+                                                <constraint firstAttribute="bottom" secondItem="9fE-i0-chS" secondAttribute="bottom" constant="11.5" id="gJl-2u-4U5"/>
+                                                <constraint firstItem="9fE-i0-chS" firstAttribute="leading" secondItem="TXU-t5-e5e" secondAttribute="leading" constant="16" id="kY1-qa-V0t"/>
+                                                <constraint firstAttribute="trailing" secondItem="9Sb-on-1wc" secondAttribute="trailing" constant="18" id="lPH-j1-FbW"/>
+                                                <constraint firstItem="9fE-i0-chS" firstAttribute="top" secondItem="TXU-t5-e5e" secondAttribute="top" constant="11" id="tQ0-gy-PWd"/>
+                                            </constraints>
+                                        </tableViewCellContentView>
+                                    </tableViewCell>
+                                </cells>
+                            </tableViewSection>
+                            <tableViewSection footerTitle="Controls playback volume for all tracks. Useful to adjust LoopMusic's volume relative to other apps with audio." id="VuN-2V-KFV">
+                                <cells>
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" id="GGv-6k-AGF">
+                                        <rect key="frame" x="0.0" y="169.5" width="375" height="43.5"/>
+                                        <autoresizingMask key="autoresizingMask"/>
+                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="GGv-6k-AGF" id="ozv-EH-pwq">
+                                            <rect key="frame" x="0.0" y="0.0" width="375" height="43.5"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                            <subviews>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Master Volume" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Upy-lf-XwD">
+                                                    <rect key="frame" x="16" y="11" width="115" height="21.5"/>
+                                                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                                    <nil key="textColor"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
+                                                <slider opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" value="0.5" minValue="0.0" maxValue="1" translatesAutoresizingMaskIntoConstraints="NO" id="tpP-Ae-vU1">
+                                                    <rect key="frame" x="203" y="7" width="156" height="32"/>
+                                                    <connections>
+                                                        <action selector="masterVolumeChanged" destination="vyH-Q5-luI" eventType="valueChanged" id="FsZ-89-wsR"/>
+                                                    </connections>
+                                                </slider>
+                                            </subviews>
+                                            <constraints>
+                                                <constraint firstItem="tpP-Ae-vU1" firstAttribute="leading" secondItem="ozv-EH-pwq" secondAttribute="leading" constant="205" id="8Y7-78-mF3"/>
+                                                <constraint firstAttribute="trailing" secondItem="tpP-Ae-vU1" secondAttribute="trailing" constant="18" id="97s-eL-dKy"/>
+                                                <constraint firstAttribute="bottom" secondItem="Upy-lf-XwD" secondAttribute="bottom" constant="11.5" id="IbH-sD-1S1"/>
+                                                <constraint firstItem="Upy-lf-XwD" firstAttribute="top" secondItem="ozv-EH-pwq" secondAttribute="top" constant="11" id="YYm-eR-ZOx"/>
+                                                <constraint firstItem="Upy-lf-XwD" firstAttribute="leading" secondItem="ozv-EH-pwq" secondAttribute="leading" constant="16" id="aZX-Ow-IRr"/>
+                                                <constraint firstAttribute="bottom" secondItem="tpP-Ae-vU1" secondAttribute="bottom" constant="6.5" id="lco-Ee-P14"/>
+                                                <constraint firstItem="tpP-Ae-vU1" firstAttribute="top" secondItem="ozv-EH-pwq" secondAttribute="top" constant="7" id="peV-Mg-9uN"/>
+                                            </constraints>
+                                        </tableViewCellContentView>
+                                    </tableViewCell>
+                                </cells>
+                            </tableViewSection>
+                            <tableViewSection footerTitle="The initial relative volume of newly added tracks, controlling the volume of tracks relative to each other." id="aeY-S6-Bdi">
+                                <cells>
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" id="tik-B1-doe">
+                                        <rect key="frame" x="0.0" y="277" width="375" height="43.5"/>
+                                        <autoresizingMask key="autoresizingMask"/>
+                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="tik-B1-doe" id="5aJ-4Q-w2c">
+                                            <rect key="frame" x="0.0" y="0.0" width="375" height="43.5"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                            <subviews>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="Default Relative Volume" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="1fI-tO-pVm">
+                                                    <rect key="frame" x="16" y="10" width="181" height="21.5"/>
+                                                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                                    <nil key="textColor"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
+                                                <slider opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" value="0.5" minValue="0.0" maxValue="1" translatesAutoresizingMaskIntoConstraints="NO" id="g1f-HU-Zi9">
+                                                    <rect key="frame" x="203" y="7" width="156" height="31.5"/>
+                                                    <connections>
+                                                        <action selector="defaultRelativeVolumeChanged" destination="vyH-Q5-luI" eventType="valueChanged" id="eN8-pi-dWe"/>
+                                                    </connections>
+                                                </slider>
+                                            </subviews>
+                                            <constraints>
+                                                <constraint firstItem="1fI-tO-pVm" firstAttribute="top" secondItem="5aJ-4Q-w2c" secondAttribute="top" constant="11" id="3H2-Ml-9dI"/>
+                                                <constraint firstAttribute="trailing" secondItem="g1f-HU-Zi9" secondAttribute="trailing" constant="18" id="DRy-gi-VXd"/>
+                                                <constraint firstItem="1fI-tO-pVm" firstAttribute="leading" secondItem="5aJ-4Q-w2c" secondAttribute="leading" constant="16" id="Hfa-Gz-TFT"/>
+                                                <constraint firstItem="g1f-HU-Zi9" firstAttribute="leading" secondItem="5aJ-4Q-w2c" secondAttribute="leading" constant="205" id="KkI-dJ-Y5P"/>
+                                                <constraint firstAttribute="bottom" secondItem="g1f-HU-Zi9" secondAttribute="bottom" constant="6.5" id="RCY-I4-z2S"/>
+                                                <constraint firstAttribute="bottom" secondItem="1fI-tO-pVm" secondAttribute="bottom" constant="11.5" id="SX4-Iq-gXG"/>
+                                                <constraint firstItem="g1f-HU-Zi9" firstAttribute="top" secondItem="5aJ-4Q-w2c" secondAttribute="top" constant="7" id="UyF-8j-1Kx"/>
+                                            </constraints>
+                                        </tableViewCellContentView>
+                                    </tableViewCell>
+                                </cells>
+                            </tableViewSection>
+                        </sections>
+                        <connections>
+                            <outlet property="dataSource" destination="vyH-Q5-luI" id="Bip-Vt-XgP"/>
+                            <outlet property="delegate" destination="vyH-Q5-luI" id="lyf-SD-Qka"/>
+                        </connections>
+                    </tableView>
+                    <navigationItem key="navigationItem" title="Title" id="W5V-dL-WEx"/>
+                    <connections>
+                        <outlet property="defaultRelativeVolumeSlider" destination="g1f-HU-Zi9" id="7gU-8r-jBg"/>
+                        <outlet property="masterVolumeSlider" destination="tpP-Ae-vU1" id="ilr-eE-7yd"/>
+                        <outlet property="playOnInitSwitch" destination="9Sb-on-1wc" id="EEW-c8-HBt"/>
+                    </connections>
+                </tableViewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="YNf-3g-GwA" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+                <exit id="weW-GY-mHm" userLabel="Exit" sceneMemberID="exit"/>
+            </objects>
+            <point key="canvasLocation" x="-1327.2" y="-536.58170914542734"/>
         </scene>
         <!--Music Player-->
         <scene sceneID="tne-QT-ifu">

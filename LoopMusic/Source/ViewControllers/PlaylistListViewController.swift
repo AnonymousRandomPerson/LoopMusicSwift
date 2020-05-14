@@ -1,7 +1,7 @@
 import MediaPlayer
 import UIKit
 
-/// Controller for the playlist selection screen.
+/// View controller for the playlist selection screen.
 class PlaylistListViewController: BaseListViewController<MPMediaPlaylist> {
     
     override func getItems() -> [MPMediaPlaylist] {

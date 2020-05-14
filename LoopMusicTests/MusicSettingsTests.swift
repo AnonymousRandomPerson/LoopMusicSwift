@@ -24,6 +24,8 @@ class MusicSettingsTests: XCTestCase {
         }
         settings.settingsFileName = TEST_SETTINGS_FILE
         settings.playOnInit = false
+        settings.masterVolume = 0
+        settings.defaultRelativeVolume = 0
         settings.shuffleSetting = ShuffleSetting.none
         settings.shuffleTime = nil
         settings.shuffleRepeats = nil
@@ -198,6 +200,8 @@ class MusicSettingsTests: XCTestCase {
         
         var settingsFile: MusicSettingsCodable = MusicSettingsCodable()
         settingsFile.playOnInit = true
+        settingsFile.masterVolume = 1
+        settingsFile.defaultRelativeVolume = 2
         settingsFile.shuffleSetting = "time"
         settingsFile.shuffleTime = 1
         settingsFile.shuffleTimeVariance = 2
@@ -212,6 +216,8 @@ class MusicSettingsTests: XCTestCase {
         try settings.loadSettingsFile()
         XCTAssertTrue(settings.currentPlaylist === MediaPlayerUtils.ALL_TRACKS_PLAYLIST)
         XCTAssertTrue(settings.playOnInit)
+        XCTAssertEqual(settings.masterVolume, 1, accuracy: EPSILON)
+        XCTAssertEqual(settings.defaultRelativeVolume, 2, accuracy: EPSILON)
         XCTAssertEqual(settings.shuffleSetting, ShuffleSetting.time)
         XCTAssertEqual(settings.shuffleTime!, 1, accuracy: EPSILON)
         XCTAssertEqual(settings.shuffleTimeVariance!, 2, accuracy: EPSILON)
@@ -226,6 +232,8 @@ class MusicSettingsTests: XCTestCase {
     /// Tests that the settings file can be saved.
     func testSaveSettingsFile() throws {
         settings.playOnInit = true
+        settings.masterVolume = 1
+        settings.defaultRelativeVolume = 2
         settings.shuffleSetting = ShuffleSetting.time
         settings.shuffleTime = 1
         settings.shuffleTimeVariance = 2
@@ -242,6 +250,8 @@ class MusicSettingsTests: XCTestCase {
         
         XCTAssertNil(settingsFile.currentPlaylist)
         XCTAssertTrue(settingsFile.playOnInit)
+        XCTAssertEqual(settingsFile.masterVolume, 1, accuracy: EPSILON)
+        XCTAssertEqual(settingsFile.defaultRelativeVolume, 2, accuracy: EPSILON)
         XCTAssertEqual(settingsFile.shuffleSetting, "time")
         XCTAssertEqual(settingsFile.shuffleTime!, 1, accuracy: EPSILON)
         XCTAssertEqual(settingsFile.shuffleTimeVariance!, 2, accuracy: EPSILON)

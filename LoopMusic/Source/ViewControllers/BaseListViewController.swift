@@ -1,7 +1,7 @@
 import MediaPlayer
 import UIKit
 
-/// Controller for the track selection screen.
+/// Base view controller for list views.
 class BaseListViewController<Item>: UIViewController, UITableViewDelegate, UITableViewDataSource, UISearchBarDelegate {
     
     /// Table displaying the item list.
