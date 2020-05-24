@@ -35,6 +35,12 @@ class MusicPlayer {
     /// Passed to the dispatch queue tasks so the audio loading task knows if the track changes while it's still loading.
     private var trackUuid: UUID = UUID()
     
+    var trackLoaded: Bool {
+        get {
+            return currentTrack.url != MusicTrack.BLANK_MUSIC_TRACK.url
+        }
+    }
+    
     /// Sets up audio playback.
     func initialize() throws {
         try enableBackgroundAudio()

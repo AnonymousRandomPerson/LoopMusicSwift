@@ -19,8 +19,13 @@
 		39191C2E22E6BCDB00C09D67 /* MessageError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 39191C2D22E6BCDB00C09D67 /* MessageError.swift */; };
 		3928C38724553D560007A4FE /* MediaPlayerUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3928C38624553D560007A4FE /* MediaPlayerUtils.swift */; };
 		393F1B502455283A005E1583 /* TrackListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 393F1B4F2455283A005E1583 /* TrackListViewController.swift */; };
+		395D897B24738A7100B9FD1C /* BaseSettingViewGeneric.swift in Sources */ = {isa = PBXBuildFile; fileRef = 395D897A24738A7100B9FD1C /* BaseSettingViewGeneric.swift */; };
+		395D897D24738AAA00B9FD1C /* DoubleSettingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 395D897C24738AAA00B9FD1C /* DoubleSettingView.swift */; };
 		3979377722ACA6BA00C5DB09 /* MusicPlayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3979377622ACA6BA00C5DB09 /* MusicPlayer.swift */; };
 		3979377922ACAA9A00C5DB09 /* MusicTrack.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3979377822ACAA9A00C5DB09 /* MusicTrack.swift */; };
+		39812B712478D07A002AFBCA /* BaseSettingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 39812B702478D07A002AFBCA /* BaseSettingView.swift */; };
+		39812B732478D1F3002AFBCA /* ShuffleSettingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 39812B722478D1F3002AFBCA /* ShuffleSettingView.swift */; };
+		39812B752478D5BF002AFBCA /* BooleanSettingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 39812B742478D5BF002AFBCA /* BooleanSettingView.swift */; };
 		398666BE24514030008AC748 /* MusicSettingsTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 398666BD24514030008AC748 /* MusicSettingsTests.swift */; };
 		398666C024514367008AC748 /* ShuffleSetting.swift in Sources */ = {isa = PBXBuildFile; fileRef = 398666BF24514366008AC748 /* ShuffleSetting.swift */; };
 		398666C224514527008AC748 /* TestUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 398666C124514527008AC748 /* TestUtils.swift */; };
@@ -39,6 +44,7 @@
 		39C5192A2390E86C00B7FE26 /* TracksOld.db in Resources */ = {isa = PBXBuildFile; fileRef = 39C519292390E86C00B7FE26 /* TracksOld.db */; };
 		39D198E32376669B00680EE3 /* MusicDataTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 39D198E22376669B00680EE3 /* MusicDataTests.swift */; };
 		39E2CC3923AF12A4001FE0BF /* DataMigrator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 39E2CC3823AF12A4001FE0BF /* DataMigrator.swift */; };
+		39EB89B6247A25D8002E0901 /* DoubleTextFieldSettingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 39EB89B5247A25D8002E0901 /* DoubleTextFieldSettingView.swift */; };
 		39EC8AE2245A6E0F00D5240D /* PlaylistListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 39EC8AE1245A6E0F00D5240D /* PlaylistListViewController.swift */; };
 		39F1799A22DBCD4800D3CDFF /* AudioEngine.c in Sources */ = {isa = PBXBuildFile; fileRef = 39F1799922DBCD4800D3CDFF /* AudioEngine.c */; };
 /* End PBXBuildFile section */
@@ -81,8 +87,13 @@
 		39191C2D22E6BCDB00C09D67 /* MessageError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MessageError.swift; sourceTree = "<group>"; };
 		3928C38624553D560007A4FE /* MediaPlayerUtils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MediaPlayerUtils.swift; sourceTree = "<group>"; };
 		393F1B4F2455283A005E1583 /* TrackListViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrackListViewController.swift; sourceTree = "<group>"; };
+		395D897A24738A7100B9FD1C /* BaseSettingViewGeneric.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseSettingViewGeneric.swift; sourceTree = "<group>"; };
+		395D897C24738AAA00B9FD1C /* DoubleSettingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DoubleSettingView.swift; sourceTree = "<group>"; };
 		3979377622ACA6BA00C5DB09 /* MusicPlayer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MusicPlayer.swift; sourceTree = "<group>"; };
 		3979377822ACAA9A00C5DB09 /* MusicTrack.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MusicTrack.swift; sourceTree = "<group>"; };
+		39812B702478D07A002AFBCA /* BaseSettingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseSettingView.swift; sourceTree = "<group>"; };
+		39812B722478D1F3002AFBCA /* ShuffleSettingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShuffleSettingView.swift; sourceTree = "<group>"; };
+		39812B742478D5BF002AFBCA /* BooleanSettingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BooleanSettingView.swift; sourceTree = "<group>"; };
 		398666BD24514030008AC748 /* MusicSettingsTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MusicSettingsTests.swift; sourceTree = "<group>"; };
 		398666BF24514366008AC748 /* ShuffleSetting.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShuffleSetting.swift; sourceTree = "<group>"; };
 		398666C124514527008AC748 /* TestUtils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestUtils.swift; sourceTree = "<group>"; };
@@ -101,6 +112,7 @@
 		39C519292390E86C00B7FE26 /* TracksOld.db */ = {isa = PBXFileReference; lastKnownFileType = file; name = TracksOld.db; path = ../TracksOld.db; sourceTree = "<group>"; };
 		39D198E22376669B00680EE3 /* MusicDataTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MusicDataTests.swift; sourceTree = "<group>"; };
 		39E2CC3823AF12A4001FE0BF /* DataMigrator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataMigrator.swift; sourceTree = "<group>"; };
+		39EB89B5247A25D8002E0901 /* DoubleTextFieldSettingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DoubleTextFieldSettingView.swift; sourceTree = "<group>"; };
 		39EC8AE1245A6E0F00D5240D /* PlaylistListViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlaylistListViewController.swift; sourceTree = "<group>"; };
 		39F1799922DBCD4800D3CDFF /* AudioEngine.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = AudioEngine.c; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -133,13 +145,10 @@
 		390A6C3D246118EE00234882 /* ViewControllers */ = {
 			isa = PBXGroup;
 			children = (
+				395D897E24738ABC00B9FD1C /* Settings */,
 				39B098CA2468DD6600526910 /* BaseListViewController.swift */,
-				39B098D22468F64600526910 /* BaseSettingsSectionViewController.swift */,
-				39B098D02468F54000526910 /* GeneralSettingsViewController.swift */,
 				390BDAA022AA0CE600E01411 /* MusicPlayerViewController.swift */,
 				39EC8AE1245A6E0F00D5240D /* PlaylistListViewController.swift */,
-				39B098CE2468F4F800526910 /* SettingsHomeViewController.swift */,
-				39C4C89A246CF43900994D1C /* ShuffleSettingsViewController.swift */,
 				393F1B4F2455283A005E1583 /* TrackListViewController.swift */,
 			);
 			path = ViewControllers;
@@ -241,10 +250,10 @@
 		391F734422AA0E5A00FAC111 /* Source */ = {
 			isa = PBXGroup;
 			children = (
+				390BDA9E22AA0CE600E01411 /* AppDelegate.swift */,
 				390A6C402461195300234882 /* MusicPlayer */,
 				390A6C3E2461190800234882 /* Utils */,
 				390A6C3D246118EE00234882 /* ViewControllers */,
-				390BDA9E22AA0CE600E01411 /* AppDelegate.swift */,
 			);
 			path = Source;
 			sourceTree = "<group>";
@@ -256,6 +265,31 @@
 				390BDAA222AA0CE600E01411 /* Main.storyboard */,
 			);
 			path = Views;
+			sourceTree = "<group>";
+		};
+		395D897E24738ABC00B9FD1C /* Settings */ = {
+			isa = PBXGroup;
+			children = (
+				395D897F24738ADE00B9FD1C /* SettingViews */,
+				39B098D22468F64600526910 /* BaseSettingsSectionViewController.swift */,
+				39B098D02468F54000526910 /* GeneralSettingsViewController.swift */,
+				39B098CE2468F4F800526910 /* SettingsHomeViewController.swift */,
+				39C4C89A246CF43900994D1C /* ShuffleSettingsViewController.swift */,
+			);
+			path = Settings;
+			sourceTree = "<group>";
+		};
+		395D897F24738ADE00B9FD1C /* SettingViews */ = {
+			isa = PBXGroup;
+			children = (
+				39812B702478D07A002AFBCA /* BaseSettingView.swift */,
+				395D897A24738A7100B9FD1C /* BaseSettingViewGeneric.swift */,
+				39812B742478D5BF002AFBCA /* BooleanSettingView.swift */,
+				395D897C24738AAA00B9FD1C /* DoubleSettingView.swift */,
+				39EB89B5247A25D8002E0901 /* DoubleTextFieldSettingView.swift */,
+				39812B722478D1F3002AFBCA /* ShuffleSettingView.swift */,
+			);
+			path = SettingViews;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -400,14 +434,19 @@
 				39B098CB2468DD6600526910 /* BaseListViewController.swift in Sources */,
 				393F1B502455283A005E1583 /* TrackListViewController.swift in Sources */,
 				39C4651E24440AC3002CBBB8 /* MusicSettings.swift in Sources */,
+				395D897B24738A7100B9FD1C /* BaseSettingViewGeneric.swift in Sources */,
 				39F1799A22DBCD4800D3CDFF /* AudioEngine.c in Sources */,
 				39A8D8FE24626DC600652E70 /* ErrorUtils.swift in Sources */,
 				39191C2E22E6BCDB00C09D67 /* MessageError.swift in Sources */,
 				3979377922ACAA9A00C5DB09 /* MusicTrack.swift in Sources */,
 				39B098D12468F54000526910 /* GeneralSettingsViewController.swift in Sources */,
+				39812B712478D07A002AFBCA /* BaseSettingView.swift in Sources */,
 				39B098CF2468F4F800526910 /* SettingsHomeViewController.swift in Sources */,
+				39812B752478D5BF002AFBCA /* BooleanSettingView.swift in Sources */,
+				39EB89B6247A25D8002E0901 /* DoubleTextFieldSettingView.swift in Sources */,
 				39B5B31F23B97A1C0091D2E1 /* Notifications.swift in Sources */,
 				39A8D8FC246262FD00652E70 /* MusicSettingsCodable.swift in Sources */,
+				395D897D24738AAA00B9FD1C /* DoubleSettingView.swift in Sources */,
 				390BDAA122AA0CE600E01411 /* MusicPlayerViewController.swift in Sources */,
 				390BDAA722AA0CE600E01411 /* LoopMusic.xcdatamodeld in Sources */,
 				39B098D32468F64600526910 /* BaseSettingsSectionViewController.swift in Sources */,
@@ -418,6 +457,7 @@
 				3928C38724553D560007A4FE /* MediaPlayerUtils.swift in Sources */,
 				3979377722ACA6BA00C5DB09 /* MusicPlayer.swift in Sources */,
 				390BDA9F22AA0CE600E01411 /* AppDelegate.swift in Sources */,
+				39812B732478D1F3002AFBCA /* ShuffleSettingView.swift in Sources */,
 				39C4C89B246CF43900994D1C /* ShuffleSettingsViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

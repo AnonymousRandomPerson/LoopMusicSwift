@@ -30,6 +30,7 @@ class MusicPlayerViewController: UIViewController {
         if (MusicSettings.settings.playOnInit) {
             randomizeTrack()
         }
+        updatePlayButtonIcon()
     }
     
     /// Toggles whether audio is playing.
@@ -63,6 +64,7 @@ class MusicPlayerViewController: UIViewController {
         } else {
             playButton?.setTitle("▶", for: .normal)
         }
+        playButton?.isEnabled = MusicPlayer.player.trackLoaded
     }
     
     /// Displays an error to the user.

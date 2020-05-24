@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="16096" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="BYZ-38-t0r">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="16097" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="BYZ-38-t0r">
     <device id="retina5_5" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
@@ -167,7 +167,7 @@
                                                 <switch opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" contentHorizontalAlignment="center" contentVerticalAlignment="center" on="YES" translatesAutoresizingMaskIntoConstraints="NO" id="9Sb-on-1wc">
                                                     <rect key="frame" x="347" y="6.0000000000000018" width="51" height="31.666666666666671"/>
                                                     <connections>
-                                                        <action selector="playOnInitChanged" destination="vyH-Q5-luI" eventType="valueChanged" id="XIS-li-XV5"/>
+                                                        <action selector="settingChangedWithSender:" destination="vyH-Q5-luI" eventType="valueChanged" id="hJB-ON-nuf"/>
                                                     </connections>
                                                 </switch>
                                             </subviews>
@@ -202,7 +202,7 @@
                                                 <slider opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" value="0.5" minValue="0.0" maxValue="1" translatesAutoresizingMaskIntoConstraints="NO" id="tpP-Ae-vU1">
                                                     <rect key="frame" x="205" y="7.0000000000000018" width="193" height="31.666666666666671"/>
                                                     <connections>
-                                                        <action selector="masterVolumeChanged" destination="vyH-Q5-luI" eventType="valueChanged" id="FsZ-89-wsR"/>
+                                                        <action selector="masterVolumeChangedWithSender:" destination="vyH-Q5-luI" eventType="valueChanged" id="emw-qT-6Bp"/>
                                                     </connections>
                                                 </slider>
                                             </subviews>
@@ -238,7 +238,7 @@
                                                 <slider opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" value="0.5" minValue="0.0" maxValue="1" translatesAutoresizingMaskIntoConstraints="NO" id="g1f-HU-Zi9">
                                                     <rect key="frame" x="205" y="7.0000000000000018" width="193" height="31.666666666666671"/>
                                                     <connections>
-                                                        <action selector="defaultRelativeVolumeChanged" destination="vyH-Q5-luI" eventType="valueChanged" id="eN8-pi-dWe"/>
+                                                        <action selector="settingChangedWithSender:" destination="vyH-Q5-luI" eventType="valueChanged" id="xVO-ke-9KR"/>
                                                     </connections>
                                                 </slider>
                                             </subviews>
@@ -289,7 +289,7 @@
                                 <nil key="highlightedColor"/>
                             </label>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="PFV-4N-Rnj" userLabel="Random Button">
-                                <rect key="frame" x="163.66666666666663" y="194" width="87" height="41"/>
+                                <rect key="frame" x="163.66666666666666" y="194" width="87" height="41"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="24"/>
                                 <state key="normal" title="Random"/>
                                 <connections>
@@ -297,7 +297,7 @@
                                 </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="sOX-8u-f3x">
-                                <rect key="frame" x="187.66666666666663" y="115" width="39" height="70"/>
+                                <rect key="frame" x="187.66666666666666" y="115" width="39" height="70"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="48"/>
                                 <state key="normal" title="▶"/>
                                 <connections>
@@ -558,7 +558,7 @@
                                                         <segment title="Repeats"/>
                                                     </segments>
                                                     <connections>
-                                                        <action selector="shuffleSettingChanged" destination="4b3-sS-mfn" eventType="valueChanged" id="pqN-Tz-apt"/>
+                                                        <action selector="shuffleSettingChangedWithSender:" destination="4b3-sS-mfn" eventType="valueChanged" id="sbc-T3-yie"/>
                                                     </connections>
                                                 </segmentedControl>
                                             </subviews>
@@ -595,7 +595,7 @@
                                                     <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                                     <textInputTraits key="textInputTraits" keyboardType="decimalPad" returnKeyType="done" enablesReturnKeyAutomatically="YES"/>
                                                     <connections>
-                                                        <action selector="shuffleTimeChanged" destination="4b3-sS-mfn" eventType="editingDidEnd" id="5qs-za-5nh"/>
+                                                        <action selector="settingChangedWithSender:" destination="4b3-sS-mfn" eventType="editingDidEnd" id="VAc-Op-ZjJ"/>
                                                     </connections>
                                                 </textField>
                                             </subviews>
@@ -635,7 +635,7 @@
                                                     <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                                     <textInputTraits key="textInputTraits" keyboardType="decimalPad" returnKeyType="done" enablesReturnKeyAutomatically="YES"/>
                                                     <connections>
-                                                        <action selector="shuffleRepeatsChanged" destination="4b3-sS-mfn" eventType="editingDidEnd" id="w7L-hh-MGc"/>
+                                                        <action selector="settingChangedWithSender:" destination="4b3-sS-mfn" eventType="editingDidEnd" id="4Rn-n7-3da"/>
                                                     </connections>
                                                 </textField>
                                             </subviews>
@@ -675,7 +675,7 @@
                                                     <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                                     <textInputTraits key="textInputTraits" keyboardType="decimalPad" returnKeyType="done" enablesReturnKeyAutomatically="YES"/>
                                                     <connections>
-                                                        <action selector="shuffleTimeVarianceChanged" destination="4b3-sS-mfn" eventType="editingDidEnd" id="VKq-vH-YlE"/>
+                                                        <action selector="settingChangedWithSender:" destination="4b3-sS-mfn" eventType="editingDidEnd" id="hpE-Tq-Ifp"/>
                                                     </connections>
                                                 </textField>
                                             </subviews>
@@ -715,7 +715,7 @@
                                                     <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                                     <textInputTraits key="textInputTraits" keyboardType="decimalPad" returnKeyType="done" enablesReturnKeyAutomatically="YES"/>
                                                     <connections>
-                                                        <action selector="shuffleRepeatsVarianceChanged" destination="4b3-sS-mfn" eventType="editingDidEnd" id="GwD-EY-Nnr"/>
+                                                        <action selector="settingChangedWithSender:" destination="4b3-sS-mfn" eventType="editingDidEnd" id="o8P-I9-J2f"/>
                                                     </connections>
                                                 </textField>
                                             </subviews>
@@ -755,7 +755,7 @@
                                                     <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                                     <textInputTraits key="textInputTraits" keyboardType="decimalPad" returnKeyType="done" enablesReturnKeyAutomatically="YES"/>
                                                     <connections>
-                                                        <action selector="minShuffleTimeChanged" destination="4b3-sS-mfn" eventType="editingDidEnd" id="Ftf-oU-yz7"/>
+                                                        <action selector="settingChangedWithSender:" destination="4b3-sS-mfn" eventType="editingDidEnd" id="ldA-Fv-JJz"/>
                                                     </connections>
                                                 </textField>
                                             </subviews>
@@ -795,7 +795,7 @@
                                                     <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                                     <textInputTraits key="textInputTraits" keyboardType="decimalPad" returnKeyType="done" enablesReturnKeyAutomatically="YES"/>
                                                     <connections>
-                                                        <action selector="minShuffleRepeatsChanged" destination="4b3-sS-mfn" eventType="editingDidEnd" id="Jvd-he-QeK"/>
+                                                        <action selector="settingChangedWithSender:" destination="4b3-sS-mfn" eventType="editingDidEnd" id="Kzj-Vb-yFo"/>
                                                     </connections>
                                                 </textField>
                                             </subviews>
@@ -835,7 +835,7 @@
                                                     <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                                     <textInputTraits key="textInputTraits" keyboardType="decimalPad" returnKeyType="done" enablesReturnKeyAutomatically="YES"/>
                                                     <connections>
-                                                        <action selector="maxShuffleTimeChanged" destination="4b3-sS-mfn" eventType="editingDidEnd" id="cBA-OK-aQb"/>
+                                                        <action selector="settingChangedWithSender:" destination="4b3-sS-mfn" eventType="editingDidEnd" id="Q10-qi-Uqd"/>
                                                     </connections>
                                                 </textField>
                                             </subviews>
@@ -875,7 +875,7 @@
                                                     <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                                     <textInputTraits key="textInputTraits" keyboardType="decimalPad" returnKeyType="done" enablesReturnKeyAutomatically="YES"/>
                                                     <connections>
-                                                        <action selector="maxShuffleRepeatsChanged" destination="4b3-sS-mfn" eventType="editingDidEnd" id="s2e-et-Qem"/>
+                                                        <action selector="settingChangedWithSender:" destination="4b3-sS-mfn" eventType="editingDidEnd" id="UxC-TS-vaK"/>
                                                     </connections>
                                                 </textField>
                                             </subviews>
