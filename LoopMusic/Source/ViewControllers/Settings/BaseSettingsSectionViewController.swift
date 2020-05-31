@@ -24,12 +24,10 @@ class BaseSettingsSectionViewController: UITableViewController, UITextFieldDeleg
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if changed {
-            if let _ = segue.destination as? SettingsHomeViewController {
-                do {
-                    try MusicSettings.settings.saveSettingsFile()
-                } catch {
-                    ErrorUtils.showErrorMessage(error: error, viewController: self)
-                }
+            do {
+                try MusicSettings.settings.saveSettingsFile()
+            } catch {
+                ErrorUtils.showErrorMessage(error: error, viewController: self)
             }
         }
     }

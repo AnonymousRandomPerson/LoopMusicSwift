@@ -29,6 +29,10 @@
 		398666BE24514030008AC748 /* MusicSettingsTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 398666BD24514030008AC748 /* MusicSettingsTests.swift */; };
 		398666C024514367008AC748 /* ShuffleSetting.swift in Sources */ = {isa = PBXBuildFile; fileRef = 398666BF24514366008AC748 /* ShuffleSetting.swift */; };
 		398666C224514527008AC748 /* TestUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 398666C124514527008AC748 /* TestUtils.swift */; };
+		39A6B5AE248353F0001A2B0B /* LoopFinderInitialEstimateSettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 39A6B5AD248353F0001A2B0B /* LoopFinderInitialEstimateSettingsViewController.swift */; };
+		39A6B5B02483541E001A2B0B /* LoopFinderInternalSettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 39A6B5AF2483541E001A2B0B /* LoopFinderInternalSettingsViewController.swift */; };
+		39A6B5B22483543B001A2B0B /* LoopFinderPerformanceSettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 39A6B5B12483543B001A2B0B /* LoopFinderPerformanceSettingsViewController.swift */; };
+		39A6B5B424835452001A2B0B /* LoopFinderOutputSettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 39A6B5B324835452001A2B0B /* LoopFinderOutputSettingsViewController.swift */; };
 		39A8D8FC246262FD00652E70 /* MusicSettingsCodable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 39A8D8FB246262FD00652E70 /* MusicSettingsCodable.swift */; };
 		39A8D8FE24626DC600652E70 /* ErrorUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 39A8D8FD24626DC600652E70 /* ErrorUtils.swift */; };
 		39B098CB2468DD6600526910 /* BaseListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 39B098CA2468DD6600526910 /* BaseListViewController.swift */; };
@@ -43,6 +47,9 @@
 		39C4C89B246CF43900994D1C /* ShuffleSettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 39C4C89A246CF43900994D1C /* ShuffleSettingsViewController.swift */; };
 		39C5192A2390E86C00B7FE26 /* TracksOld.db in Resources */ = {isa = PBXBuildFile; fileRef = 39C519292390E86C00B7FE26 /* TracksOld.db */; };
 		39D198E32376669B00680EE3 /* MusicDataTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 39D198E22376669B00680EE3 /* MusicDataTests.swift */; };
+		39DCDA402480B9880049353D /* LoopFinderSettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 39DCDA3F2480B9880049353D /* LoopFinderSettingsViewController.swift */; };
+		39DCDA422480BBBE0049353D /* TimeShuffleSettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 39DCDA412480BBBE0049353D /* TimeShuffleSettingsViewController.swift */; };
+		39DCDA442480BE050049353D /* RepeatsShuffleSettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 39DCDA432480BE050049353D /* RepeatsShuffleSettingsViewController.swift */; };
 		39E2CC3923AF12A4001FE0BF /* DataMigrator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 39E2CC3823AF12A4001FE0BF /* DataMigrator.swift */; };
 		39EB89B6247A25D8002E0901 /* DoubleTextFieldSettingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 39EB89B5247A25D8002E0901 /* DoubleTextFieldSettingView.swift */; };
 		39EC8AE2245A6E0F00D5240D /* PlaylistListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 39EC8AE1245A6E0F00D5240D /* PlaylistListViewController.swift */; };
@@ -97,6 +104,10 @@
 		398666BD24514030008AC748 /* MusicSettingsTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MusicSettingsTests.swift; sourceTree = "<group>"; };
 		398666BF24514366008AC748 /* ShuffleSetting.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShuffleSetting.swift; sourceTree = "<group>"; };
 		398666C124514527008AC748 /* TestUtils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestUtils.swift; sourceTree = "<group>"; };
+		39A6B5AD248353F0001A2B0B /* LoopFinderInitialEstimateSettingsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoopFinderInitialEstimateSettingsViewController.swift; sourceTree = "<group>"; };
+		39A6B5AF2483541E001A2B0B /* LoopFinderInternalSettingsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoopFinderInternalSettingsViewController.swift; sourceTree = "<group>"; };
+		39A6B5B12483543B001A2B0B /* LoopFinderPerformanceSettingsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoopFinderPerformanceSettingsViewController.swift; sourceTree = "<group>"; };
+		39A6B5B324835452001A2B0B /* LoopFinderOutputSettingsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoopFinderOutputSettingsViewController.swift; sourceTree = "<group>"; };
 		39A8D8FB246262FD00652E70 /* MusicSettingsCodable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MusicSettingsCodable.swift; sourceTree = "<group>"; };
 		39A8D8FD24626DC600652E70 /* ErrorUtils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ErrorUtils.swift; sourceTree = "<group>"; };
 		39B098CA2468DD6600526910 /* BaseListViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseListViewController.swift; sourceTree = "<group>"; };
@@ -111,6 +122,9 @@
 		39C4C89A246CF43900994D1C /* ShuffleSettingsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShuffleSettingsViewController.swift; sourceTree = "<group>"; };
 		39C519292390E86C00B7FE26 /* TracksOld.db */ = {isa = PBXFileReference; lastKnownFileType = file; name = TracksOld.db; path = ../TracksOld.db; sourceTree = "<group>"; };
 		39D198E22376669B00680EE3 /* MusicDataTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MusicDataTests.swift; sourceTree = "<group>"; };
+		39DCDA3F2480B9880049353D /* LoopFinderSettingsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoopFinderSettingsViewController.swift; sourceTree = "<group>"; };
+		39DCDA412480BBBE0049353D /* TimeShuffleSettingsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimeShuffleSettingsViewController.swift; sourceTree = "<group>"; };
+		39DCDA432480BE050049353D /* RepeatsShuffleSettingsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RepeatsShuffleSettingsViewController.swift; sourceTree = "<group>"; };
 		39E2CC3823AF12A4001FE0BF /* DataMigrator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataMigrator.swift; sourceTree = "<group>"; };
 		39EB89B5247A25D8002E0901 /* DoubleTextFieldSettingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DoubleTextFieldSettingView.swift; sourceTree = "<group>"; };
 		39EC8AE1245A6E0F00D5240D /* PlaylistListViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlaylistListViewController.swift; sourceTree = "<group>"; };
@@ -273,8 +287,15 @@
 				395D897F24738ADE00B9FD1C /* SettingViews */,
 				39B098D22468F64600526910 /* BaseSettingsSectionViewController.swift */,
 				39B098D02468F54000526910 /* GeneralSettingsViewController.swift */,
+				39A6B5AD248353F0001A2B0B /* LoopFinderInitialEstimateSettingsViewController.swift */,
+				39A6B5AF2483541E001A2B0B /* LoopFinderInternalSettingsViewController.swift */,
+				39A6B5B324835452001A2B0B /* LoopFinderOutputSettingsViewController.swift */,
+				39A6B5B12483543B001A2B0B /* LoopFinderPerformanceSettingsViewController.swift */,
+				39DCDA3F2480B9880049353D /* LoopFinderSettingsViewController.swift */,
+				39DCDA432480BE050049353D /* RepeatsShuffleSettingsViewController.swift */,
 				39B098CE2468F4F800526910 /* SettingsHomeViewController.swift */,
 				39C4C89A246CF43900994D1C /* ShuffleSettingsViewController.swift */,
+				39DCDA412480BBBE0049353D /* TimeShuffleSettingsViewController.swift */,
 			);
 			path = Settings;
 			sourceTree = "<group>";
@@ -430,7 +451,9 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				39A6B5AE248353F0001A2B0B /* LoopFinderInitialEstimateSettingsViewController.swift in Sources */,
 				39BF34CA245FBA920063AEF1 /* AllTracksPlaylist.swift in Sources */,
+				39A6B5B424835452001A2B0B /* LoopFinderOutputSettingsViewController.swift in Sources */,
 				39B098CB2468DD6600526910 /* BaseListViewController.swift in Sources */,
 				393F1B502455283A005E1583 /* TrackListViewController.swift in Sources */,
 				39C4651E24440AC3002CBBB8 /* MusicSettings.swift in Sources */,
@@ -444,6 +467,7 @@
 				39B098CF2468F4F800526910 /* SettingsHomeViewController.swift in Sources */,
 				39812B752478D5BF002AFBCA /* BooleanSettingView.swift in Sources */,
 				39EB89B6247A25D8002E0901 /* DoubleTextFieldSettingView.swift in Sources */,
+				39DCDA422480BBBE0049353D /* TimeShuffleSettingsViewController.swift in Sources */,
 				39B5B31F23B97A1C0091D2E1 /* Notifications.swift in Sources */,
 				39A8D8FC246262FD00652E70 /* MusicSettingsCodable.swift in Sources */,
 				395D897D24738AAA00B9FD1C /* DoubleSettingView.swift in Sources */,
@@ -451,12 +475,16 @@
 				390BDAA722AA0CE600E01411 /* LoopMusic.xcdatamodeld in Sources */,
 				39B098D32468F64600526910 /* BaseSettingsSectionViewController.swift in Sources */,
 				39EC8AE2245A6E0F00D5240D /* PlaylistListViewController.swift in Sources */,
+				39DCDA442480BE050049353D /* RepeatsShuffleSettingsViewController.swift in Sources */,
 				398666C024514367008AC748 /* ShuffleSetting.swift in Sources */,
+				39A6B5B22483543B001A2B0B /* LoopFinderPerformanceSettingsViewController.swift in Sources */,
 				390A6C3C246118D300234882 /* FileUtils.swift in Sources */,
+				39A6B5B02483541E001A2B0B /* LoopFinderInternalSettingsViewController.swift in Sources */,
 				39C03A69235BFB34004BD0DA /* MusicData.swift in Sources */,
 				3928C38724553D560007A4FE /* MediaPlayerUtils.swift in Sources */,
 				3979377722ACA6BA00C5DB09 /* MusicPlayer.swift in Sources */,
 				390BDA9F22AA0CE600E01411 /* AppDelegate.swift in Sources */,
+				39DCDA402480B9880049353D /* LoopFinderSettingsViewController.swift in Sources */,
 				39812B732478D1F3002AFBCA /* ShuffleSettingView.swift in Sources */,
 				39C4C89B246CF43900994D1C /* ShuffleSettingsViewController.swift in Sources */,
 			);

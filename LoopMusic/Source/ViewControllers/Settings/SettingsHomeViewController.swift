@@ -7,14 +7,4 @@ class SettingsHomeViewController: UITableViewController {
     /// - parameter segue: Segue object performing the segue.
     @IBAction func unwindToSettingsHome(segue: UIStoryboardSegue) {
     }
-    
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        if let _ = segue.destination as? MusicPlayerViewController {
-            do {
-                try MusicSettings.settings.saveSettingsFile()
-            } catch {
-                ErrorUtils.showErrorMessage(error: error, viewController: self)
-            }
-        }
-    }
 }

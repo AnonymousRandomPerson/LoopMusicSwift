@@ -27,6 +27,7 @@ class MusicSettingsTests: XCTestCase {
         settings.masterVolume = 0
         settings.defaultRelativeVolume = 0
         settings.shuffleSetting = ShuffleSetting.none
+        settings.fadeDuration = nil
         settings.shuffleTime = nil
         settings.shuffleRepeats = nil
         settings.shuffleTimeVariance = nil
@@ -104,65 +105,47 @@ class MusicSettingsTests: XCTestCase {
         XCTAssertEqual(300, settings.calculateShuffleVariance(repeatLength: REPEAT_LENGTH)!, accuracy: EPSILON)
     }
     
-    /// Tests that calculateMinShuffleTime() returns nil if no min time is configured.
-    func testCalculateMinShuffleTimeUnconfigured() {
+    /// Tests that calculateMinShuffleTime() returns nil if shuffle setting is none.
+    func testCalculateMinShuffleTimeNone() {
         XCTAssertNil(settings.calculateMinShuffleTime(repeatLength: REPEAT_LENGTH))
     }
     
     /// Tests that calculateMinShuffleTime() returns the configured min time.
     func testCalculateMinShuffleTimeWithMinTime() {
         settings.minShuffleTime = 5
+        settings.minShuffleRepeats = 2
+        settings.shuffleSetting = ShuffleSetting.repeats
         XCTAssertEqual(300, settings.calculateMinShuffleTime(repeatLength: REPEAT_LENGTH)!, accuracy: EPSILON)
     }
     
     /// Tests that calculateMinShuffleTime() returns the configured min repeats.
     func testCalculateMinShuffleTimeWithMinRepeats() {
+        settings.minShuffleTime = 5
         settings.minShuffleRepeats = 2
+        settings.shuffleSetting = ShuffleSetting.time
         XCTAssertEqual(30, settings.calculateMinShuffleTime(repeatLength: REPEAT_LENGTH)!, accuracy: EPSILON)
     }
     
-    /// Tests that calculateMinShuffleTime() uses the higher of min time and repeats.
-    func testCalculateMinShuffleTimeWithHigherMinTime() {
-        settings.minShuffleTime = 5
-        settings.minShuffleRepeats = 2
-        XCTAssertEqual(300, settings.calculateMinShuffleTime(repeatLength: REPEAT_LENGTH)!, accuracy: EPSILON)
-    }
-    
-    /// Tests that calculateMinShuffleTime() uses the higher of min time and repeats.
-    func testCalculateMinShuffleTimeWithHigherMinRepeats() {
-        settings.minShuffleTime = 1
-        settings.minShuffleRepeats = 5
-        XCTAssertEqual(75, settings.calculateMinShuffleTime(repeatLength: REPEAT_LENGTH)!, accuracy: EPSILON)
-    }
-    
-    /// Tests that calculateMaxShuffleTime() returns nil if no max time is configured.
-    func testCalculateMaxShuffleTimeUnconfigured() {
+    /// Tests that calculateMaxShuffleTime() returns nil if shuffle setting is none.
+    func testCalculateMaxShuffleTimeNone() {
+        settings.maxShuffleTime = 5
+        settings.maxShuffleRepeats = 2
         XCTAssertNil(settings.calculateMaxShuffleTime(repeatLength: REPEAT_LENGTH))
     }
     
     /// Tests that calculateMaxShuffleTime() returns the configured max time.
     func testCalculateMaxShuffleTimeWithMaxTime() {
         settings.maxShuffleTime = 5
+        settings.maxShuffleRepeats = 2
+        settings.shuffleSetting = ShuffleSetting.repeats
         XCTAssertEqual(300, settings.calculateMaxShuffleTime(repeatLength: REPEAT_LENGTH)!, accuracy: EPSILON)
     }
     
     /// Tests that calculateMaxShuffleTime() returns the configured max repeats.
     func testCalculateMaxShuffleTimeWithMaxRepeats() {
+        settings.maxShuffleTime = 5
         settings.maxShuffleRepeats = 2
-        XCTAssertEqual(30, settings.calculateMaxShuffleTime(repeatLength: REPEAT_LENGTH)!, accuracy: EPSILON)
-    }
-    
-    /// Tests that calculateMaxShuffleTime() uses the lower of max time and repeats.
-    func testCalculateMaxShuffleTimeWithLowerMaxTime() {
-        settings.maxShuffleTime = 1
-        settings.maxShuffleRepeats = 5
-        XCTAssertEqual(60, settings.calculateMaxShuffleTime(repeatLength: REPEAT_LENGTH)!, accuracy: EPSILON)
-    }
-    
-    /// Tests that calculateMaxShuffleTime() uses the lower of max time and repeats.
-    func testCalculateMaxShuffleTimeWithLowerMaxRepeats() {
-        settings.maxShuffleTime = 1
-        settings.maxShuffleRepeats = 2
+        settings.shuffleSetting = ShuffleSetting.time
         XCTAssertEqual(30, settings.calculateMaxShuffleTime(repeatLength: REPEAT_LENGTH)!, accuracy: EPSILON)
     }
 
@@ -189,8 +172,8 @@ class MusicSettingsTests: XCTestCase {
         settings.shuffleTimeVariance = 1
         /// Shuffle time to assert on.
         let shuffleTime = settings.calculateShuffleTime(track: TEST_TRACK)!
-        XCTAssertGreaterThanOrEqual(60, shuffleTime)
-        XCTAssertLessThanOrEqual(180, shuffleTime)
+        XCTAssertLessThanOrEqual(60, shuffleTime)
+        XCTAssertGreaterThanOrEqual(180, shuffleTime)
     }
     
     /// Tests that the settings file can be loaded.
@@ -203,6 +186,7 @@ class MusicSettingsTests: XCTestCase {
         settingsFile.masterVolume = 1
         settingsFile.defaultRelativeVolume = 2
         settingsFile.shuffleSetting = "time"
+        settingsFile.fadeDuration = 9
         settingsFile.shuffleTime = 1
         settingsFile.shuffleTimeVariance = 2
         settingsFile.minShuffleRepeats = 3
@@ -219,6 +203,7 @@ class MusicSettingsTests: XCTestCase {
         XCTAssertEqual(settings.masterVolume, 1, accuracy: EPSILON)
         XCTAssertEqual(settings.defaultRelativeVolume, 2, accuracy: EPSILON)
         XCTAssertEqual(settings.shuffleSetting, ShuffleSetting.time)
+        XCTAssertEqual(settings.fadeDuration!, 9, accuracy: EPSILON)
         XCTAssertEqual(settings.shuffleTime!, 1, accuracy: EPSILON)
         XCTAssertEqual(settings.shuffleTimeVariance!, 2, accuracy: EPSILON)
         XCTAssertEqual(settings.minShuffleRepeats!, 3, accuracy: EPSILON)
@@ -235,6 +220,7 @@ class MusicSettingsTests: XCTestCase {
         settings.masterVolume = 1
         settings.defaultRelativeVolume = 2
         settings.shuffleSetting = ShuffleSetting.time
+        settings.fadeDuration = 9
         settings.shuffleTime = 1
         settings.shuffleTimeVariance = 2
         settings.minShuffleRepeats = 3
@@ -253,6 +239,7 @@ class MusicSettingsTests: XCTestCase {
         XCTAssertEqual(settingsFile.masterVolume, 1, accuracy: EPSILON)
         XCTAssertEqual(settingsFile.defaultRelativeVolume, 2, accuracy: EPSILON)
         XCTAssertEqual(settingsFile.shuffleSetting, "time")
+        XCTAssertEqual(settingsFile.fadeDuration!, 9, accuracy: EPSILON)
         XCTAssertEqual(settingsFile.shuffleTime!, 1, accuracy: EPSILON)
         XCTAssertEqual(settingsFile.shuffleTimeVariance!, 2, accuracy: EPSILON)
         XCTAssertEqual(settingsFile.minShuffleRepeats!, 3, accuracy: EPSILON)

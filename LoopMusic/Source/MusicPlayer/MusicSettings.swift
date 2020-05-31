@@ -24,6 +24,8 @@ class MusicSettings {
     
     /// Setting for the time between shuffling tracks.
     var shuffleSetting: ShuffleSetting = ShuffleSetting.none
+    /// Duration of fade-out just before shuffling tracks.
+    var fadeDuration: Double?
     
     /// For time shuffle, the base amount of time (minutes) to shuffle tracks at.
     var shuffleTime: Double?
@@ -59,6 +61,7 @@ class MusicSettings {
             masterVolume = settingsFile.masterVolume
             defaultRelativeVolume = settingsFile.defaultRelativeVolume
             shuffleSetting = ShuffleSetting(rawValue: settingsFile.shuffleSetting ?? "") ?? ShuffleSetting.none
+            fadeDuration = settingsFile.fadeDuration
             shuffleTime = settingsFile.shuffleTime
             shuffleTimeVariance = settingsFile.shuffleTimeVariance
             minShuffleRepeats = settingsFile.minShuffleRepeats
@@ -87,6 +90,7 @@ class MusicSettings {
             settingsFile.defaultRelativeVolume = defaultRelativeVolume
             settingsFile.shuffleSetting = shuffleSetting.rawValue
             settingsFile.shuffleTime = shuffleTime
+            settingsFile.fadeDuration = fadeDuration
             settingsFile.shuffleTimeVariance = shuffleTimeVariance
             settingsFile.minShuffleRepeats = minShuffleRepeats
             settingsFile.maxShuffleRepeats = maxShuffleRepeats
@@ -158,39 +162,31 @@ class MusicSettings {
     /// - parameter repeatLength: The length of the track loop.
     /// - returns: Minimum shuffle time based on settings.
     func calculateMinShuffleTime(repeatLength: Double) -> Double? {
-        /// Minimum shuffle time based on settings.
-        var minShuffle: Double?
-        if let minShuffleTime: Double = minShuffleTime {
-            minShuffle = minShuffleTime * 60
-        }
-        if let minShuffleRepeats: Double = minShuffleRepeats {
-            let repeatsTime: Double = minShuffleRepeats * repeatLength
-            if let currentMinShuffle: Double = minShuffle {
-                minShuffle = max(currentMinShuffle, repeatsTime)
-            } else {
-                minShuffle = repeatsTime
+        if shuffleSetting == ShuffleSetting.time {
+            if let minShuffleRepeats: Double = minShuffleRepeats {
+                return minShuffleRepeats * repeatLength
+            }
+        } else if shuffleSetting == ShuffleSetting.repeats {
+            if let minShuffleTime: Double = minShuffleTime {
+                return minShuffleTime * 60
             }
         }
-        return minShuffle
+        return nil;
     }
     
     /// Calculates maximum shuffle time based on the track and shuffle settings.
     /// - parameter repeatLength: The length of the track loop.
     /// - returns: Maximum shuffle time based on settings.
     func calculateMaxShuffleTime(repeatLength: Double) -> Double? {
-        /// Maximum shuffle time based on settings.
-        var maxShuffle: Double?
-        if let maxShuffleTime: Double = maxShuffleTime {
-            maxShuffle = maxShuffleTime * 60
-        }
-        if let maxShuffleRepeats: Double = maxShuffleRepeats {
-            let repeatsTime: Double = maxShuffleRepeats * repeatLength
-            if let currentMaxShuffle: Double = maxShuffle {
-                maxShuffle = min(currentMaxShuffle, repeatsTime)
-            } else {
-                maxShuffle = repeatsTime
+        if shuffleSetting == ShuffleSetting.time {
+            if let maxShuffleRepeats: Double = maxShuffleRepeats {
+                return maxShuffleRepeats * repeatLength
+            }
+        } else if shuffleSetting == ShuffleSetting.repeats {
+            if let maxShuffleTime: Double = maxShuffleTime {
+                return maxShuffleTime * 60
             }
         }
-        return maxShuffle
+        return nil;
     }
 }
