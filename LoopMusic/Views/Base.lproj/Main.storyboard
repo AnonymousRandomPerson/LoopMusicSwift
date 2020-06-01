@@ -588,6 +588,7 @@
                                                     <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                                     <textInputTraits key="textInputTraits" keyboardType="decimalPad" returnKeyType="done" enablesReturnKeyAutomatically="YES"/>
                                                     <connections>
+                                                        <action selector="settingChangedWithSender:" destination="4b3-sS-mfn" eventType="editingDidEnd" id="BBy-gh-nH1"/>
                                                         <action selector="settingChangedWithSender:" destination="sxs-Qf-zhn" eventType="editingDidEnd" id="fAI-hP-AYh"/>
                                                     </connections>
                                                 </textField>
@@ -702,6 +703,7 @@
                     </tableView>
                     <navigationItem key="navigationItem" title="Title" id="Plz-uB-MFu"/>
                     <connections>
+                        <outlet property="fadeDurationField" destination="1zH-ns-RkT" id="SJj-tS-MYm"/>
                         <outlet property="shuffleSettingControl" destination="nur-u0-FtO" id="HFI-jt-FYs"/>
                     </connections>
                 </tableViewController>

@@ -5,10 +5,13 @@ class ShuffleSettingsViewController: BaseSettingsSectionViewController {
     
     /// Switch controlling the shuffle setting.
     @IBOutlet weak var shuffleSettingControl: UISegmentedControl!
+    /// Text field for fade duration.
+    @IBOutlet weak var fadeDurationField: UITextField!
 
     override func viewDidLoad() {
         super.viewDidLoad()
         self.registerSetting(settingView: ShuffleSettingView(setting: &MusicSettings.settings.shuffleSetting, settingModifier: shuffleSettingControl))
+        self.registerSetting(settingView: DoubleTextFieldSettingView(setting: &MusicSettings.settings.fadeDuration, settingModifier: fadeDurationField))
     }
     
     /// Marks the screen as unwindable for segues.

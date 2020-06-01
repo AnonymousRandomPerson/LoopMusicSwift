@@ -11,6 +11,9 @@ class MusicPlayer {
     /// The number of frames to be read from an audio file each time it is read from asynchronously.
     static let FRAME_READ_INCREMENT: AVAudioFrameCount = AVAudioFrameCount(100000)
     
+    /// The amount of time (seconds) between each volume decrement when fading out.
+    static let FADE_DECREMENT_TIME: Double = 0.1
+    
     /// Singleton instance.
     static let player: MusicPlayer = MusicPlayer()
     
@@ -21,6 +24,9 @@ class MusicPlayer {
 
     /// Timer used to shuffle tracks after playing for a while.
     private var shuffleTimer: Timer?
+
+    /// Timer used to fade out tracks before shuffling them.
+    private var fadeTimer: Timer?
     
     /// Sample rate of the currently loaded track.
     private var sampleRate: Double = 44100
@@ -34,6 +40,9 @@ class MusicPlayer {
     private var bufferLock: DispatchSemaphore = DispatchSemaphore(value: 1)
     /// Passed to the dispatch queue tasks so the audio loading task knows if the track changes while it's still loading.
     private var trackUuid: UUID = UUID()
+    
+    /// Volume multiplier used when fading out.
+    private var fadeMultiplier: Double = 1
     
     var trackLoaded: Bool {
         get {
@@ -148,7 +157,6 @@ class MusicPlayer {
         try loadAudioAsync(audioFile: audioFile, loadBuffer: origBuffer, audioDesc: audioDesc, converter: converter, noninterleaved: noninterleaved, currentFramesRead: startReadFrames, processUuid: trackUuid)
         
         updateLoopPoints()
-        updateVolume()
         
         try playTrack()
         
@@ -277,6 +285,8 @@ class MusicPlayer {
     /// Starts playing the currently loaded track.
     func playTrack() throws {
         if !playing {
+            fadeMultiplier = 1
+            updateVolume()
             playing = true
             /// Status code for playing audio.
             let playStatus: OSStatus = playAudio()
@@ -307,7 +317,7 @@ class MusicPlayer {
     
     /// Updates the volume multiplier within the audio engine.
     func updateVolume() {
-        setVolumeMultiplier(currentTrack.volumeMultiplier * MusicSettings.settings.masterVolume)
+        setVolumeMultiplier(currentTrack.volumeMultiplier * MusicSettings.settings.masterVolume * fadeMultiplier)
     }
     
     /// Chooses a random track from the current playlist and starts playing it.
@@ -339,11 +349,27 @@ class MusicPlayer {
     /// Starts the timer used to shuffle tracks.
     func startShuffleTimer() {
         if shuffleTimer != nil {
-            return
+            stopShuffleTimer()
         }
         if let shuffleTime: Double = MusicSettings.settings.calculateShuffleTime(track: currentTrack) {
             shuffleTimer = Timer.scheduledTimer(withTimeInterval: shuffleTime, repeats: false) { timer in
                 do {
+                    if let fadeDuration: Double = MusicSettings.settings.fadeDuration {
+                        if fadeDuration > 0 {
+                            self.fadeTimer = Timer.scheduledTimer(withTimeInterval: MusicPlayer.FADE_DECREMENT_TIME, repeats: true) { timer in
+                                do {
+                                    self.fadeMultiplier = max(0, self.fadeMultiplier - MusicPlayer.FADE_DECREMENT_TIME / fadeDuration)
+                                    self.updateVolume()
+                                    if self.fadeMultiplier <= 0 {
+                                        try self.randomizeTrack()
+                                    }
+                                } catch {
+                                    print("Error shuffling track:", error.localizedDescription)
+                                }
+                            }
+                            return
+                        }
+                    }
                     try self.randomizeTrack()
                 } catch {
                     print("Error shuffling track:", error.localizedDescription)
@@ -356,5 +382,7 @@ class MusicPlayer {
     func stopShuffleTimer() {
         shuffleTimer?.invalidate()
         shuffleTimer = nil
+        fadeTimer?.invalidate()
+        fadeTimer = nil
     }
 }
