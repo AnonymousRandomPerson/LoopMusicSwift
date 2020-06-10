@@ -1,5 +1,6 @@
 /// Serializable version of MusicSettings.
 struct MusicSettingsCodable: Codable {
+    
     /// Playlist being used to choose tracks.
     var currentPlaylist: String?
     

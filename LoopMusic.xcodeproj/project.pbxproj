@@ -17,6 +17,8 @@
 		390BDAB722AA0CE700E01411 /* MusicPlayerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 390BDAB622AA0CE700E01411 /* MusicPlayerTests.swift */; };
 		390BDAC222AA0CE700E01411 /* LoopMusicUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 390BDAC122AA0CE700E01411 /* LoopMusicUITests.swift */; };
 		39191C2E22E6BCDB00C09D67 /* MessageError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 39191C2D22E6BCDB00C09D67 /* MessageError.swift */; };
+		3924EB8E24908F9E0087DDA6 /* LoopScrubberContainer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3924EB8D24908F9E0087DDA6 /* LoopScrubberContainer.swift */; };
+		3925EE29248495900020B94C /* LoopScrubber.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3925EE28248495900020B94C /* LoopScrubber.swift */; };
 		3928C38724553D560007A4FE /* MediaPlayerUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3928C38624553D560007A4FE /* MediaPlayerUtils.swift */; };
 		393F1B502455283A005E1583 /* TrackListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 393F1B4F2455283A005E1583 /* TrackListViewController.swift */; };
 		395D897B24738A7100B9FD1C /* BaseSettingViewGeneric.swift in Sources */ = {isa = PBXBuildFile; fileRef = 395D897A24738A7100B9FD1C /* BaseSettingViewGeneric.swift */; };
@@ -92,6 +94,8 @@
 		390BDAC122AA0CE700E01411 /* LoopMusicUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoopMusicUITests.swift; sourceTree = "<group>"; };
 		390BDAC322AA0CE700E01411 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		39191C2D22E6BCDB00C09D67 /* MessageError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MessageError.swift; sourceTree = "<group>"; };
+		3924EB8D24908F9E0087DDA6 /* LoopScrubberContainer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoopScrubberContainer.swift; sourceTree = "<group>"; };
+		3925EE28248495900020B94C /* LoopScrubber.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoopScrubber.swift; sourceTree = "<group>"; };
 		3928C38624553D560007A4FE /* MediaPlayerUtils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MediaPlayerUtils.swift; sourceTree = "<group>"; };
 		393F1B4F2455283A005E1583 /* TrackListViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrackListViewController.swift; sourceTree = "<group>"; };
 		395D897A24738A7100B9FD1C /* BaseSettingViewGeneric.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseSettingViewGeneric.swift; sourceTree = "<group>"; };
@@ -198,6 +202,8 @@
 				39F1799922DBCD4800D3CDFF /* AudioEngine.c */,
 				3906880C22C1D28C00CE5292 /* AudioEngine.h */,
 				3906880922C1D27400CE5292 /* LoopMusic-Bridging-Header.h */,
+				3925EE28248495900020B94C /* LoopScrubber.swift */,
+				3924EB8D24908F9E0087DDA6 /* LoopScrubberContainer.swift */,
 				39C03A68235BFB34004BD0DA /* MusicData.swift */,
 				3979377622ACA6BA00C5DB09 /* MusicPlayer.swift */,
 				39C4651D24440AC3002CBBB8 /* MusicSettings.swift */,
@@ -471,6 +477,7 @@
 				39B5B31F23B97A1C0091D2E1 /* Notifications.swift in Sources */,
 				39A8D8FC246262FD00652E70 /* MusicSettingsCodable.swift in Sources */,
 				395D897D24738AAA00B9FD1C /* DoubleSettingView.swift in Sources */,
+				3925EE29248495900020B94C /* LoopScrubber.swift in Sources */,
 				390BDAA122AA0CE600E01411 /* MusicPlayerViewController.swift in Sources */,
 				390BDAA722AA0CE600E01411 /* LoopMusic.xcdatamodeld in Sources */,
 				39B098D32468F64600526910 /* BaseSettingsSectionViewController.swift in Sources */,
@@ -484,6 +491,7 @@
 				3928C38724553D560007A4FE /* MediaPlayerUtils.swift in Sources */,
 				3979377722ACA6BA00C5DB09 /* MusicPlayer.swift in Sources */,
 				390BDA9F22AA0CE600E01411 /* AppDelegate.swift in Sources */,
+				3924EB8E24908F9E0087DDA6 /* LoopScrubberContainer.swift in Sources */,
 				39DCDA402480B9880049353D /* LoopFinderSettingsViewController.swift in Sources */,
 				39812B732478D1F3002AFBCA /* ShuffleSettingView.swift in Sources */,
 				39C4C89B246CF43900994D1C /* ShuffleSettingsViewController.swift in Sources */,

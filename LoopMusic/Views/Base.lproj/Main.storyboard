@@ -332,7 +332,7 @@
                                 <rect key="frame" x="312" y="686" width="82" height="30"/>
                                 <state key="normal" title="Loop Finder"/>
                             </button>
-                            <slider opaque="NO" contentMode="scaleToFill" verticalHuggingPriority="251" contentHorizontalAlignment="center" contentVerticalAlignment="center" minValue="0.0" maxValue="1" translatesAutoresizingMaskIntoConstraints="NO" id="B0F-RG-7s9" customClass="UILoopSlider">
+                            <slider opaque="NO" contentMode="scaleToFill" verticalHuggingPriority="251" enabled="NO" contentHorizontalAlignment="center" contentVerticalAlignment="center" minValue="0.0" maxValue="1" translatesAutoresizingMaskIntoConstraints="NO" id="B0F-RG-7s9" customClass="LoopScrubber" customModule="LoopMusic" customModuleProvider="target">
                                 <rect key="frame" x="18" y="77" width="378" height="31"/>
                                 <color key="backgroundColor" red="0.74898773429999999" green="0.74903941149999997" blue="0.76478832959999998" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <color key="minimumTrackTintColor" red="0.53661210280000005" green="0.54961935679999996" blue="0.58864111870000002" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
@@ -342,6 +342,9 @@
                                         <integer key="value" value="5"/>
                                     </userDefinedRuntimeAttribute>
                                 </userDefinedRuntimeAttributes>
+                                <connections>
+                                    <action selector="setPlaybackPosition" destination="BYZ-38-t0r" eventType="valueChanged" id="5N1-7o-uQ9"/>
+                                </connections>
                             </slider>
                         </subviews>
                         <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
@@ -369,6 +372,7 @@
                         <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
                     </view>
                     <connections>
+                        <outlet property="loopScrubber" destination="B0F-RG-7s9" id="pvw-GA-yf3"/>
                         <outlet property="playButton" destination="sOX-8u-f3x" id="bnV-BZ-pwz"/>
                         <outlet property="trackLabel" destination="3Kj-gi-vbC" id="hks-x8-wQ7"/>
                         <outlet property="tracksButton" destination="POc-xN-ihv" id="Xcy-KV-Ds9"/>

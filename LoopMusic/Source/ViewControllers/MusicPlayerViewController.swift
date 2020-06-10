@@ -2,7 +2,7 @@ import MediaPlayer
 import UIKit
 
 /// View controller for the music player (home screen) of the app.
-class MusicPlayerViewController: UIViewController {
+class MusicPlayerViewController: UIViewController, LoopScrubberContainer {
     
     /// Notification for updating the track name when the current track changes.
     static let NOTIFICATION_TRACK_NAME: NSNotification.Name = NSNotification.Name("trackName")
@@ -13,6 +13,9 @@ class MusicPlayerViewController: UIViewController {
     @IBOutlet weak var tracksButton: UIButton!
     /// Displays the current track name.
     @IBOutlet weak var trackLabel: UILabel!
+    
+    /// Slider used for playback scrubbing.
+    @IBOutlet weak var loopScrubber: LoopScrubber!
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -33,6 +36,10 @@ class MusicPlayerViewController: UIViewController {
         updatePlayButtonIcon()
     }
     
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        self.loopScrubber.unload()
+    }
+    
     /// Toggles whether audio is playing.
     @IBAction func toggleAudio() {
         do {
@@ -51,6 +58,7 @@ class MusicPlayerViewController: UIViewController {
     @IBAction func randomizeTrack() {
         do {
             try MusicPlayer.player.randomizeTrack()
+            self.loopScrubber?.changeTrack()
             updatePlayButtonIcon()
         } catch {
             showErrorMessage(error: error)
@@ -61,10 +69,16 @@ class MusicPlayerViewController: UIViewController {
     func updatePlayButtonIcon() {
         if MusicPlayer.player.playing {
             playButton?.setTitle("■", for: .normal)
+            self.loopScrubber?.playTrack()
         } else {
             playButton?.setTitle("▶", for: .normal)
+            self.loopScrubber?.stopTrack()
         }
         playButton?.isEnabled = MusicPlayer.player.trackLoaded
+    }
+    
+    @IBAction func setPlaybackPosition() {
+        loopScrubber.setPlaybackPosition()
     }
     
     /// Displays an error to the user.
@@ -82,6 +96,7 @@ class MusicPlayerViewController: UIViewController {
     /// Marks the screen as unwindable for segues.
     /// - parameter segue: Segue object performing the segue.
     @IBAction func unwindToMusicPlayer(segue: UIStoryboardSegue) {
+        self.loopScrubber.resume()
     }
     
     /// Starts playing the chosen track.
@@ -94,5 +109,9 @@ class MusicPlayerViewController: UIViewController {
         } catch {
            showErrorMessage(error: error)
         }
+    }
+    
+    func getScrubber() -> LoopScrubber {
+        return loopScrubber
     }
 }

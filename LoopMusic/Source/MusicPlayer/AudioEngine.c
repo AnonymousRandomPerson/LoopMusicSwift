@@ -118,6 +118,10 @@ OSStatus loadFloatAudio(void *_Nonnull newAudioData, int64_t newNumSamples, cons
     return loadAudio(newAudioData, newNumSamples, audioDesc, FLOAT);
 }
 
+void setSampleCounter(int64_t newSampleCounter) {
+    sampleCounter = newSampleCounter;
+}
+
 void setLoopPoints(int64_t newLoopStart, int64_t newLoopEnd) {
     loopStart = newLoopStart * origAudioDesc.mChannelsPerFrame;
     loopEnd = newLoopEnd * origAudioDesc.mChannelsPerFrame;
@@ -144,6 +148,22 @@ OSStatus stopAudio() {
     }
     sampleCounter = 0;
     return status;
+}
+
+int64_t getSampleCounter(void) {
+    return sampleCounter;
+}
+
+int64_t getNumSamples(void) {
+    return numSamples;
+}
+
+int64_t getLoopStart(void) {
+    return loopStart;
+}
+
+int64_t getLoopEnd(void) {
+    return loopEnd;
 }
 
 /// Checks if two audio stream descriptions are equal. Returns false if either description is null.

@@ -44,9 +44,41 @@ class MusicPlayer {
     /// Volume multiplier used when fading out.
     private var fadeMultiplier: Double = 1
     
+    /// True if the player has a track loaded in it.
     var trackLoaded: Bool {
         get {
             return currentTrack.url != MusicTrack.BLANK_MUSIC_TRACK.url
+        }
+    }
+
+    /// The index of the currently playing sample within the audio data.
+    var sampleCounter: Int {
+        get {
+            return Int(getSampleCounter())
+        }
+        set {
+            setSampleCounter(Int64(newValue))
+        }
+    }
+
+    /// The total number of samples in the audio data.
+    var numSamples: Int {
+        get {
+            return Int(getNumSamples());
+        }
+    }
+
+    /// The audio sample to start the loop at.
+    var loopStart: Int {
+        get {
+            return Int(getLoopStart());
+        }
+    }
+
+    /// The audio sample to end the loop at.
+    var loopEnd: Int {
+        get {
+            return Int(getLoopEnd());
         }
     }
     
