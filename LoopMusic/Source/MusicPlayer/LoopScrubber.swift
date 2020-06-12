@@ -66,14 +66,12 @@ class LoopScrubber: UISlider {
     
     /// Invalidates the playback timer before unloading the view.
     func unload() {
-        print("Paused")
         self.playbackTimer?.invalidate()
         self.playbackTimer = nil
     }
     
     /// Starts the update timer again after resuming the app.
     func resume() {
-        print("Resumed")
         if self.isEnabled {
             self.startTimer()
         }
