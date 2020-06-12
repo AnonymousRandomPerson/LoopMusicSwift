@@ -105,6 +105,7 @@ class MusicPlayerViewController: UIViewController, LoopScrubberContainer {
         do {
             try MusicPlayer.player.loadTrack(mediaItem: track)
             try MusicPlayer.player.playTrack()
+            self.loopScrubber?.changeTrack()
             updatePlayButtonIcon()
         } catch {
            showErrorMessage(error: error)

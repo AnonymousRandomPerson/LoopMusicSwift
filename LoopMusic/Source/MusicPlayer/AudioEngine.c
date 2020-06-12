@@ -42,7 +42,7 @@ for (unsigned int i = 0; i < BUFFER_SIZE / sizeof(castedAudioData[0]); i++) { \
     } else { \
         castedBufferData[i] = castedAudioData[sampleCounter++] * volumeMultiplier; \
     } \
-    if (loopEnd > 0 && sampleCounter > loopEnd) { \
+    if ((loopEnd > 0 && sampleCounter > loopEnd) || sampleCounter >= numSamples) { \
         sampleCounter = loopStart; \
     } \
 } \
