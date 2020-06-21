@@ -6,7 +6,10 @@ struct MusicTrack {
     /// The default volume multiplier for new tracks.
     static let DEFAULT_VOLUME_MULTIPLIER: Double = 0.3
     /// Null object pattern indicating the absence of a music track.
-    static let BLANK_MUSIC_TRACK: MusicTrack = MusicTrack(url: URL(fileURLWithPath: ""), name: "", loopStart: 0, loopEnd: 0, volumeMultiplier: DEFAULT_VOLUME_MULTIPLIER)
+    static let BLANK_MUSIC_TRACK: MusicTrack = MusicTrack(id: -1, url: URL(fileURLWithPath: ""), name: "", loopStart: 0, loopEnd: 0, volumeMultiplier: DEFAULT_VOLUME_MULTIPLIER)
+    
+    /// Database ID of the track.
+    let id: Int64
     
     /// URL of the audio file.
     let url: URL
@@ -15,11 +18,11 @@ struct MusicTrack {
     let name: String
     
     /// Time (seconds) at the start of the track's loop.
-    let loopStart: Double
+    var loopStart: Double
     
     /// Time (seconds) at the end of the track's loop.
-    let loopEnd: Double
+    var loopEnd: Double
     
     /// Multiplier used to alter the volume of the track.
-    let volumeMultiplier: Double
+    var volumeMultiplier: Double
 }

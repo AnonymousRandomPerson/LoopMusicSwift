@@ -4,14 +4,10 @@ import UIKit
 class BaseSettingsSectionViewController: UITableViewController, UITextFieldDelegate {
     
     /// Set to true if a setting has changed; the settings file will be saved after seguing back to the settings home.
-    private var changed: Bool = false
+    var changed: Bool = false
+    /// Maps unique hash values of setting views to their respective objects.
     private var settingViews: Dictionary<Int, BaseSettingView> = Dictionary<Int, BaseSettingView>()
     
-    /// Marks settings as changed to save them upon seguing.
-    func setChanged() {
-        changed = true
-    }
-
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -37,15 +33,18 @@ class BaseSettingsSectionViewController: UITableViewController, UITextFieldDeleg
         return true
     }
     
+    /// Registers a setting view to the internal setting view map.
+    /// - parameter settingView: The setting view to add.
     func registerSetting(settingView: BaseSettingView) {
         settingViews[settingView.hashValue()] = settingView
         settingView.displaySetting()
     }
     
-    /// Updates the play-on-init setting when switched on or off.
+    /// Updates a setting when changed in the view.
+    /// - parameter sender: The setting view that changed.
     @IBAction func settingChanged(sender: AnyObject) {
         settingViews[ObjectIdentifier(sender).hashValue]?.updateSetting()
-        setChanged()
+        changed = true
     }
     
     @objc func dismissKeyboard() {

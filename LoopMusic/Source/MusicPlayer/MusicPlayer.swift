@@ -29,7 +29,7 @@ class MusicPlayer {
     private var fadeTimer: Timer?
     
     /// Sample rate of the currently loaded track.
-    private var sampleRate: Double = 44100
+    private(set) var sampleRate: Double = 44100
     
     /// Audio data for the currently playing track.
     private var audioBuffer: AudioBuffer?
@@ -67,6 +67,13 @@ class MusicPlayer {
             return Int(getNumSamples());
         }
     }
+    
+    /// The length of the audio data in seconds.
+    var durationSeconds: Double {
+        get {
+            return Double(numSamples) / sampleRate
+        }
+    }
 
     /// The audio sample to start the loop at.
     var loopStart: Int {
@@ -79,6 +86,38 @@ class MusicPlayer {
     var loopEnd: Int {
         get {
             return Int(getLoopEnd());
+        }
+    }
+    
+    /// The number of seconds to start the loop at.
+    var loopStartSeconds: Double {
+        get {
+            return currentTrack.loopStart
+        }
+        set {
+            currentTrack.loopStart = newValue
+            updateLoopPoints()
+        }
+    }
+    
+    /// The number of seconds to end the loop at.
+    var loopEndSeconds: Double {
+        get {
+            return currentTrack.loopEnd
+        }
+        set {
+            currentTrack.loopEnd = newValue
+            updateLoopPoints()
+        }
+    }
+    
+    var volumeMultiplier: Double {
+        get {
+            return currentTrack.volumeMultiplier
+        }
+        set {
+            currentTrack.volumeMultiplier = newValue
+            updateVolume()
         }
     }
     
@@ -350,6 +389,16 @@ class MusicPlayer {
     /// Updates the volume multiplier within the audio engine.
     func updateVolume() {
         setVolumeMultiplier(currentTrack.volumeMultiplier * MusicSettings.settings.masterVolume * fadeMultiplier)
+    }
+    
+    /// Saves the currently configured volume multiplier to the database.
+    func saveVolumeMultiplier() throws {
+        try MusicData.data.updateVolumeMultiplier(track: currentTrack)
+    }
+    
+    /// Saves the currently configured loop points to the database.
+    func saveLoopPoints() throws {
+        try MusicData.data.updateLoopPoints(track: currentTrack)
     }
     
     /// Chooses a random track from the current playlist and starts playing it.

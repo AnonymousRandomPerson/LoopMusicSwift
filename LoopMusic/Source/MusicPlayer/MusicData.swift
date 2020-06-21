@@ -55,12 +55,18 @@ class MusicData {
         var track: MusicTrack = MusicTrack.BLANK_MUSIC_TRACK
         if let trackURL: URL = mediaItem.assetURL, let trackName: String = mediaItem.title {
             let trackCallback = {(statement: OpaquePointer?) -> Void in
-                track = MusicTrack(url: trackURL, name: trackName, loopStart: sqlite3_column_double(statement, 0), loopEnd: sqlite3_column_double(statement, 1), volumeMultiplier: sqlite3_column_double(statement, 2))
+                track = MusicTrack(
+                    id: sqlite3_column_int64(statement, 4),
+                    url: trackURL,
+                    name: trackName,
+                    loopStart: sqlite3_column_double(statement, 0),
+                    loopEnd: sqlite3_column_double(statement, 1),
+                    volumeMultiplier: sqlite3_column_double(statement, 2))
                 let dbTrackName: String = String(cString: sqlite3_column_text(statement, 3))
                 if dbTrackName != trackName {
                     // If the media item name has changed since last loaded from the database, update it.
                     // This can happen if the item is renamed outside the app.
-                    try self.executeSql(query: String(format: "UPDATE Tracks SET name = '%@' WHERE id = '%i'", self.escapeStringForDb(trackName), sqlite3_column_int(statement, 4)),
+                    try self.executeSql(query: String(format: "UPDATE Tracks SET name = '%@' WHERE id = '%i'", self.escapeStringForDb(trackName), track.id),
                                         errorMessage: String(format: "Failed to update name for %@", trackName))
                 }
             }
@@ -80,10 +86,19 @@ class MusicData {
                         },
                         noResultCallback: {() -> Void in
                             // Save track as new if not found.
-                            track = MusicTrack(url: trackURL, name: trackName, loopStart: 0, loopEnd: 0, volumeMultiplier: MusicTrack.DEFAULT_VOLUME_MULTIPLIER)
                             try self.executeSql(
                                 query: String(format: "INSERT INTO Tracks (url, name) VALUES ('%@', '%@')", trackURL.absoluteString, trackName),
+                                lastInsertCallback: {(id: Int64) -> Void in
+                                    track = MusicTrack(
+                                        id: id,
+                                        url: trackURL,
+                                        name: trackName,
+                                        loopStart: 0,
+                                        loopEnd: 0,
+                                        volumeMultiplier: MusicTrack.DEFAULT_VOLUME_MULTIPLIER)
+                                },
                                 errorMessage: String(format: "Failed to save %@ as new track.", trackName))
+                            
                         },
                         errorMessage: String(format: "Failed to load track: %@.", trackName))
                 },
@@ -92,6 +107,18 @@ class MusicData {
             throw MessageError(String(format: "Attempted to load track without URL or title."))
         }
         return track
+    }
+    
+    /// Updates the volume multiplier for a track.
+    /// - parameter track: The track to update.
+    func updateVolumeMultiplier(track: MusicTrack) throws {
+        try executeSql(query: String(format: "UPDATE Tracks SET volumeMultiplier = '%f' WHERE id = '%i'", track.volumeMultiplier, track.id), errorMessage: String(format: "Failed to update volume multiplier for track: %@.", track.name))
+    }
+    
+    /// Updates the loop points for a track.
+    /// - parameter track: The track to update.
+    func updateLoopPoints(track: MusicTrack) throws {
+        try executeSql(query: String(format: "UPDATE Tracks SET loopStart = '%f', loopEnd = '%f' WHERE id = '%i'", track.loopStart, track.loopEnd, track.id), errorMessage: String(format: "Failed to update loop points for track: %@.", track.name))
     }
     
     /// Throws a MessageError containing the SQL error message from sqlite3_errmsg() if a SQL call results in an error.
@@ -117,6 +144,26 @@ class MusicData {
     /// - parameter errorMessage: The error message to display if the query fails.
     /// - returns: True if results were returned from the SQL query (e.g., non-empty SELECT).
     func executeSql(query: String, stepCallback: ((_: OpaquePointer?) throws -> Void)?, noResultCallback: (() throws -> Void)?, errorMessage: String) throws {
+        try executeSql(query: query, stepCallback: stepCallback, noResultCallback: noResultCallback, lastInsertCallback: nil, errorMessage: errorMessage)
+    }
+    
+    /// Executes a SQL query.
+    /// - parameter query: The SQL query string to execute.
+    /// - parameter lastInsertCallback: Callback for the last inserted index value.
+    /// - parameter errorMessage: The error message to display if the query fails.
+    /// - returns: True if results were returned from the SQL query (e.g., non-empty SELECT).
+    func executeSql(query: String, lastInsertCallback: ((_: Int64) -> Void)?, errorMessage: String) throws {
+        try executeSql(query: query, stepCallback: nil, noResultCallback: nil, lastInsertCallback: lastInsertCallback, errorMessage: errorMessage)
+    }
+    
+    /// Executes a SQL query.
+    /// - parameter query: The SQL query string to execute.
+    /// - parameter stepCallback: Callback for each row returned from the query.
+    /// - parameter noResultCallback: Callback when there are no results from the query.
+    /// - parameter lastInsertCallback: Callback for the last inserted index value. 
+    /// - parameter errorMessage: The error message to display if the query fails.
+    /// - returns: True if results were returned from the SQL query (e.g., non-empty SELECT).
+    func executeSql(query: String, stepCallback: ((_: OpaquePointer?) throws -> Void)?, noResultCallback: (() throws -> Void)?, lastInsertCallback: ((_: Int64) -> Void)?, errorMessage: String) throws {
         /// Error message if a SQL query has an error.
         var sqlErrorMessage: UnsafeMutablePointer<Int8>? = nil
         /// The status code returned from the latest SQL query.
@@ -144,6 +191,11 @@ class MusicData {
         } else {
             execCode = sqlite3_exec(db, query, nil, nil, &sqlErrorMessage)
         }
+        
+        if let lastInsertCallback: ((_: Int64) -> Void) = lastInsertCallback {
+            lastInsertCallback(sqlite3_last_insert_rowid(db))
+        }
+        
         if let sqlErrorMessage: UnsafeMutablePointer<Int8> = sqlErrorMessage {
             let sqlError: String = String(cString: sqlErrorMessage)
             sqlite3_free(sqlErrorMessage)

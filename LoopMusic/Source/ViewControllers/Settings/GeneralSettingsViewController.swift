@@ -13,9 +13,9 @@ class GeneralSettingsViewController: BaseSettingsSectionViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        self.registerSetting(settingView: BooleanSettingView(setting: &MusicSettings.settings.playOnInit, settingModifier: playOnInitSwitch))
-        self.registerSetting(settingView: DoubleSliderSettingView(setting: &MusicSettings.settings.masterVolume, settingModifier: masterVolumeSlider))
-        self.registerSetting(settingView: DoubleSliderSettingView(setting: &MusicSettings.settings.defaultRelativeVolume, settingModifier: defaultRelativeVolumeSlider))
+        registerSetting(settingView: BooleanSettingView(setting: &MusicSettings.settings.playOnInit, settingModifier: playOnInitSwitch))
+        registerSetting(settingView: DoubleSliderSettingView(setting: &MusicSettings.settings.masterVolume, settingModifier: masterVolumeSlider))
+        registerSetting(settingView: DoubleSliderSettingView(setting: &MusicSettings.settings.defaultRelativeVolume, settingModifier: defaultRelativeVolumeSlider))
     }
     
     /// Updates the master volume setting.

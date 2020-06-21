@@ -25,6 +25,9 @@ class LoopScrubber: UISlider {
             self.loopBox?.layer.cornerRadius = 3
             self.loopBox?.backgroundColor = UIColor.green.withAlphaComponent(0.25)
             self.insertSubview(self.loopBox!, belowSubview: self.subviews.last!)
+            if (MusicPlayer.player.trackLoaded) {
+                updateLoopBox()
+            }
         }
     }
     
@@ -44,7 +47,7 @@ class LoopScrubber: UISlider {
     }
     
     /// Updates the position of the loop box according to the current track.
-    func changeTrack() {
+    func updateLoopBox() {
         self.loopBox?.frame = CGRect(
             x: CGFloat(Float(MusicPlayer.player.loopStart) / Float(MusicPlayer.player.numSamples)) * self.bounds.width,
             y: 0,

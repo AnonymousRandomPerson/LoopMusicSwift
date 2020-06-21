@@ -58,7 +58,7 @@ class BaseListViewController<Item>: UIViewController, UITableViewDelegate, UITab
     }
     
     func filterItems(_ searchText: String) {
-        filteredItems = items.filter({ getItemName($0).contains(searchText) })
+        filteredItems = items.filter({ getItemName($0).localizedCaseInsensitiveContains(searchText) })
     }
 
     func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {

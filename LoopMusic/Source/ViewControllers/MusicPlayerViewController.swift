@@ -13,6 +13,8 @@ class MusicPlayerViewController: UIViewController, LoopScrubberContainer {
     @IBOutlet weak var tracksButton: UIButton!
     /// Displays the current track name.
     @IBOutlet weak var trackLabel: UILabel!
+    /// Button for navigating to the loop finder.
+    @IBOutlet weak var loopFinderButton: UIButton!
     
     /// Slider used for playback scrubbing.
     @IBOutlet weak var loopScrubber: LoopScrubber!
@@ -33,11 +35,7 @@ class MusicPlayerViewController: UIViewController, LoopScrubberContainer {
         if (MusicSettings.settings.playOnInit) {
             randomizeTrack()
         }
-        updatePlayButtonIcon()
-    }
-    
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        self.loopScrubber.unload()
+        updateOnPlay()
     }
     
     /// Toggles whether audio is playing.
@@ -48,7 +46,7 @@ class MusicPlayerViewController: UIViewController, LoopScrubberContainer {
             } else {
                 try MusicPlayer.player.playTrack()
             }
-            updatePlayButtonIcon()
+            updateOnPlay()
         } catch {
            showErrorMessage(error: error)
         }
@@ -58,27 +56,39 @@ class MusicPlayerViewController: UIViewController, LoopScrubberContainer {
     @IBAction func randomizeTrack() {
         do {
             try MusicPlayer.player.randomizeTrack()
-            self.loopScrubber?.changeTrack()
-            updatePlayButtonIcon()
+            self.loopScrubber?.updateLoopBox()
+            updateOnPlay()
         } catch {
             showErrorMessage(error: error)
         }
     }
     
-    /// Sets the play button icon depending on whether music is playing.
-    func updatePlayButtonIcon() {
-        if MusicPlayer.player.playing {
-            playButton?.setTitle("■", for: .normal)
-            self.loopScrubber?.playTrack()
-        } else {
-            playButton?.setTitle("▶", for: .normal)
-            self.loopScrubber?.stopTrack()
-        }
-        playButton?.isEnabled = MusicPlayer.player.trackLoaded
-    }
-    
     @IBAction func setPlaybackPosition() {
         loopScrubber.setPlaybackPosition()
+    }
+    
+    /// Updates UI elements when starting or stopping the current track.
+    func updateOnPlay() {
+        if MusicPlayer.player.playing {
+            self.loopScrubber?.playTrack()
+        } else {
+            self.loopScrubber?.stopTrack()
+        }
+
+        playButton.setTitle(MusicPlayer.player.playing ? "■" : "▶", for: .normal)
+        playButton.isEnabled = MusicPlayer.player.trackLoaded
+        
+        loopFinderButton.isEnabled = MusicPlayer.player.playing
+    }
+    
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        self.loopScrubber.unload()
+    }
+    
+    /// Marks the screen as unwindable for segues.
+    /// - parameter segue: Segue object performing the segue.
+    @IBAction func unwind(segue: UIStoryboardSegue) {
+        self.loopScrubber.resume()
     }
     
     /// Displays an error to the user.
@@ -93,20 +103,14 @@ class MusicPlayerViewController: UIViewController, LoopScrubberContainer {
         trackLabel?.text = MusicPlayer.player.currentTrack.name
     }
     
-    /// Marks the screen as unwindable for segues.
-    /// - parameter segue: Segue object performing the segue.
-    @IBAction func unwindToMusicPlayer(segue: UIStoryboardSegue) {
-        self.loopScrubber.resume()
-    }
-    
     /// Starts playing the chosen track.
     /// - parameter track: Track to play.
     func chooseTrack(track: MPMediaItem) {
         do {
             try MusicPlayer.player.loadTrack(mediaItem: track)
             try MusicPlayer.player.playTrack()
-            self.loopScrubber?.changeTrack()
-            updatePlayButtonIcon()
+            self.loopScrubber?.updateLoopBox()
+            updateOnPlay()
         } catch {
            showErrorMessage(error: error)
         }

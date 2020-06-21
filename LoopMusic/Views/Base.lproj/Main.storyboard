@@ -23,7 +23,7 @@
                                 <navigationItem title="Settings" id="2VN-Xs-wWf">
                                     <barButtonItem key="leftBarButtonItem" title="Back" id="Px7-td-Yam">
                                         <connections>
-                                            <segue destination="b3i-NY-vUY" kind="unwind" unwindAction="unwindToMusicPlayerWithSegue:" id="e11-X7-RCh"/>
+                                            <segue destination="b3i-NY-vUY" kind="unwind" unwindAction="unwindWithSegue:" id="uTt-65-udr"/>
                                         </connections>
                                     </barButtonItem>
                                 </navigationItem>
@@ -59,10 +59,39 @@
                                     </tableViewCell>
                                 </cells>
                             </tableViewSection>
+                            <tableViewSection footerTitle="Settings for the currently selected track." id="s8V-m2-bol">
+                                <cells>
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" accessoryType="disclosureIndicator" indentationWidth="10" id="A0G-Sc-u1D">
+                                        <rect key="frame" x="0.0" y="141.5" width="414" height="43.5"/>
+                                        <autoresizingMask key="autoresizingMask"/>
+                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="A0G-Sc-u1D" id="UVN-Yp-1NT">
+                                            <rect key="frame" x="0.0" y="0.0" width="383" height="43.5"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                            <subviews>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Track" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="U2h-HQ-3ud">
+                                                    <rect key="frame" x="16" y="11.000000000000002" width="359" height="21.666666666666671"/>
+                                                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                                    <nil key="textColor"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
+                                            </subviews>
+                                            <constraints>
+                                                <constraint firstAttribute="trailing" secondItem="U2h-HQ-3ud" secondAttribute="trailing" constant="8" id="SM1-yF-ufa"/>
+                                                <constraint firstItem="U2h-HQ-3ud" firstAttribute="top" secondItem="UVN-Yp-1NT" secondAttribute="top" constant="11" id="UhV-Qc-WKp"/>
+                                                <constraint firstItem="U2h-HQ-3ud" firstAttribute="leading" secondItem="UVN-Yp-1NT" secondAttribute="leading" constant="16" id="bKE-cY-evd"/>
+                                                <constraint firstAttribute="bottom" secondItem="U2h-HQ-3ud" secondAttribute="bottom" constant="11.5" id="gxq-Hq-deW"/>
+                                            </constraints>
+                                        </tableViewCellContentView>
+                                        <connections>
+                                            <segue destination="0u0-Gw-XJ3" kind="show" id="8EV-zv-Rq1"/>
+                                        </connections>
+                                    </tableViewCell>
+                                </cells>
+                            </tableViewSection>
                             <tableViewSection footerTitle="Settings for timed track shuffling." id="yDz-xh-0Ii">
                                 <cells>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" accessoryType="disclosureIndicator" indentationWidth="10" id="sRg-3D-ggB">
-                                        <rect key="frame" x="0.0" y="141.5" width="414" height="43.5"/>
+                                        <rect key="frame" x="0.0" y="233" width="414" height="43.5"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="sRg-3D-ggB" id="p8R-2e-lvs">
                                             <rect key="frame" x="0.0" y="0.0" width="383" height="43.5"/>
@@ -91,7 +120,7 @@
                             <tableViewSection footerTitle="Settings for automatic loop finding." id="gBq-Cl-2Ce">
                                 <cells>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" accessoryType="disclosureIndicator" indentationWidth="10" id="1Mg-ym-qdB">
-                                        <rect key="frame" x="0.0" y="233" width="414" height="43.5"/>
+                                        <rect key="frame" x="0.0" y="324.5" width="414" height="43.5"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="1Mg-ym-qdB" id="eiQ-nR-oqV">
                                             <rect key="frame" x="0.0" y="0.0" width="383" height="43.5"/>
@@ -124,6 +153,10 @@
                         </connections>
                     </tableView>
                     <navigationItem key="navigationItem" title="Title" id="q7V-BG-sv5"/>
+                    <connections>
+                        <outlet property="trackSettingsCell" destination="A0G-Sc-u1D" id="6Fb-9J-Ew8"/>
+                        <outlet property="trackSettingsLabel" destination="U2h-HQ-3ud" id="cGY-kC-vd7"/>
+                    </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="2MW-bO-gne" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
                 <exit id="b3i-NY-vUY" userLabel="Exit" sceneMemberID="exit"/>
@@ -143,9 +176,9 @@
                             <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxY="YES"/>
                             <items>
                                 <navigationItem title="General" id="Ftv-bE-E7e">
-                                    <barButtonItem key="leftBarButtonItem" title="Settings" id="7aQ-cf-bFu">
+                                    <barButtonItem key="leftBarButtonItem" title="Back" id="7aQ-cf-bFu">
                                         <connections>
-                                            <segue destination="weW-GY-mHm" kind="unwind" unwindAction="unwindToSettingsHomeWithSegue:" id="Edu-lZ-Iqs"/>
+                                            <segue destination="weW-GY-mHm" kind="unwind" unwindAction="unwindWithSegue:" id="mf2-Pe-E6x"/>
                                         </connections>
                                     </barButtonItem>
                                 </navigationItem>
@@ -331,6 +364,9 @@
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="BWM-Fe-EFr" userLabel="Loop Finder Button">
                                 <rect key="frame" x="312" y="686" width="82" height="30"/>
                                 <state key="normal" title="Loop Finder"/>
+                                <connections>
+                                    <segue destination="jMN-ee-0go" kind="show" id="jHP-1n-TNv"/>
+                                </connections>
                             </button>
                             <slider opaque="NO" contentMode="scaleToFill" verticalHuggingPriority="251" enabled="NO" contentHorizontalAlignment="center" contentVerticalAlignment="center" minValue="0.0" maxValue="1" translatesAutoresizingMaskIntoConstraints="NO" id="B0F-RG-7s9" customClass="LoopScrubber" customModule="LoopMusic" customModuleProvider="target">
                                 <rect key="frame" x="18" y="77" width="378" height="31"/>
@@ -371,7 +407,9 @@
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
                     </view>
+                    <navigationItem key="navigationItem" id="Mau-DA-UdA"/>
                     <connections>
+                        <outlet property="loopFinderButton" destination="BWM-Fe-EFr" id="m4D-sc-8bY"/>
                         <outlet property="loopScrubber" destination="B0F-RG-7s9" id="pvw-GA-yf3"/>
                         <outlet property="playButton" destination="sOX-8u-f3x" id="bnV-BZ-pwz"/>
                         <outlet property="trackLabel" destination="3Kj-gi-vbC" id="hks-x8-wQ7"/>
@@ -396,7 +434,7 @@
                                     <navigationItem title="Tracks" id="T2O-ax-kY0">
                                         <barButtonItem key="leftBarButtonItem" title="Back" id="bak-ii-6Gh">
                                             <connections>
-                                                <segue destination="BjX-tW-hjS" kind="unwind" unwindAction="unwindToMusicPlayerWithSegue:" id="7lU-uz-ZMY"/>
+                                                <segue destination="BjX-tW-hjS" kind="unwind" unwindAction="unwindWithSegue:" id="Gag-6M-vmf"/>
                                             </connections>
                                         </barButtonItem>
                                     </navigationItem>
@@ -458,13 +496,108 @@
                         <outlet property="itemSearchBar" destination="s4W-0K-u5r" id="w46-SE-d8X"/>
                         <outlet property="table" destination="usL-Dw-78H" id="yQ0-2L-9Nv"/>
                         <outlet property="titleLabel" destination="T2O-ax-kY0" id="v2N-Ed-yhj"/>
-                        <segue destination="BjX-tW-hjS" kind="unwind" identifier="chooseTrack" unwindAction="unwindToMusicPlayerWithSegue:" id="p63-LJ-uj2"/>
+                        <segue destination="BjX-tW-hjS" kind="unwind" identifier="chooseTrack" unwindAction="unwindWithSegue:" id="p63-LJ-uj2"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="ng4-II-cwy" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
                 <exit id="BjX-tW-hjS" userLabel="Exit" sceneMemberID="exit"/>
             </objects>
-            <point key="canvasLocation" x="888.79999999999995" y="-275.71214392803603"/>
+            <point key="canvasLocation" x="888" y="-280"/>
+        </scene>
+        <!--Loop Finder View Controller-->
+        <scene sceneID="dvp-fH-0IQ">
+            <objects>
+                <viewController id="jMN-ee-0go" customClass="LoopFinderViewController" customModule="LoopMusic" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="GcW-fY-6KK">
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="716"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="wCN-ex-L2L">
+                                <rect key="frame" x="26" y="20" width="34" height="30"/>
+                                <state key="normal" title="Back"/>
+                                <connections>
+                                    <segue destination="HPp-ar-rJN" kind="unwind" unwindAction="unwindWithSegue:" id="Wmp-eM-bax"/>
+                                </connections>
+                            </button>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="0vu-jM-I3Q">
+                                <rect key="frame" x="337" y="20" width="57" height="30"/>
+                                <state key="normal" title="Settings"/>
+                                <connections>
+                                    <segue destination="Nfk-h3-LQE" kind="show" id="8jf-1K-Cuz"/>
+                                </connections>
+                            </button>
+                            <textField opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="dbM-Om-NIk">
+                                <rect key="frame" x="26" y="208" width="164" height="34"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                <textInputTraits key="textInputTraits" keyboardType="decimalPad" returnKeyType="done" enablesReturnKeyAutomatically="YES"/>
+                                <connections>
+                                    <action selector="changeLoopStartField" destination="jMN-ee-0go" eventType="editingDidEnd" id="1Ov-bO-Kkp"/>
+                                </connections>
+                            </textField>
+                            <slider opaque="NO" contentMode="scaleToFill" verticalHuggingPriority="251" enabled="NO" contentHorizontalAlignment="center" contentVerticalAlignment="center" minValue="0.0" maxValue="1" translatesAutoresizingMaskIntoConstraints="NO" id="gvU-U2-yHK" customClass="LoopScrubber" customModule="LoopMusic" customModuleProvider="target">
+                                <rect key="frame" x="18" y="73" width="378" height="31"/>
+                                <color key="backgroundColor" red="0.74898773429999999" green="0.74903941149999997" blue="0.76478832959999998" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                <color key="minimumTrackTintColor" red="0.53661210280000005" green="0.54961935679999996" blue="0.58864111870000002" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                <color key="maximumTrackTintColor" red="0.83522337680000003" green="0.83534115549999999" blue="0.83518618349999996" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                <userDefinedRuntimeAttributes>
+                                    <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
+                                        <integer key="value" value="5"/>
+                                    </userDefinedRuntimeAttribute>
+                                </userDefinedRuntimeAttributes>
+                                <connections>
+                                    <action selector="setPlaybackPosition" destination="BYZ-38-t0r" eventType="valueChanged" id="Ku8-Yl-sMe"/>
+                                </connections>
+                            </slider>
+                            <textField opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="KdN-DC-Jwf">
+                                <rect key="frame" x="246" y="208" width="148" height="34"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                <textInputTraits key="textInputTraits" keyboardType="decimalPad" returnKeyType="done" enablesReturnKeyAutomatically="YES"/>
+                                <connections>
+                                    <action selector="changeLoopEndField" destination="jMN-ee-0go" eventType="editingDidEnd" id="U7h-gd-Jo3"/>
+                                </connections>
+                            </textField>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="Loop Finder" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Fhb-hC-bOa">
+                                <rect key="frame" x="162" y="23" width="91" height="24"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="uuH-WB-H4u">
+                                <rect key="frame" x="185" y="137" width="45" height="30"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <state key="normal" title="Revert"/>
+                                <connections>
+                                    <action selector="revertLoopPoints" destination="jMN-ee-0go" eventType="touchUpInside" id="oFZ-Tu-LIC"/>
+                                </connections>
+                            </button>
+                        </subviews>
+                        <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
+                        <constraints>
+                            <constraint firstItem="0vu-jM-I3Q" firstAttribute="top" secondItem="g2d-Ac-4vy" secondAttribute="top" constant="20" id="2Xo-LN-Cvu"/>
+                            <constraint firstItem="Fhb-hC-bOa" firstAttribute="top" secondItem="g2d-Ac-4vy" secondAttribute="top" constant="23" id="BYl-pQ-MU7"/>
+                            <constraint firstItem="gvU-U2-yHK" firstAttribute="leading" secondItem="g2d-Ac-4vy" secondAttribute="leading" constant="20" id="C8S-qJ-zVZ"/>
+                            <constraint firstItem="g2d-Ac-4vy" firstAttribute="trailing" secondItem="0vu-jM-I3Q" secondAttribute="trailing" constant="20" id="DVk-ny-YYQ"/>
+                            <constraint firstItem="wCN-ex-L2L" firstAttribute="leading" secondItem="g2d-Ac-4vy" secondAttribute="leading" constant="26" id="abv-Hw-1xj"/>
+                            <constraint firstItem="gvU-U2-yHK" firstAttribute="top" secondItem="g2d-Ac-4vy" secondAttribute="top" constant="73" id="cO3-Zf-mMJ"/>
+                            <constraint firstItem="Fhb-hC-bOa" firstAttribute="centerX" secondItem="g2d-Ac-4vy" secondAttribute="centerX" id="daF-Jw-9ha"/>
+                            <constraint firstItem="wCN-ex-L2L" firstAttribute="top" secondItem="g2d-Ac-4vy" secondAttribute="top" constant="20" id="f1f-ZT-2bG"/>
+                            <constraint firstItem="g2d-Ac-4vy" firstAttribute="trailing" secondItem="gvU-U2-yHK" secondAttribute="trailing" constant="20" id="t83-y3-XbD"/>
+                        </constraints>
+                        <viewLayoutGuide key="safeArea" id="g2d-Ac-4vy"/>
+                    </view>
+                    <navigationItem key="navigationItem" id="FU6-di-hMq"/>
+                    <connections>
+                        <outlet property="loopEndField" destination="KdN-DC-Jwf" id="gA8-nL-hVa"/>
+                        <outlet property="loopScrubber" destination="gvU-U2-yHK" id="60V-eR-gxA"/>
+                        <outlet property="loopStartField" destination="dbM-Om-NIk" id="7Fw-Gh-RFt"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="1Hn-T2-gYO" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+                <exit id="HPp-ar-rJN" userLabel="Exit" sceneMemberID="exit"/>
+            </objects>
+            <point key="canvasLocation" x="131.8840579710145" y="871.46739130434787"/>
         </scene>
         <!--Playlist List-->
         <scene sceneID="Axf-tX-4dD">
@@ -480,7 +613,7 @@
                                     <navigationItem title="Playlists" id="AFq-9c-5BD">
                                         <barButtonItem key="leftBarButtonItem" title="Back" id="ygy-VM-egt">
                                             <connections>
-                                                <segue destination="pPm-EO-OM7" kind="unwind" unwindAction="unwindToMusicPlayerWithSegue:" id="TwL-rg-Gqv"/>
+                                                <segue destination="pPm-EO-OM7" kind="unwind" unwindAction="unwindWithSegue:" id="U7R-vX-EwT"/>
                                             </connections>
                                         </barButtonItem>
                                     </navigationItem>
@@ -507,7 +640,7 @@
                                             </subviews>
                                         </tableViewCellContentView>
                                         <connections>
-                                            <segue destination="pPm-EO-OM7" kind="unwind" unwindAction="unwindToMusicPlayerWithSegue:" id="Yho-MI-glE"/>
+                                            <segue destination="pPm-EO-OM7" kind="unwind" unwindAction="unwindWithSegue:" id="Zb8-3b-6m8"/>
                                         </connections>
                                     </tableViewCell>
                                 </prototypes>
@@ -560,9 +693,9 @@
                             <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxY="YES"/>
                             <items>
                                 <navigationItem title="Shuffle" id="jRl-at-66S">
-                                    <barButtonItem key="leftBarButtonItem" title="Settings" id="3cv-AC-u81">
+                                    <barButtonItem key="leftBarButtonItem" title="Back" id="3cv-AC-u81">
                                         <connections>
-                                            <segue destination="yY3-FS-NNW" kind="unwind" unwindAction="unwindToSettingsHomeWithSegue:" id="ABm-x2-ckJ"/>
+                                            <segue destination="yY3-FS-NNW" kind="unwind" unwindAction="unwindWithSegue:" id="0vq-gw-kHS"/>
                                         </connections>
                                     </barButtonItem>
                                 </navigationItem>
@@ -729,9 +862,9 @@
                             <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxY="YES"/>
                             <items>
                                 <navigationItem title="Loop Finder" id="b28-IW-3lw">
-                                    <barButtonItem key="leftBarButtonItem" title="Settings" id="WUS-kl-1IO">
+                                    <barButtonItem key="leftBarButtonItem" title="Back" id="WUS-kl-1IO">
                                         <connections>
-                                            <segue destination="dpY-tY-Jzz" kind="unwind" unwindAction="unwindToSettingsHomeWithSegue:" id="RHx-5g-efd"/>
+                                            <segue destination="dpY-tY-Jzz" kind="unwind" unwindAction="unwindWithSegue:" id="8DQ-23-9qZ"/>
                                         </connections>
                                     </barButtonItem>
                                 </navigationItem>
@@ -907,9 +1040,9 @@
                             <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxY="YES"/>
                             <items>
                                 <navigationItem title="Time Shuffle" id="QVq-xv-M4F">
-                                    <barButtonItem key="leftBarButtonItem" title="Shuffle" id="KRr-ub-lIp">
+                                    <barButtonItem key="leftBarButtonItem" title="Back" id="KRr-ub-lIp">
                                         <connections>
-                                            <segue destination="5DB-Y3-mCH" kind="unwind" unwindAction="unwindToShuffleSettingsWithSegue:" id="aAy-YE-PyO"/>
+                                            <segue destination="5DB-Y3-mCH" kind="unwind" unwindAction="unwindWithSegue:" id="QUy-dC-gos"/>
                                         </connections>
                                     </barButtonItem>
                                 </navigationItem>
@@ -1108,9 +1241,9 @@
                             <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxY="YES"/>
                             <items>
                                 <navigationItem title="Repeats Shuffle" id="pSD-U6-FGD">
-                                    <barButtonItem key="leftBarButtonItem" title="Shuffle" id="Gsv-q7-Zyx">
+                                    <barButtonItem key="leftBarButtonItem" title="Back" id="Gsv-q7-Zyx">
                                         <connections>
-                                            <segue destination="WeP-xV-8wg" kind="unwind" unwindAction="unwindToShuffleSettingsWithSegue:" id="4XE-9t-uYM"/>
+                                            <segue destination="WeP-xV-8wg" kind="unwind" unwindAction="unwindWithSegue:" id="PrE-EO-z6U"/>
                                         </connections>
                                     </barButtonItem>
                                 </navigationItem>
@@ -1309,9 +1442,9 @@
                             <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxY="YES"/>
                             <items>
                                 <navigationItem title="Initial Estimate" id="i9r-9G-LMe">
-                                    <barButtonItem key="leftBarButtonItem" title="Loop Finder" id="1GV-vd-yz5">
+                                    <barButtonItem key="leftBarButtonItem" title="Back" id="1GV-vd-yz5">
                                         <connections>
-                                            <segue destination="fPE-OO-XCm" kind="unwind" unwindAction="unwindToLoopFinderSettingsWithSegue:" id="d7j-eA-OU0"/>
+                                            <segue destination="fPE-OO-XCm" kind="unwind" unwindAction="unwindWithSegue:" id="kam-rw-46X"/>
                                         </connections>
                                     </barButtonItem>
                                 </navigationItem>
@@ -1557,9 +1690,9 @@
                             <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxY="YES"/>
                             <items>
                                 <navigationItem title="Internal" id="c4Y-wl-ff7">
-                                    <barButtonItem key="leftBarButtonItem" title="Loop Finder" id="nkc-fk-xH5">
+                                    <barButtonItem key="leftBarButtonItem" title="Back" id="nkc-fk-xH5">
                                         <connections>
-                                            <segue destination="4ce-Bb-Mdc" kind="unwind" unwindAction="unwindToLoopFinderSettingsWithSegue:" id="nO0-wg-ORL"/>
+                                            <segue destination="4ce-Bb-Mdc" kind="unwind" unwindAction="unwindWithSegue:" id="9mz-LY-jYw"/>
                                         </connections>
                                     </barButtonItem>
                                 </navigationItem>
@@ -1888,9 +2021,9 @@
                             <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxY="YES"/>
                             <items>
                                 <navigationItem title="Performance" id="uXj-mv-xM4">
-                                    <barButtonItem key="leftBarButtonItem" title="Loop Finder" id="UJu-IZ-aSD">
+                                    <barButtonItem key="leftBarButtonItem" title="Back" id="UJu-IZ-aSD">
                                         <connections>
-                                            <segue destination="bhS-Ev-1Pt" kind="unwind" unwindAction="unwindToLoopFinderSettingsWithSegue:" id="wca-TV-A1W"/>
+                                            <segue destination="bhS-Ev-1Pt" kind="unwind" unwindAction="unwindWithSegue:" id="4SO-Gy-PB9"/>
                                         </connections>
                                     </barButtonItem>
                                 </navigationItem>
@@ -2078,9 +2211,9 @@
                             <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxY="YES"/>
                             <items>
                                 <navigationItem title="Output" id="Rvd-Ug-sbj">
-                                    <barButtonItem key="leftBarButtonItem" title="Loop Finder" id="Gue-G3-viF">
+                                    <barButtonItem key="leftBarButtonItem" title="Back" id="Gue-G3-viF">
                                         <connections>
-                                            <segue destination="MPN-FH-A64" kind="unwind" unwindAction="unwindToLoopFinderSettingsWithSegue:" id="nuw-GX-O0j"/>
+                                            <segue destination="MPN-FH-A64" kind="unwind" unwindAction="unwindWithSegue:" id="2qh-px-7IR"/>
                                         </connections>
                                     </barButtonItem>
                                 </navigationItem>
@@ -2176,5 +2309,82 @@
             </objects>
             <point key="canvasLocation" x="-633" y="1774"/>
         </scene>
+        <!--Track Settings-->
+        <scene sceneID="Ce7-zj-W7f">
+            <objects>
+                <tableViewController id="0u0-Gw-XJ3" userLabel="Track Settings" customClass="TrackSettingsViewController" customModule="LoopMusic" customModuleProvider="target" sceneMemberID="viewController">
+                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="static" style="grouped" separatorStyle="default" allowsSelection="NO" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="18" sectionFooterHeight="18" id="yhV-MG-y3d">
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="716"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <color key="backgroundColor" systemColor="systemGray5Color" red="0.8980392157" green="0.8980392157" blue="0.91764705879999997" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                        <navigationBar key="tableHeaderView" contentMode="scaleToFill" id="8Gi-pU-LRV">
+                            <rect key="frame" x="0.0" y="0.0" width="414" height="44"/>
+                            <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxY="YES"/>
+                            <items>
+                                <navigationItem title="Track" id="nSY-1j-92Q">
+                                    <barButtonItem key="leftBarButtonItem" title="Back" id="6TI-mc-dZm">
+                                        <connections>
+                                            <segue destination="PDz-9g-ndu" kind="unwind" unwindAction="unwindWithSegue:" id="aJU-I7-7cc"/>
+                                        </connections>
+                                    </barButtonItem>
+                                </navigationItem>
+                            </items>
+                        </navigationBar>
+                        <sections>
+                            <tableViewSection footerTitle="Controls the volume of the track relative to other tracks." id="joj-Qm-Ego">
+                                <cells>
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" id="6Ru-yN-w20">
+                                        <rect key="frame" x="0.0" y="62" width="414" height="43.5"/>
+                                        <autoresizingMask key="autoresizingMask"/>
+                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="6Ru-yN-w20" id="ZvT-HM-OkC">
+                                            <rect key="frame" x="0.0" y="0.0" width="414" height="43.5"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                            <subviews>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Relative Volume" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="qYj-tG-UUu">
+                                                    <rect key="frame" x="16" y="11.000000000000002" width="183.66666666666666" height="21.666666666666671"/>
+                                                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                                    <nil key="textColor"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
+                                                <slider opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" value="0.5" minValue="0.0" maxValue="1" translatesAutoresizingMaskIntoConstraints="NO" id="sxf-3g-6Bh" userLabel="Relative Volume Slider">
+                                                    <rect key="frame" x="205" y="7.0000000000000018" width="193" height="31.666666666666671"/>
+                                                    <connections>
+                                                        <action selector="relativeVolumeChangedWithSender:" destination="0u0-Gw-XJ3" eventType="valueChanged" id="8Py-eM-ePL"/>
+                                                    </connections>
+                                                </slider>
+                                            </subviews>
+                                            <constraints>
+                                                <constraint firstItem="sxf-3g-6Bh" firstAttribute="leading" secondItem="qYj-tG-UUu" secondAttribute="trailing" constant="7.5" id="40U-yM-WW4"/>
+                                                <constraint firstAttribute="trailing" secondItem="sxf-3g-6Bh" secondAttribute="trailing" constant="18" id="BmL-Fc-ujY"/>
+                                                <constraint firstItem="qYj-tG-UUu" firstAttribute="leading" secondItem="ZvT-HM-OkC" secondAttribute="leading" constant="16" id="Fzl-Uq-qrV"/>
+                                                <constraint firstItem="sxf-3g-6Bh" firstAttribute="top" secondItem="ZvT-HM-OkC" secondAttribute="top" constant="7" id="Kan-7s-zfV"/>
+                                                <constraint firstItem="sxf-3g-6Bh" firstAttribute="leading" secondItem="ZvT-HM-OkC" secondAttribute="centerX" id="NzP-tD-bFd"/>
+                                                <constraint firstItem="qYj-tG-UUu" firstAttribute="top" secondItem="ZvT-HM-OkC" secondAttribute="top" constant="11" id="OdM-PT-eOs"/>
+                                                <constraint firstAttribute="bottom" secondItem="qYj-tG-UUu" secondAttribute="bottom" constant="11.5" id="VQW-g6-Z0o"/>
+                                                <constraint firstAttribute="bottom" secondItem="sxf-3g-6Bh" secondAttribute="bottom" constant="6.5" id="WDe-iP-gej"/>
+                                            </constraints>
+                                        </tableViewCellContentView>
+                                    </tableViewCell>
+                                </cells>
+                            </tableViewSection>
+                        </sections>
+                        <connections>
+                            <outlet property="dataSource" destination="0u0-Gw-XJ3" id="YUm-w6-Q0R"/>
+                            <outlet property="delegate" destination="0u0-Gw-XJ3" id="mSv-78-cBD"/>
+                        </connections>
+                    </tableView>
+                    <navigationItem key="navigationItem" title="Title" id="cgB-za-1QW"/>
+                    <connections>
+                        <outlet property="relativeVolumeSlider" destination="sxf-3g-6Bh" id="QP2-vg-OzF"/>
+                    </connections>
+                </tableViewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="EKE-1W-OQv" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+                <exit id="PDz-9g-ndu" userLabel="Exit" sceneMemberID="exit"/>
+            </objects>
+            <point key="canvasLocation" x="-555" y="-576"/>
+        </scene>
     </scenes>
+    <inferredMetricsTieBreakers>
+        <segue reference="8jf-1K-Cuz"/>
+    </inferredMetricsTieBreakers>
 </document>

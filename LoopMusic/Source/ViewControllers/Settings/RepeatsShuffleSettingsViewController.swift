@@ -14,9 +14,9 @@ class RepeatsShuffleSettingsViewController: BaseSettingsSectionViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        self.registerSetting(settingView: DoubleTextFieldSettingView(setting: &MusicSettings.settings.shuffleRepeats, settingModifier: shuffleRepeatsField))
-        self.registerSetting(settingView: DoubleTextFieldSettingView(setting: &MusicSettings.settings.shuffleRepeatsVariance, settingModifier: shuffleRepeatsVarianceField))
-        self.registerSetting(settingView: DoubleTextFieldSettingView(setting: &MusicSettings.settings.minShuffleTime, settingModifier: minShuffleTimeField))
-        self.registerSetting(settingView: DoubleTextFieldSettingView(setting: &MusicSettings.settings.maxShuffleTime, settingModifier: maxShuffleTimeField))
+        registerSetting(settingView: DoubleTextFieldSettingView(setting: &MusicSettings.settings.shuffleRepeats, settingModifier: shuffleRepeatsField))
+        registerSetting(settingView: DoubleTextFieldSettingView(setting: &MusicSettings.settings.shuffleRepeatsVariance, settingModifier: shuffleRepeatsVarianceField))
+        registerSetting(settingView: DoubleTextFieldSettingView(setting: &MusicSettings.settings.minShuffleTime, settingModifier: minShuffleTimeField))
+        registerSetting(settingView: DoubleTextFieldSettingView(setting: &MusicSettings.settings.maxShuffleTime, settingModifier: maxShuffleTimeField))
     }
 }

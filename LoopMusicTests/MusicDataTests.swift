@@ -84,6 +84,42 @@ class MusicDataTests: XCTestCase {
             noResultCallback: nil, errorMessage: "")
     }
     
+    /// Tests that volume multiplier is updated correctly.
+    func testUpdateVolumeMultiplier() throws {
+        try data.executeSql(query: String(format: "INSERT INTO Tracks (id, url, name, loopStart, loopEnd, volumeMultiplier) VALUES (1, '%@', '%@', 2, 3, 0.5)", TRACK_URL, TRACK_NAME), errorMessage: "")
+        
+        /// Loaded track to assert on from the database.
+        var loadedTrack: LoopMusic.MusicTrack = try data.loadTrack(mediaItem: TestMPMediaItem())
+        loadedTrack.volumeMultiplier = 0.7
+        try data.updateVolumeMultiplier(track: loadedTrack)
+        
+        try data.executeSql(
+            query: "SELECT volumeMultiplier FROM Tracks",
+            stepCallback: { (statement) in
+                XCTAssertEqual(0.7, sqlite3_column_double(statement, 0), accuracy: EPSILON)
+            },
+            noResultCallback: nil, errorMessage: "")
+    }
+    
+    /// Tests that loop points are updated correctly.
+    func testUpdateLoopPoints() throws {
+        try data.executeSql(query: String(format: "INSERT INTO Tracks (id, url, name, loopStart, loopEnd, volumeMultiplier) VALUES (1, '%@', '%@', 2, 3, 0.5)", TRACK_URL, TRACK_NAME), errorMessage: "")
+        
+        /// Loaded track to assert on from the database.
+        var loadedTrack: LoopMusic.MusicTrack = try data.loadTrack(mediaItem: TestMPMediaItem())
+        loadedTrack.loopStart = 1
+        loadedTrack.loopEnd = 5
+        try data.updateLoopPoints(track: loadedTrack)
+        
+        try data.executeSql(
+            query: "SELECT loopStart, loopEnd FROM Tracks",
+            stepCallback: { (statement) in
+                XCTAssertEqual(1, sqlite3_column_double(statement, 0), accuracy: EPSILON)
+                XCTAssertEqual(5, sqlite3_column_double(statement, 1), accuracy: EPSILON)
+            },
+            noResultCallback: nil, errorMessage: "")
+    }
+    
     /// Tests that escapeStringForDb() escapes single quotes.
     func testEscapeStringForDb() {
         XCTAssertEqual("Let''s Go", data.escapeStringForDb("Let's Go"))

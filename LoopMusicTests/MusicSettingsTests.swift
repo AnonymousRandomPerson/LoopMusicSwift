@@ -7,7 +7,7 @@ class MusicSettingsTests: XCTestCase {
     /// Music settings instance.
     var settings: MusicSettings = MusicSettings.settings
     /// Constant test music track.
-    let TEST_TRACK: MusicTrack = MusicTrack(url: URL(fileURLWithPath: ""), name: "", loopStart: 5, loopEnd: 20, volumeMultiplier: 1)
+    let TEST_TRACK: MusicTrack = MusicTrack(id: 0, url: URL(fileURLWithPath: ""), name: "", loopStart: 5, loopEnd: 20, volumeMultiplier: 1)
     
     /// Pre-calculated repeat length of TEST_TRACK.
     let REPEAT_LENGTH: Double = 15
