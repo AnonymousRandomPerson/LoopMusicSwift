@@ -22,7 +22,7 @@ class TrackSettingsViewController: BaseSettingsSectionViewController {
             do {
                 try MusicPlayer.player.saveVolumeMultiplier()
             } catch {
-                ErrorUtils.showErrorMessage(error: error, viewController: self)
+                AlertUtils.showErrorMessage(error: error, viewController: self)
             }
         }
     }

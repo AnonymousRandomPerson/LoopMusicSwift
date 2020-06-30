@@ -94,7 +94,7 @@ class MusicPlayerViewController: UIViewController, LoopScrubberContainer {
     /// Displays an error to the user.
     /// - parameter message: Error message to display.
     func showErrorMessage(error: Error) {
-        ErrorUtils.showErrorMessage(error: error, viewController: self)
+        AlertUtils.showErrorMessage(error: error, viewController: self)
     }
 
     /// Updates the track label according to the currently playing track.

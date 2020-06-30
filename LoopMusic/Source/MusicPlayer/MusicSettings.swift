@@ -45,6 +45,43 @@ class MusicSettings {
     /// For repeats shuffle, the maximum amount of time (minutes) for a track, regardless of the shuffle repeats.
     var maxShuffleTime: Double?
     
+    /// How far the loop finder will deviate from the start time estimate (seconds).
+    var startTimeEstimateRadius: Double?
+    /// How far the loop finder will deviate from the end time estimate (seconds).
+    var endTimeEstimateRadius: Double?
+    /// How far the loop finder will deviate from the loop duration estimate (seconds).
+    var loopDurationEstimateRadius: Double?
+    /// How much the loop finder penalizes start time estimate deviation.
+    var startTimeEstimateDeviationPenalty: Double = 0
+    /// How much the loop finder penalizes end time estimate deviation.
+    var endTimeEstimateDeviationPenalty: Double = 0
+    /// How much the loop finder penalizes loop duration estimate deviation.
+    var loopDurationEstimateDeviationPenalty: Double = 0
+    var minimumSearchDuration: Double?
+    var durationSearchSeparation: Double?
+    var durationSearchStartIgnore: Double?
+    var durationSearchEndIgnore: Double?
+    var fadeDetection: Bool = false
+    var endpointSearchDifferenceTolerance: Double?
+    var fftLength: Double?
+    var spectrogramOverlapPercentage: Double?
+    /// Controls whether to use mono audio data rather than stereo data for certain parts of analysis. Usually gives about a 2x speedup, but may reduce accuracy.
+    var useMonoAudio: Bool = false
+    /// Controls how to reduce the framerate of the audio data before loop-finding. Usually gives a speedup factor equal to the reduction value, but may be less accurate. Values of 7+ may cause algorithm instability.
+    var frameRateReduction: Double?
+    /// Limit of frame rate reduction when the loop finder downsamples.
+    var frameRateReductionLimit: Double?
+    /// Proportional to the frame rate reduction limit.
+    var trackLengthLimit: Double?
+    /// Number of duration values outputted by the loop finder.
+    var durationValues: Double?
+    /// Number of endpoint pairs outputted by the loop finder.
+    var endpointPairs: Double?
+    /// If enabled, the loop will be tested automatically when loop points are changed.
+    var testLoopOnChange: Bool = true
+    /// The amount of time (seconds) before the loop end that audio playback will be set to when testing the loop.
+    var loopTestOffset: Double?
+    
     private init() {
     }
     
@@ -70,8 +107,31 @@ class MusicSettings {
             shuffleRepeatsVariance = settingsFile.shuffleRepeatsVariance
             minShuffleTime = settingsFile.minShuffleTime
             maxShuffleTime = settingsFile.maxShuffleTime
+            startTimeEstimateRadius = settingsFile.startTimeEstimateRadius
+            endTimeEstimateRadius = settingsFile.endTimeEstimateRadius
+            loopDurationEstimateRadius = settingsFile.loopDurationEstimateRadius
+            startTimeEstimateDeviationPenalty = settingsFile.startTimeEstimateDeviationPenalty
+            endTimeEstimateDeviationPenalty = settingsFile.endTimeEstimateDeviationPenalty
+            loopDurationEstimateDeviationPenalty = settingsFile.loopDurationEstimateDeviationPenalty
+            minimumSearchDuration = settingsFile.minimumSearchDuration
+            durationSearchSeparation = settingsFile.durationSearchSeparation
+            durationSearchStartIgnore = settingsFile.durationSearchStartIgnore
+            durationSearchEndIgnore = settingsFile.durationSearchEndIgnore
+            fadeDetection = settingsFile.fadeDetection
+            endpointSearchDifferenceTolerance = settingsFile.endpointSearchDifferenceTolerance
+            fftLength = settingsFile.fftLength
+            spectrogramOverlapPercentage = settingsFile.spectrogramOverlapPercentage
+            useMonoAudio = settingsFile.useMonoAudio
+            frameRateReduction = settingsFile.frameRateReduction
+            frameRateReductionLimit = settingsFile.frameRateReductionLimit
+            trackLengthLimit = settingsFile.trackLengthLimit
+            durationValues = settingsFile.durationValues
+            endpointPairs = settingsFile.endpointPairs
+            testLoopOnChange = settingsFile.testLoopOnChange
+            loopTestOffset = settingsFile.loopTestOffset
         } catch {
             print("Settings file not found. Creating a new one.", error)
+            resetLoopFinderSettings()
             try saveSettingsFile()
         }
     }
@@ -98,6 +158,28 @@ class MusicSettings {
             settingsFile.shuffleRepeatsVariance = shuffleRepeatsVariance
             settingsFile.minShuffleTime = minShuffleTime
             settingsFile.maxShuffleTime = maxShuffleTime
+            settingsFile.startTimeEstimateRadius = startTimeEstimateRadius
+            settingsFile.endTimeEstimateRadius = endTimeEstimateRadius
+            settingsFile.loopDurationEstimateRadius = loopDurationEstimateRadius
+            settingsFile.startTimeEstimateDeviationPenalty = startTimeEstimateDeviationPenalty
+            settingsFile.endTimeEstimateDeviationPenalty = endTimeEstimateDeviationPenalty
+            settingsFile.loopDurationEstimateDeviationPenalty = loopDurationEstimateDeviationPenalty
+            settingsFile.minimumSearchDuration = minimumSearchDuration
+            settingsFile.durationSearchSeparation = durationSearchSeparation
+            settingsFile.durationSearchStartIgnore = durationSearchStartIgnore
+            settingsFile.durationSearchEndIgnore = durationSearchEndIgnore
+            settingsFile.fadeDetection = fadeDetection
+            settingsFile.endpointSearchDifferenceTolerance = endpointSearchDifferenceTolerance
+            settingsFile.fftLength = fftLength
+            settingsFile.spectrogramOverlapPercentage = spectrogramOverlapPercentage
+            settingsFile.useMonoAudio = useMonoAudio
+            settingsFile.frameRateReduction = frameRateReduction
+            settingsFile.frameRateReductionLimit = frameRateReductionLimit
+            settingsFile.trackLengthLimit = trackLengthLimit
+            settingsFile.durationValues = durationValues
+            settingsFile.endpointPairs = endpointPairs
+            settingsFile.testLoopOnChange = testLoopOnChange
+            settingsFile.loopTestOffset = loopTestOffset
             
             try encoder.encode(settingsFile).write(to: FileUtils.getFileUrl(fileName: settingsFileName))
         } catch {
@@ -188,5 +270,29 @@ class MusicSettings {
             }
         }
         return nil;
+    }
+    
+    /// Resets all loop finder settings to their default values.
+    func resetLoopFinderSettings() {
+        startTimeEstimateRadius = 0
+        endTimeEstimateRadius = 0
+        loopDurationEstimateRadius = 0
+        startTimeEstimateDeviationPenalty = 0
+        endTimeEstimateDeviationPenalty = 0
+        loopDurationEstimateDeviationPenalty = 0
+        minimumSearchDuration = 0
+        durationSearchSeparation = 0
+        durationSearchStartIgnore = 0
+        durationSearchEndIgnore = 0
+        fadeDetection = false
+        endpointSearchDifferenceTolerance = 0
+        fftLength = 0
+        spectrogramOverlapPercentage = 0
+        useMonoAudio = false
+        frameRateReduction = 0
+        frameRateReductionLimit = 0
+        trackLengthLimit = 0
+        durationValues = 0
+        endpointPairs = 0
     }
 }

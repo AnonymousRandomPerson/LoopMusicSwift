@@ -41,6 +41,7 @@ class LoopFinderViewController: UIViewController, LoopScrubberContainer, UITextF
     
     /// Sets the loop start time when the loop start text field is edited.
     @IBAction func changeLoopStartField() {
+        /// Number of seconds to set the loop start to.
         var loopStartSeconds: Double
         if let text = loopStartField.text, let loopStart = Double(text) {
             loopStartSeconds = min(max(loopStart, 0), MusicPlayer.player.loopEndSeconds)
@@ -53,6 +54,7 @@ class LoopFinderViewController: UIViewController, LoopScrubberContainer, UITextF
     
     /// Sets the loop end time when the loop end text field is edited.
     @IBAction func changeLoopEndField() {
+        /// Number of seconds to set the loop end to.
         var loopEndSeconds: Double
         if let text = loopEndField.text, let loopEnd = Double(text) {
             loopEndSeconds = min(max(loopEnd, MusicPlayer.player.loopStartSeconds), MusicPlayer.player.durationSeconds)
@@ -65,9 +67,11 @@ class LoopFinderViewController: UIViewController, LoopScrubberContainer, UITextF
     
     /// Reverts the loop points to their values when first entering this screen.
     @IBAction func revertLoopPoints() {
-        MusicPlayer.player.loopStartSeconds = originalLoopStart
-        MusicPlayer.player.loopEndSeconds = originalLoopEnd
-        displayLoopTimes()
+        AlertUtils.showConfirmMessage(message: "Revert loop times to their original values?", viewController: self, confirmAction: { _ in
+            MusicPlayer.player.loopStartSeconds = self.originalLoopStart
+            MusicPlayer.player.loopEndSeconds = self.originalLoopEnd
+            self.displayLoopTimes()
+        })
     }
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
@@ -76,7 +80,7 @@ class LoopFinderViewController: UIViewController, LoopScrubberContainer, UITextF
             do {
                 try MusicPlayer.player.saveLoopPoints()
             } catch {
-                ErrorUtils.showErrorMessage(error: error, viewController: self)
+                AlertUtils.showErrorMessage(error: error, viewController: self)
             }
         }
     }

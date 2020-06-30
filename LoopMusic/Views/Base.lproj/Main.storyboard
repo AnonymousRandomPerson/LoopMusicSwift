@@ -987,28 +987,61 @@
                                     </tableViewCell>
                                 </cells>
                             </tableViewSection>
+                            <tableViewSection footerTitle="Settings for loop testing." id="22o-ab-UTK">
+                                <cells>
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" accessoryType="disclosureIndicator" indentationWidth="10" id="9Im-GK-yQw">
+                                        <rect key="frame" x="0.0" y="428" width="414" height="43.5"/>
+                                        <autoresizingMask key="autoresizingMask"/>
+                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="9Im-GK-yQw" id="97K-oW-z04">
+                                            <rect key="frame" x="0.0" y="0.0" width="383" height="43.5"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                            <subviews>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Testing" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="lNg-so-5VR">
+                                                    <rect key="frame" x="16" y="11.000000000000002" width="359" height="21.666666666666671"/>
+                                                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                                    <nil key="textColor"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
+                                            </subviews>
+                                            <constraints>
+                                                <constraint firstItem="lNg-so-5VR" firstAttribute="leading" secondItem="97K-oW-z04" secondAttribute="leading" constant="16" id="IoG-fI-LZT"/>
+                                                <constraint firstItem="lNg-so-5VR" firstAttribute="top" secondItem="97K-oW-z04" secondAttribute="top" constant="11" id="en3-Xr-Blo"/>
+                                                <constraint firstAttribute="trailing" secondItem="lNg-so-5VR" secondAttribute="trailing" constant="8" id="jTe-DI-hcB"/>
+                                                <constraint firstAttribute="bottom" secondItem="lNg-so-5VR" secondAttribute="bottom" constant="11.5" id="rO4-uz-NW1"/>
+                                            </constraints>
+                                        </tableViewCellContentView>
+                                        <connections>
+                                            <segue destination="oAb-0a-eCe" kind="show" id="iVv-0V-b7T"/>
+                                        </connections>
+                                    </tableViewCell>
+                                </cells>
+                            </tableViewSection>
                             <tableViewSection footerTitle="Reset all loop finder settings to their default values." id="p9J-dR-mx9">
                                 <cells>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" id="nce-W1-5sI">
-                                        <rect key="frame" x="0.0" y="428" width="414" height="43.5"/>
+                                        <rect key="frame" x="0.0" y="519.5" width="414" height="43.5"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="nce-W1-5sI" id="olZ-oG-KOk">
                                             <rect key="frame" x="0.0" y="0.0" width="414" height="43.5"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
-                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Reset to Defaults" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="HSU-th-1xd">
-                                                    <rect key="frame" x="16" y="11.000000000000002" width="378" height="21.666666666666671"/>
+                                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="iLa-Oa-IoH">
+                                                    <rect key="frame" x="0.0" y="0.0" width="414" height="44"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                                    <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                                    <nil key="highlightedColor"/>
-                                                </label>
+                                                    <state key="normal" title="Reset to Defaults">
+                                                        <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                    </state>
+                                                    <connections>
+                                                        <action selector="resetLoopFinderSettings" destination="Nfk-h3-LQE" eventType="touchUpInside" id="r0x-gV-1gV"/>
+                                                    </connections>
+                                                </button>
                                             </subviews>
                                             <color key="backgroundColor" red="0.80000000000000004" green="0.0078431372549019607" blue="0.094117647058823528" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                             <constraints>
-                                                <constraint firstAttribute="bottom" secondItem="HSU-th-1xd" secondAttribute="bottom" constant="11.5" id="65R-4M-KPz"/>
-                                                <constraint firstItem="HSU-th-1xd" firstAttribute="top" secondItem="olZ-oG-KOk" secondAttribute="top" constant="11" id="SKh-we-uGh"/>
-                                                <constraint firstAttribute="trailing" secondItem="HSU-th-1xd" secondAttribute="trailing" constant="20" id="qGr-bV-qNa"/>
-                                                <constraint firstItem="HSU-th-1xd" firstAttribute="leading" secondItem="olZ-oG-KOk" secondAttribute="leading" constant="16" id="yNv-fH-nse"/>
+                                                <constraint firstItem="iLa-Oa-IoH" firstAttribute="leading" secondItem="olZ-oG-KOk" secondAttribute="leading" id="08s-fA-TFP"/>
+                                                <constraint firstItem="iLa-Oa-IoH" firstAttribute="top" secondItem="olZ-oG-KOk" secondAttribute="top" id="bZ5-OL-Ufs"/>
+                                                <constraint firstAttribute="trailing" secondItem="iLa-Oa-IoH" secondAttribute="trailing" id="cTD-ZW-TDv"/>
+                                                <constraint firstAttribute="bottom" secondItem="iLa-Oa-IoH" secondAttribute="bottom" id="pq5-0i-7Hb"/>
                                             </constraints>
                                         </tableViewCellContentView>
                                     </tableViewCell>
@@ -1671,6 +1704,14 @@
                         </connections>
                     </tableView>
                     <navigationItem key="navigationItem" title="Title" id="aGV-e4-nLj"/>
+                    <connections>
+                        <outlet property="endTimeEstimateDeviationPenaltySlider" destination="cFS-4c-1LJ" id="oS6-cb-lxe"/>
+                        <outlet property="endTimeEstimateRadiusField" destination="y87-Xx-zhi" id="3Zc-zm-3zs"/>
+                        <outlet property="loopDurationEstimateDeviationPenaltySlider" destination="bQt-LG-LAF" id="gpa-g5-7lW"/>
+                        <outlet property="loopDurationEstimateRadiusField" destination="DGW-jt-1VR" id="nlT-PN-ftB"/>
+                        <outlet property="startTimeEstimateDeviationPenaltySlider" destination="Uvs-DA-fmx" id="Vwa-UD-Ir2"/>
+                        <outlet property="startTimeEstimateRadiusField" destination="W53-tq-1gj" id="XQN-e8-pli"/>
+                    </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="VRh-EY-atB" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
                 <exit id="fPE-OO-XCm" userLabel="Exit" sceneMemberID="exit"/>
@@ -2002,6 +2043,16 @@
                         </connections>
                     </tableView>
                     <navigationItem key="navigationItem" title="Title" id="Hyp-Vb-OIA"/>
+                    <connections>
+                        <outlet property="durationSearchEndIgnoreField" destination="JeY-Fg-JKo" id="m2w-zB-Crx"/>
+                        <outlet property="durationSearchSeparationField" destination="ZsO-Gm-hmM" id="oDt-72-7ht"/>
+                        <outlet property="durationSearchStartIgnoreField" destination="v78-uG-Hyd" id="ita-ff-qfS"/>
+                        <outlet property="endpointSearchDifferenceToleranceField" destination="kAe-8I-2zh" id="7b6-tU-j4M"/>
+                        <outlet property="fadeDetectionSwitch" destination="jqF-SW-wgz" id="WpC-iL-vch"/>
+                        <outlet property="fftLengthField" destination="ifj-IC-GNc" id="hdu-wb-yFz"/>
+                        <outlet property="minimumSearchDurationField" destination="VFh-kj-RFU" id="Ykc-6q-hJV"/>
+                        <outlet property="spectrogramOverlapPercentageField" destination="PF3-pR-yNR" id="Lqz-SM-EvH"/>
+                    </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="nZq-gQ-X2v" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
                 <exit id="4ce-Bb-Mdc" userLabel="Exit" sceneMemberID="exit"/>
@@ -2192,6 +2243,12 @@
                         </connections>
                     </tableView>
                     <navigationItem key="navigationItem" title="Title" id="rg5-FZ-AeB"/>
+                    <connections>
+                        <outlet property="frameRateReductionField" destination="rQz-aK-49E" id="Iiv-0w-Lgn"/>
+                        <outlet property="frameRateReductionLimitField" destination="aq3-Ox-yC6" id="6OU-oi-TPh"/>
+                        <outlet property="trackLengthLimitField" destination="PDx-7e-Yfr" id="ZbW-JJ-HHj"/>
+                        <outlet property="useMonoAudioSwitch" destination="NoD-d6-prc" id="na5-mu-4wV"/>
+                    </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="x7k-ds-OUQ" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
                 <exit id="bhS-Ev-1Pt" userLabel="Exit" sceneMemberID="exit"/>
@@ -2303,6 +2360,10 @@
                         </connections>
                     </tableView>
                     <navigationItem key="navigationItem" title="Title" id="pVw-Zz-JRJ"/>
+                    <connections>
+                        <outlet property="durationValuesField" destination="u7o-WX-ZvR" id="suU-gx-9WM"/>
+                        <outlet property="endpointPairsField" destination="zRL-Ga-shl" id="0Gl-FX-S61"/>
+                    </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="MlN-YX-OyN" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
                 <exit id="MPN-FH-A64" userLabel="Exit" sceneMemberID="exit"/>
@@ -2382,6 +2443,121 @@
                 <exit id="PDz-9g-ndu" userLabel="Exit" sceneMemberID="exit"/>
             </objects>
             <point key="canvasLocation" x="-555" y="-576"/>
+        </scene>
+        <!--Loop Finder Testing Settings-->
+        <scene sceneID="zLe-o2-Jxs">
+            <objects>
+                <tableViewController id="oAb-0a-eCe" userLabel="Loop Finder Testing Settings" customClass="LoopFinderTestingSettingsViewController" customModule="LoopMusic" customModuleProvider="target" sceneMemberID="viewController">
+                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="static" style="grouped" separatorStyle="default" allowsSelection="NO" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="18" sectionFooterHeight="18" id="pEA-Hr-P6A">
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="716"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <color key="backgroundColor" systemColor="systemGray5Color" red="0.8980392157" green="0.8980392157" blue="0.91764705879999997" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                        <navigationBar key="tableHeaderView" contentMode="scaleToFill" id="uTV-Gw-ea6">
+                            <rect key="frame" x="0.0" y="0.0" width="414" height="44"/>
+                            <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxY="YES"/>
+                            <items>
+                                <navigationItem title="Testing" id="sA1-mz-ygQ">
+                                    <barButtonItem key="leftBarButtonItem" title="Back" id="MWO-Bq-ggt">
+                                        <connections>
+                                            <segue destination="psJ-wP-B8U" kind="unwind" unwindAction="unwindWithSegue:" id="8cj-LD-zSg"/>
+                                        </connections>
+                                    </barButtonItem>
+                                </navigationItem>
+                            </items>
+                        </navigationBar>
+                        <sections>
+                            <tableViewSection footerTitle="If enabled, the loop will be tested automatically when loop points are changed." id="qWn-7n-KGQ">
+                                <cells>
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" id="JEH-8K-lnR">
+                                        <rect key="frame" x="0.0" y="62" width="414" height="43.5"/>
+                                        <autoresizingMask key="autoresizingMask"/>
+                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="JEH-8K-lnR" id="qtx-f5-Sje">
+                                            <rect key="frame" x="0.0" y="0.0" width="414" height="43.5"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                            <subviews>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Test on Change" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="G9l-7q-bhh">
+                                                    <rect key="frame" x="16" y="11.000000000000002" width="323" height="21.666666666666671"/>
+                                                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                                    <nil key="textColor"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
+                                                <switch opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" contentHorizontalAlignment="center" contentVerticalAlignment="center" on="YES" translatesAutoresizingMaskIntoConstraints="NO" id="nix-6K-eMh">
+                                                    <rect key="frame" x="347" y="6.0000000000000018" width="51" height="31.666666666666671"/>
+                                                    <connections>
+                                                        <action selector="settingChangedWithSender:" destination="oAb-0a-eCe" eventType="valueChanged" id="FeZ-K4-V24"/>
+                                                        <action selector="settingChangedWithSender:" destination="vyH-Q5-luI" eventType="valueChanged" id="nxn-9u-Tba"/>
+                                                    </connections>
+                                                </switch>
+                                            </subviews>
+                                            <constraints>
+                                                <constraint firstAttribute="bottom" secondItem="nix-6K-eMh" secondAttribute="bottom" constant="6.5" id="4hO-Cb-tzp"/>
+                                                <constraint firstItem="nix-6K-eMh" firstAttribute="top" secondItem="qtx-f5-Sje" secondAttribute="top" constant="6" id="55b-Bq-hKJ"/>
+                                                <constraint firstAttribute="bottom" secondItem="G9l-7q-bhh" secondAttribute="bottom" constant="11.5" id="KM3-L1-xzv"/>
+                                                <constraint firstItem="G9l-7q-bhh" firstAttribute="leading" secondItem="qtx-f5-Sje" secondAttribute="leading" constant="16" id="b2W-HH-W9w"/>
+                                                <constraint firstItem="G9l-7q-bhh" firstAttribute="top" secondItem="qtx-f5-Sje" secondAttribute="top" constant="11" id="kAP-ox-FLB"/>
+                                                <constraint firstAttribute="trailing" secondItem="nix-6K-eMh" secondAttribute="trailing" constant="18" id="svX-O3-Owp"/>
+                                                <constraint firstItem="nix-6K-eMh" firstAttribute="leading" secondItem="G9l-7q-bhh" secondAttribute="trailing" constant="8" id="urE-a2-KjZ"/>
+                                            </constraints>
+                                        </tableViewCellContentView>
+                                    </tableViewCell>
+                                </cells>
+                            </tableViewSection>
+                            <tableViewSection footerTitle="The amount of time (seconds) before the loop end that audio playback will be set to when testing the loop." id="Pcu-FN-a6F">
+                                <cells>
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" id="Kgs-TN-f2r">
+                                        <rect key="frame" x="0.0" y="169.5" width="414" height="43.5"/>
+                                        <autoresizingMask key="autoresizingMask"/>
+                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="Kgs-TN-f2r" id="bxu-fH-W6P">
+                                            <rect key="frame" x="0.0" y="0.0" width="414" height="43.5"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                            <subviews>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Loop Test Offset" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="PFb-Hi-vQG">
+                                                    <rect key="frame" x="16" y="11.000000000000002" width="284" height="21.666666666666671"/>
+                                                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                                    <nil key="textColor"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
+                                                <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" textAlignment="center" minimumFontSize="17" clearButtonMode="whileEditing" translatesAutoresizingMaskIntoConstraints="NO" id="lAA-MX-zvz">
+                                                    <rect key="frame" x="308" y="4" width="90" height="34.666666666666664"/>
+                                                    <constraints>
+                                                        <constraint firstAttribute="width" constant="90" id="2LG-Ra-chM"/>
+                                                    </constraints>
+                                                    <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                                    <textInputTraits key="textInputTraits" keyboardType="decimalPad" returnKeyType="done" enablesReturnKeyAutomatically="YES"/>
+                                                    <connections>
+                                                        <action selector="settingChangedWithSender:" destination="oAb-0a-eCe" eventType="editingDidEnd" id="k6Z-kw-3aj"/>
+                                                    </connections>
+                                                </textField>
+                                            </subviews>
+                                            <constraints>
+                                                <constraint firstItem="lAA-MX-zvz" firstAttribute="top" secondItem="bxu-fH-W6P" secondAttribute="top" constant="4" id="Pyg-mf-gh1"/>
+                                                <constraint firstItem="PFb-Hi-vQG" firstAttribute="top" secondItem="bxu-fH-W6P" secondAttribute="top" constant="11" id="RJa-TW-2bs"/>
+                                                <constraint firstItem="lAA-MX-zvz" firstAttribute="leading" secondItem="PFb-Hi-vQG" secondAttribute="trailing" constant="8" id="dkg-hx-3gQ"/>
+                                                <constraint firstAttribute="trailing" secondItem="lAA-MX-zvz" secondAttribute="trailing" constant="16" id="mOb-AD-hqc"/>
+                                                <constraint firstAttribute="bottom" secondItem="lAA-MX-zvz" secondAttribute="bottom" constant="5.5" id="mwd-Y6-IBb"/>
+                                                <constraint firstItem="PFb-Hi-vQG" firstAttribute="leading" secondItem="bxu-fH-W6P" secondAttribute="leading" constant="16" id="o55-AG-E6y"/>
+                                                <constraint firstAttribute="bottom" secondItem="PFb-Hi-vQG" secondAttribute="bottom" constant="11.5" id="uN6-re-iaY"/>
+                                            </constraints>
+                                        </tableViewCellContentView>
+                                    </tableViewCell>
+                                </cells>
+                            </tableViewSection>
+                        </sections>
+                        <connections>
+                            <outlet property="dataSource" destination="oAb-0a-eCe" id="ATo-bV-rfn"/>
+                            <outlet property="delegate" destination="oAb-0a-eCe" id="7UF-4F-32C"/>
+                        </connections>
+                    </tableView>
+                    <navigationItem key="navigationItem" title="Title" id="cPf-yz-B4o"/>
+                    <connections>
+                        <outlet property="loopTestOffsetField" destination="lAA-MX-zvz" id="RrA-Od-5h7"/>
+                        <outlet property="testLoopOnChangeSwitch" destination="nix-6K-eMh" id="LGq-pF-7Ry"/>
+                    </connections>
+                </tableViewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="cP1-GI-lAd" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+                <exit id="psJ-wP-B8U" userLabel="Exit" sceneMemberID="exit"/>
+            </objects>
+            <point key="canvasLocation" x="-1328" y="1618"/>
         </scene>
     </scenes>
     <inferredMetricsTieBreakers>

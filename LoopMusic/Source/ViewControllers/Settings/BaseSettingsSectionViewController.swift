@@ -23,7 +23,7 @@ class BaseSettingsSectionViewController: UITableViewController, UITextFieldDeleg
             do {
                 try MusicSettings.settings.saveSettingsFile()
             } catch {
-                ErrorUtils.showErrorMessage(error: error, viewController: self)
+                AlertUtils.showErrorMessage(error: error, viewController: self)
             }
         }
     }
