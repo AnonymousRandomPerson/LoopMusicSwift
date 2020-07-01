@@ -547,6 +547,7 @@
                                 </userDefinedRuntimeAttributes>
                                 <connections>
                                     <action selector="setPlaybackPosition" destination="BYZ-38-t0r" eventType="valueChanged" id="Ku8-Yl-sMe"/>
+                                    <action selector="setPlaybackPosition" destination="jMN-ee-0go" eventType="valueChanged" id="k9t-gl-XCj"/>
                                 </connections>
                             </slider>
                             <textField opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="KdN-DC-Jwf">
@@ -570,6 +571,28 @@
                                 <state key="normal" title="Revert"/>
                                 <connections>
                                     <action selector="revertLoopPoints" destination="jMN-ee-0go" eventType="touchUpInside" id="oFZ-Tu-LIC"/>
+                                </connections>
+                            </button>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Start" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="a4P-iW-GCH">
+                                <rect key="frame" x="87" y="179" width="38" height="21"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="End" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="xoz-mG-LAY">
+                                <rect key="frame" x="299" y="179" width="30" height="21"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Pbg-j2-3c6">
+                                <rect key="frame" x="287" y="136" width="67" height="30"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <state key="normal" title="Test Loop"/>
+                                <connections>
+                                    <action selector="testLoop" destination="jMN-ee-0go" eventType="touchUpInside" id="B7v-bJ-NRE"/>
                                 </connections>
                             </button>
                         </subviews>

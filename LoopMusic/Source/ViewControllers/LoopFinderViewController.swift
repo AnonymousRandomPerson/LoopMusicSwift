@@ -49,7 +49,7 @@ class LoopFinderViewController: UIViewController, LoopScrubberContainer, UITextF
             loopStartSeconds = 0
         }
         MusicPlayer.player.loopStartSeconds = loopStartSeconds
-        displayLoopTimes()
+        updateLoopTimes()
     }
     
     /// Sets the loop end time when the loop end text field is edited.
@@ -62,7 +62,7 @@ class LoopFinderViewController: UIViewController, LoopScrubberContainer, UITextF
             loopEndSeconds = MusicPlayer.player.durationSeconds
         }
         MusicPlayer.player.loopEndSeconds = loopEndSeconds
-        displayLoopTimes()
+        updateLoopTimes()
     }
     
     /// Reverts the loop points to their values when first entering this screen.
@@ -70,8 +70,21 @@ class LoopFinderViewController: UIViewController, LoopScrubberContainer, UITextF
         AlertUtils.showConfirmMessage(message: "Revert loop times to their original values?", viewController: self, confirmAction: { _ in
             MusicPlayer.player.loopStartSeconds = self.originalLoopStart
             MusicPlayer.player.loopEndSeconds = self.originalLoopEnd
-            self.displayLoopTimes()
+            self.updateLoopTimes()
         })
+    }
+    
+    /// Sets the playback time to shortly before the loop point.
+    @IBAction func testLoop() {
+        /// The time (seconds) that playback will be set to when testing the loop.
+        let testLoopSeconds = MusicPlayer.player.loopEndSeconds - (MusicSettings.settings.loopTestOffset ?? 0)
+        // Multiply sample rate by 2 to account for two channels.
+        MusicPlayer.player.sampleCounter = max(0, Int(testLoopSeconds * Double(MusicPlayer.player.sampleRate * 2)))
+    }
+    
+    /// Sets the audio playback position using the scrubber.
+    @IBAction func setPlaybackPosition() {
+        loopScrubber.setPlaybackPosition()
     }
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
@@ -102,6 +115,14 @@ class LoopFinderViewController: UIViewController, LoopScrubberContainer, UITextF
     
     @objc func dismissKeyboard() {
         view.endEditing(true)
+    }
+    
+    /// Displays the configured loop times and tests automatically if enabled.
+    private func updateLoopTimes() {
+        displayLoopTimes()
+        if MusicSettings.settings.testLoopOnChange {
+            testLoop()
+        }
     }
     
     /// Displays the loop start/end on the corresponding text fields.

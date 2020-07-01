@@ -63,6 +63,7 @@ class MusicPlayerViewController: UIViewController, LoopScrubberContainer {
         }
     }
     
+    /// Sets the audio playback position using the scrubber.
     @IBAction func setPlaybackPosition() {
         loopScrubber.setPlaybackPosition()
     }
@@ -83,12 +84,14 @@ class MusicPlayerViewController: UIViewController, LoopScrubberContainer {
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         self.loopScrubber.unload()
+        MusicPlayer.player.stopShuffleTimer()
     }
     
     /// Marks the screen as unwindable for segues.
     /// - parameter segue: Segue object performing the segue.
     @IBAction func unwind(segue: UIStoryboardSegue) {
         self.loopScrubber.resume()
+        MusicPlayer.player.startShuffleTimer()
     }
     
     /// Displays an error to the user.
