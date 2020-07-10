@@ -1,7 +1,7 @@
 import UIKit
 
 /// View controller for the top-level settings screen.
-class SettingsHomeViewController: UITableViewController {
+class SettingsHomeViewController: UITableViewController, UIAdaptivePresentationControllerDelegate {
     
     /// Cell used to navigate to track settings.
     @IBOutlet weak var trackSettingsCell: UITableViewCell!
@@ -12,6 +12,14 @@ class SettingsHomeViewController: UITableViewController {
         super.viewDidLoad()
         trackSettingsCell.isUserInteractionEnabled = MusicPlayer.player.trackLoaded
         trackSettingsLabel.isEnabled = MusicPlayer.player.trackLoaded
+    }
+    
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        segue.destination.presentationController?.delegate = self
+    }
+    
+    func presentationControllerDidDismiss(_ presentationController: UIPresentationController) {
+        (presentationController.presentedViewController as? Unloadable)?.unload(destination: self)
     }
     
     /// Marks the screen as unwindable for segues.

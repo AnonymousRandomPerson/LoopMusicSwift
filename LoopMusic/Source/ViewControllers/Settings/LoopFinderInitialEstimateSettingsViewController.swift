@@ -3,6 +3,8 @@ import UIKit
 /// View controller for the loop finder initial estimate settings section.
 class LoopFinderInitialEstimateSettingsViewController: BaseSettingsSectionViewController {
     
+    /// Switch for initial estimate.
+    @IBOutlet weak var initialEstimateSwitch: UISwitch!
     /// Text field for start time estimate radius.
     @IBOutlet weak var startTimeEstimateRadiusField: UITextField!
     /// Text field for end time estimate radius.
@@ -18,6 +20,7 @@ class LoopFinderInitialEstimateSettingsViewController: BaseSettingsSectionViewCo
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        registerSetting(settingView: BooleanSettingView(setting: &MusicSettings.settings.initialEstimate, settingModifier: initialEstimateSwitch))
         registerSetting(settingView: DoubleTextFieldSettingView(setting: &MusicSettings.settings.startTimeEstimateRadius, settingModifier: startTimeEstimateRadiusField))
         registerSetting(settingView: DoubleTextFieldSettingView(setting: &MusicSettings.settings.endTimeEstimateRadius, settingModifier: endTimeEstimateRadiusField))
         registerSetting(settingView: DoubleTextFieldSettingView(setting: &MusicSettings.settings.loopDurationEstimateRadius, settingModifier: loopDurationEstimateRadiusField))

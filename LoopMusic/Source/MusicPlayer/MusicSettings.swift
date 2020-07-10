@@ -45,6 +45,8 @@ class MusicSettings {
     /// For repeats shuffle, the maximum amount of time (minutes) for a track, regardless of the shuffle repeats.
     var maxShuffleTime: Double?
     
+    /// True if the loop finder will use the current loop times as an initial estimate for finding better times.
+    var initialEstimate: Bool = false
     /// How far the loop finder will deviate from the start time estimate (seconds).
     var startTimeEstimateRadius: Double?
     /// How far the loop finder will deviate from the end time estimate (seconds).
@@ -107,6 +109,7 @@ class MusicSettings {
             shuffleRepeatsVariance = settingsFile.shuffleRepeatsVariance
             minShuffleTime = settingsFile.minShuffleTime
             maxShuffleTime = settingsFile.maxShuffleTime
+            initialEstimate = settingsFile.initialEstimate
             startTimeEstimateRadius = settingsFile.startTimeEstimateRadius
             endTimeEstimateRadius = settingsFile.endTimeEstimateRadius
             loopDurationEstimateRadius = settingsFile.loopDurationEstimateRadius
@@ -158,6 +161,7 @@ class MusicSettings {
             settingsFile.shuffleRepeatsVariance = shuffleRepeatsVariance
             settingsFile.minShuffleTime = minShuffleTime
             settingsFile.maxShuffleTime = maxShuffleTime
+            settingsFile.initialEstimate = initialEstimate
             settingsFile.startTimeEstimateRadius = startTimeEstimateRadius
             settingsFile.endTimeEstimateRadius = endTimeEstimateRadius
             settingsFile.loopDurationEstimateRadius = loopDurationEstimateRadius

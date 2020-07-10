@@ -17,7 +17,8 @@ class TrackSettingsViewController: BaseSettingsSectionViewController {
         MusicPlayer.player.volumeMultiplier = Double(sender.value)
     }
     
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+    override func unload(destination: UIViewController) {
+        super.unload(destination: destination)
         if changed {
             do {
                 try MusicPlayer.player.saveVolumeMultiplier()

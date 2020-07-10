@@ -54,6 +54,7 @@
 		39DCDA402480B9880049353D /* LoopFinderSettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 39DCDA3F2480B9880049353D /* LoopFinderSettingsViewController.swift */; };
 		39DCDA422480BBBE0049353D /* TimeShuffleSettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 39DCDA412480BBBE0049353D /* TimeShuffleSettingsViewController.swift */; };
 		39DCDA442480BE050049353D /* RepeatsShuffleSettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 39DCDA432480BE050049353D /* RepeatsShuffleSettingsViewController.swift */; };
+		39DFF48024B80135003D8E7B /* Unloadable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 39DFF47F24B80135003D8E7B /* Unloadable.swift */; };
 		39E2CC3923AF12A4001FE0BF /* DataMigrator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 39E2CC3823AF12A4001FE0BF /* DataMigrator.swift */; };
 		39EB89B6247A25D8002E0901 /* DoubleTextFieldSettingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 39EB89B5247A25D8002E0901 /* DoubleTextFieldSettingView.swift */; };
 		39EC8AE2245A6E0F00D5240D /* PlaylistListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 39EC8AE1245A6E0F00D5240D /* PlaylistListViewController.swift */; };
@@ -133,6 +134,7 @@
 		39DCDA3F2480B9880049353D /* LoopFinderSettingsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoopFinderSettingsViewController.swift; sourceTree = "<group>"; };
 		39DCDA412480BBBE0049353D /* TimeShuffleSettingsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimeShuffleSettingsViewController.swift; sourceTree = "<group>"; };
 		39DCDA432480BE050049353D /* RepeatsShuffleSettingsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RepeatsShuffleSettingsViewController.swift; sourceTree = "<group>"; };
+		39DFF47F24B80135003D8E7B /* Unloadable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Unloadable.swift; sourceTree = "<group>"; };
 		39E2CC3823AF12A4001FE0BF /* DataMigrator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataMigrator.swift; sourceTree = "<group>"; };
 		39EB89B5247A25D8002E0901 /* DoubleTextFieldSettingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DoubleTextFieldSettingView.swift; sourceTree = "<group>"; };
 		39EC8AE1245A6E0F00D5240D /* PlaylistListViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlaylistListViewController.swift; sourceTree = "<group>"; };
@@ -185,6 +187,7 @@
 				3928C38624553D560007A4FE /* MediaPlayerUtils.swift */,
 				39191C2D22E6BCDB00C09D67 /* MessageError.swift */,
 				39B5B31E23B97A1C0091D2E1 /* Notifications.swift */,
+				39DFF47F24B80135003D8E7B /* Unloadable.swift */,
 			);
 			path = Utils;
 			sourceTree = "<group>";
@@ -483,6 +486,7 @@
 				39DCDA422480BBBE0049353D /* TimeShuffleSettingsViewController.swift in Sources */,
 				39B5B31F23B97A1C0091D2E1 /* Notifications.swift in Sources */,
 				39A8D8FC246262FD00652E70 /* MusicSettingsCodable.swift in Sources */,
+				39DFF48024B80135003D8E7B /* Unloadable.swift in Sources */,
 				395D897D24738AAA00B9FD1C /* DoubleSettingView.swift in Sources */,
 				3972084F249F02DF001494C7 /* LoopFinderTestingViewController.swift in Sources */,
 				3925EE29248495900020B94C /* LoopScrubber.swift in Sources */,

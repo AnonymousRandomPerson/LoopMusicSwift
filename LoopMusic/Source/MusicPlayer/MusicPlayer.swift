@@ -417,6 +417,16 @@ class MusicPlayer {
         try playTrack()
     }
     
+    /// Reloads all tracks in the current playlist. Used for database migration.
+    func reloadAllTracks() throws {
+        /// Tracks list to load.
+        let tracks: [MPMediaItem] = MediaPlayerUtils.getTracksInPlaylist()
+        
+        try tracks.forEach { track in
+            try loadTrack(mediaItem: track)
+        }
+    }
+    
     /// Enables background audio playback for the app.
     func enableBackgroundAudio() throws {
         do {

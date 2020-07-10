@@ -31,7 +31,7 @@ class ShuffleSettingsViewController: BaseSettingsSectionViewController {
     }
     
     override func tableView(_ tableView: UITableView, titleForFooterInSection section: Int) -> String? {
-        if section == 0 {
+        if section == 1 {
             switch MusicSettings.settings.shuffleSetting {
             case ShuffleSetting.none: return "No automatic track shuffling."
             case ShuffleSetting.time: return "Shuffle tracks after an amount of time (seconds) has passed."

@@ -1,7 +1,7 @@
 import UIKit
 
 /// Base view controller for settings section screens.
-class BaseSettingsSectionViewController: UITableViewController, UITextFieldDelegate {
+class BaseSettingsSectionViewController: UITableViewController, UITextFieldDelegate, Unloadable, UIAdaptivePresentationControllerDelegate {
     
     /// Set to true if a setting has changed; the settings file will be saved after seguing back to the settings home.
     var changed: Bool = false
@@ -19,6 +19,15 @@ class BaseSettingsSectionViewController: UITableViewController, UITextFieldDeleg
     }
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        unload(destination: segue.destination)
+        segue.destination.presentationController?.delegate = self
+    }
+    
+    func presentationControllerDidDismiss(_ presentationController: UIPresentationController) {
+        (presentationController.presentedViewController as? Unloadable)?.unload(destination: self)
+    }
+    
+    func unload(destination: UIViewController) {
         if changed {
             do {
                 try MusicSettings.settings.saveSettingsFile()

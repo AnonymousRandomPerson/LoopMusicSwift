@@ -1,7 +1,7 @@
 import UIKit
 
 /// View controller for the loop finder.
-class LoopFinderViewController: UIViewController, LoopScrubberContainer, UITextFieldDelegate {
+class LoopFinderViewController: UIViewController, LoopScrubberContainer, UITextFieldDelegate, Unloadable, UIAdaptivePresentationControllerDelegate {
     
     /// Text field used to edit the loop start.
     @IBOutlet weak var loopStartField: UITextField!
@@ -12,6 +12,9 @@ class LoopFinderViewController: UIViewController, LoopScrubberContainer, UITextF
     /// Slider used for playback scrubbing.
     @IBOutlet weak var loopScrubber: LoopScrubber!
     
+    /// Switch for initial estimate.
+    @IBOutlet weak var initialEstimateSwitch: UISwitch!
+    
     /// Formatter for displaying loop times.
     private var loopTimeFormat: NumberFormatter!
     
@@ -19,6 +22,11 @@ class LoopFinderViewController: UIViewController, LoopScrubberContainer, UITextF
     private var originalLoopStart: Double = 0
     /// The loop end value upon first entering this screen.
     private var originalLoopEnd: Double = 0
+    
+    /// True if a loop time is changed and should be saved.
+    private var loopTimeChanged = false
+    /// True if a setting changes and should be saved to the settings file.
+    private var settingChanged = false
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -31,6 +39,8 @@ class LoopFinderViewController: UIViewController, LoopScrubberContainer, UITextF
         
         originalLoopStart = MusicPlayer.player.loopStartSeconds
         originalLoopEnd = MusicPlayer.player.loopEndSeconds
+        
+        initialEstimateSwitch.isOn = MusicSettings.settings.initialEstimate
         
         let tap: UITapGestureRecognizer = UITapGestureRecognizer(
             target: self,
@@ -87,25 +97,63 @@ class LoopFinderViewController: UIViewController, LoopScrubberContainer, UITextF
         loopScrubber.setPlaybackPosition()
     }
     
+    /// Changes the initial estimate setting when the switch is flipped.
+    @IBAction func setInitialEstimate() {
+        MusicSettings.settings.initialEstimate = initialEstimateSwitch.isOn
+        settingChanged = true
+    }
+    
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        self.loopScrubber.unload()
-        if segue.destination is MusicPlayerViewController {
-            do {
-                try MusicPlayer.player.saveLoopPoints()
-            } catch {
-                AlertUtils.showErrorMessage(error: error, viewController: self)
+        unload(destination: segue.destination)
+        segue.destination.presentationController?.delegate = self
+    }
+    
+    func unload(destination: UIViewController) {
+        loopScrubber.unload()
+        if destination is MusicPlayerViewController {
+            if loopTimeChanged {
+                do {
+                    try MusicPlayer.player.saveLoopPoints()
+                } catch {
+                    AlertUtils.showErrorMessage(error: error, viewController: self)
+                }
+            }
+            
+            if settingChanged {
+                do {
+                    try MusicSettings.settings.saveSettingsFile()
+                } catch {
+                    AlertUtils.showErrorMessage(error: error, viewController: self)
+                }
             }
         }
+    }
+    
+    func presentationControllerDidDismiss(_ presentationController: UIPresentationController) {
+        (presentationController.presentedViewController as? Unloadable)?.unload(destination: self)
+        reloadView()
     }
     
     /// Marks the screen as unwindable for segues.
     /// - parameter segue: Segue object performing the segue.
     @IBAction func unwind(segue: UIStoryboardSegue) {
-        self.loopScrubber.resume()
+        reloadView()
+    }
+    
+    /// Restarts paused elements in the view after a presented view is dismissed.
+    private func reloadView() {
+        loopScrubber.resume()
     }
     
     func getScrubber() -> LoopScrubber {
         return loopScrubber
+    }
+    
+    override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
+        super.viewWillTransition(to: size, with: coordinator)
+        coordinator.animate(alongsideTransition: nil, completion: { _ in
+            self.loopScrubber.updateLoopBox()
+        })
     }
     
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
@@ -123,6 +171,7 @@ class LoopFinderViewController: UIViewController, LoopScrubberContainer, UITextF
         if MusicSettings.settings.testLoopOnChange {
             testLoop()
         }
+        loopTimeChanged = true
     }
     
     /// Displays the loop start/end on the corresponding text fields.

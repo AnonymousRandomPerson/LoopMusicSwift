@@ -54,6 +54,8 @@ class MusicData {
         /// The track to return.
         var track: MusicTrack = MusicTrack.BLANK_MUSIC_TRACK
         if let trackURL: URL = mediaItem.assetURL, let trackName: String = mediaItem.title {
+            /// Track name escaped for SQL queries.
+            let escapedTrackName = self.escapeStringForDb(trackName)
             let trackCallback = {(statement: OpaquePointer?) -> Void in
                 track = MusicTrack(
                     id: sqlite3_column_int64(statement, 4),
@@ -66,7 +68,7 @@ class MusicData {
                 if dbTrackName != trackName {
                     // If the media item name has changed since last loaded from the database, update it.
                     // This can happen if the item is renamed outside the app.
-                    try self.executeSql(query: String(format: "UPDATE Tracks SET name = '%@' WHERE id = '%i'", self.escapeStringForDb(trackName), track.id),
+                    try self.executeSql(query: String(format: "UPDATE Tracks SET name = '%@' WHERE id = '%i'", escapedTrackName, track.id),
                                         errorMessage: String(format: "Failed to update name for %@", trackName))
                 }
             }
@@ -76,8 +78,7 @@ class MusicData {
                 noResultCallback: {() -> Void in
                     // Try to fallback on name. If the track is changed at all, the URL may change.
                     try self.executeSql(
-                        // TODO Escape special characters in name.
-                        query: String(format: "SELECT loopStart, loopEnd, volumeMultiplier, id FROM Tracks WHERE name = '%@'", trackName),
+                        query: String(format: "SELECT loopStart, loopEnd, volumeMultiplier, id FROM Tracks WHERE name = '%@'", escapedTrackName),
                         stepCallback: {(statement: OpaquePointer?) -> Void in
                             // Update the stored track URL if a name match is found.
                             try trackCallback(statement)
@@ -87,7 +88,7 @@ class MusicData {
                         noResultCallback: {() -> Void in
                             // Save track as new if not found.
                             try self.executeSql(
-                                query: String(format: "INSERT INTO Tracks (url, name) VALUES ('%@', '%@')", trackURL.absoluteString, trackName),
+                                query: String(format: "INSERT INTO Tracks (url, name) VALUES ('%@', '%@')", trackURL.absoluteString, escapedTrackName),
                                 lastInsertCallback: {(id: Int64) -> Void in
                                     track = MusicTrack(
                                         id: id,

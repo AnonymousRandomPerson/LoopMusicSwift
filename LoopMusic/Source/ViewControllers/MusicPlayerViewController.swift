@@ -2,7 +2,7 @@ import MediaPlayer
 import UIKit
 
 /// View controller for the music player (home screen) of the app.
-class MusicPlayerViewController: UIViewController, LoopScrubberContainer {
+class MusicPlayerViewController: UIViewController, LoopScrubberContainer, UIAdaptivePresentationControllerDelegate {
     
     /// Notification for updating the track name when the current track changes.
     static let NOTIFICATION_TRACK_NAME: NSNotification.Name = NSNotification.Name("trackName")
@@ -85,11 +85,22 @@ class MusicPlayerViewController: UIViewController, LoopScrubberContainer {
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         self.loopScrubber.unload()
         MusicPlayer.player.stopShuffleTimer()
+        segue.destination.presentationController?.delegate = self
+    }
+    
+    func presentationControllerDidDismiss(_ presentationController: UIPresentationController) {
+        (presentationController.presentedViewController as? Unloadable)?.unload(destination: self)
+        reloadView()
     }
     
     /// Marks the screen as unwindable for segues.
     /// - parameter segue: Segue object performing the segue.
     @IBAction func unwind(segue: UIStoryboardSegue) {
+        reloadView()
+    }
+    
+    /// Restarts paused elements in the view after a presented view is dismissed.
+    private func reloadView() {
         self.loopScrubber.resume()
         MusicPlayer.player.startShuffleTimer()
     }
@@ -121,5 +132,12 @@ class MusicPlayerViewController: UIViewController, LoopScrubberContainer {
     
     func getScrubber() -> LoopScrubber {
         return loopScrubber
+    }
+    
+    override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
+        super.viewWillTransition(to: size, with: coordinator)
+        coordinator.animate(alongsideTransition: nil, completion: { _ in
+            self.loopScrubber.updateLoopBox()
+        })
     }
 }
