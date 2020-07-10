@@ -30,6 +30,9 @@ AudioQueueBufferRef buffers[NUM_BUFFERS];
 /// True if audio is currently playing.
 bool playing = false;
 
+/// True if loop times are used to loop playback.
+bool loopPlayback = true;
+
 double volumeMultiplier;
 
 bool areAudioDescsEqual(AudioStreamBasicDescription desc1, AudioStreamBasicDescription desc2);
@@ -42,8 +45,8 @@ for (unsigned int i = 0; i < BUFFER_SIZE / sizeof(castedAudioData[0]); i++) { \
     } else { \
         castedBufferData[i] = castedAudioData[sampleCounter++] * volumeMultiplier; \
     } \
-    if ((loopEnd > 0 && sampleCounter > loopEnd) || sampleCounter >= numSamples) { \
-        sampleCounter = loopStart; \
+    if ((loopEnd > 0 && sampleCounter > loopEnd && loopPlayback) || sampleCounter >= numSamples) { \
+        sampleCounter = loopPlayback ? loopStart : 0; \
     } \
 } \
 
@@ -129,6 +132,10 @@ void setLoopPoints(int64_t newLoopStart, int64_t newLoopEnd) {
 
 void setVolumeMultiplier(double newVolumeMultiplier) {
     volumeMultiplier = newVolumeMultiplier;
+}
+
+void setLoopPlayback(bool newLoopPlayback) {
+    loopPlayback = newLoopPlayback;
 }
 
 OSStatus playAudio() {

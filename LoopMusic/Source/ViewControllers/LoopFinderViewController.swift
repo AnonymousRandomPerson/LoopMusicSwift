@@ -75,6 +75,18 @@ class LoopFinderViewController: UIViewController, LoopScrubberContainer, UITextF
         updateLoopTimes()
     }
     
+    /// Sets the loop start time to the current playback time.
+    @IBAction func setCurrentStartTime() {
+        MusicPlayer.player.loopStartSeconds = MusicPlayer.player.playbackTimeSeconds
+        updateLoopTimes()
+    }
+    
+    /// Sets the loop end time to the current playback time.
+    @IBAction func setCurrentEndTime() {
+        MusicPlayer.player.loopEndSeconds = MusicPlayer.player.playbackTimeSeconds
+        updateLoopTimes()
+    }
+    
     /// Reverts the loop points to their values when first entering this screen.
     @IBAction func revertLoopPoints() {
         AlertUtils.showConfirmMessage(message: "Revert loop times to their original values?", viewController: self, confirmAction: { _ in
@@ -88,8 +100,7 @@ class LoopFinderViewController: UIViewController, LoopScrubberContainer, UITextF
     @IBAction func testLoop() {
         /// The time (seconds) that playback will be set to when testing the loop.
         let testLoopSeconds = MusicPlayer.player.loopEndSeconds - (MusicSettings.settings.loopTestOffset ?? 0)
-        // Multiply sample rate by 2 to account for two channels.
-        MusicPlayer.player.sampleCounter = max(0, Int(testLoopSeconds * Double(MusicPlayer.player.sampleRate * 2)))
+        MusicPlayer.player.playbackTimeSeconds = max(0, testLoopSeconds)
     }
     
     /// Sets the audio playback position using the scrubber.
@@ -103,6 +114,12 @@ class LoopFinderViewController: UIViewController, LoopScrubberContainer, UITextF
         settingChanged = true
     }
     
+    /// Toggles whether loop playback is enabled.
+    /// - parameter uiSwitch: Switch controlling loop playback.
+    @IBAction func toggleLoopPlayback(uiSwitch: UISwitch) {
+        MusicPlayer.player.updateLoopPlayback(loopPlayback: uiSwitch.isOn)
+    }
+    
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         unload(destination: segue.destination)
         segue.destination.presentationController?.delegate = self
@@ -111,6 +128,8 @@ class LoopFinderViewController: UIViewController, LoopScrubberContainer, UITextF
     func unload(destination: UIViewController) {
         loopScrubber.unload()
         if destination is MusicPlayerViewController {
+            MusicPlayer.player.updateLoopPlayback(loopPlayback: true)
+            
             if loopTimeChanged {
                 do {
                     try MusicPlayer.player.saveLoopPoints()

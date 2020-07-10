@@ -60,6 +60,16 @@ class MusicPlayer {
             setSampleCounter(Int64(newValue))
         }
     }
+    
+    /// The current playback time in seconds.
+    var playbackTimeSeconds: Double {
+        get {
+            return Double(sampleCounter) / (sampleRate * 2)
+        }
+        set {
+            sampleCounter = Int(newValue * Double(sampleRate * 2))
+        }
+    }
 
     /// The total number of samples in the audio data.
     var numSamples: Int {
@@ -389,6 +399,12 @@ class MusicPlayer {
     /// Updates the volume multiplier within the audio engine.
     func updateVolume() {
         setVolumeMultiplier(currentTrack.volumeMultiplier * MusicSettings.settings.masterVolume * fadeMultiplier)
+    }
+    
+    /// Sets whether loop times are used to loop playback.
+    /// - parameter loopPlayback: True if loop times are used to loop playback.
+    func updateLoopPlayback(loopPlayback: Bool) {
+        setLoopPlayback(loopPlayback)
     }
     
     /// Saves the currently configured volume multiplier to the database.

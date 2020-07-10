@@ -23,6 +23,9 @@ void setLoopPoints(int64_t, int64_t);
 /// Sets the multiplier used to alter the volume of the track.
 void setVolumeMultiplier(double);
 
+/// Sets whether loop times are used to loop playback.
+void setLoopPlayback(bool);
+
 /// Starts playing the loaded audio.
 OSStatus playAudio(void);
 
