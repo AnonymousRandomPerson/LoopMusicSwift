@@ -64,7 +64,7 @@ class MusicPlayer {
     /// The current playback time in seconds.
     var playbackTimeSeconds: Double {
         get {
-            return Double(sampleCounter) / (sampleRate * 2)
+            return convertSamplesToSeconds(sampleCounter) / 2
         }
         set {
             sampleCounter = Int(newValue * Double(sampleRate * 2))
@@ -81,7 +81,7 @@ class MusicPlayer {
     /// The length of the audio data in seconds.
     var durationSeconds: Double {
         get {
-            return Double(numSamples) / sampleRate
+            return convertSamplesToSeconds(numSamples)
         }
     }
 
@@ -90,12 +90,20 @@ class MusicPlayer {
         get {
             return Int(getLoopStart());
         }
+        set {
+            currentTrack.loopStart = convertSamplesToSeconds(newValue)
+            updateLoopPoints()
+        }
     }
 
     /// The audio sample to end the loop at.
     var loopEnd: Int {
         get {
             return Int(getLoopEnd());
+        }
+        set {
+            currentTrack.loopEnd = convertSamplesToSeconds(newValue)
+            updateLoopPoints()
         }
     }
     
@@ -491,5 +499,12 @@ class MusicPlayer {
         shuffleTimer = nil
         fadeTimer?.invalidate()
         fadeTimer = nil
+    }
+    
+    /// Converts a sample number into seconds using the current sample rate.
+    /// - parameter samples: The number of samples to convert.
+    /// - returns: The given samples converted to seconds.
+    func convertSamplesToSeconds(_ samples: Int) -> Double {
+        return Double(samples) / sampleRate
     }
 }

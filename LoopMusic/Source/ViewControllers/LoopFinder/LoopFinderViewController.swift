@@ -16,7 +16,7 @@ class LoopFinderViewController: UIViewController, LoopScrubberContainer, UITextF
     @IBOutlet weak var initialEstimateSwitch: UISwitch!
     
     /// Formatter for displaying loop times.
-    private var loopTimeFormat: NumberFormatter!
+    private var loopTimeFormat: NumberFormatter?
     
     /// The loop start value upon first entering this screen.
     private var originalLoopStart: Double = 0
@@ -27,14 +27,15 @@ class LoopFinderViewController: UIViewController, LoopScrubberContainer, UITextF
     private var loopTimeChanged = false
     /// True if a setting changes and should be saved to the settings file.
     private var settingChanged = false
+    
+    /// Nested view controller for loop duration selection.
+    private var loopDurationView: LoopDurationViewController!
+    /// Nested view controller for loop endpoint selection.
+    private var loopEndpointsView: LoopEndpointsViewController!
 
     override func viewDidLoad() {
         super.viewDidLoad()
         self.loopScrubber?.playTrack()
-        
-        loopTimeFormat = NumberFormatter()
-        loopTimeFormat.minimumFractionDigits = 0
-        loopTimeFormat.maximumFractionDigits = 4
         displayLoopTimes()
         
         originalLoopStart = MusicPlayer.player.loopStartSeconds
@@ -58,8 +59,9 @@ class LoopFinderViewController: UIViewController, LoopScrubberContainer, UITextF
         } else {
             loopStartSeconds = 0
         }
+        loopStartField.text = formatLoopTime(loopStartSeconds)
         MusicPlayer.player.loopStartSeconds = loopStartSeconds
-        updateLoopTimes()
+        updateManualLoopTimes()
     }
     
     /// Sets the loop end time when the loop end text field is edited.
@@ -71,20 +73,21 @@ class LoopFinderViewController: UIViewController, LoopScrubberContainer, UITextF
         } else {
             loopEndSeconds = MusicPlayer.player.durationSeconds
         }
+        loopEndField.text = formatLoopTime(loopEndSeconds)
         MusicPlayer.player.loopEndSeconds = loopEndSeconds
-        updateLoopTimes()
+        updateManualLoopTimes()
     }
     
     /// Sets the loop start time to the current playback time.
     @IBAction func setCurrentStartTime() {
         MusicPlayer.player.loopStartSeconds = MusicPlayer.player.playbackTimeSeconds
-        updateLoopTimes()
+        updateManualLoopTimes()
     }
     
     /// Sets the loop end time to the current playback time.
     @IBAction func setCurrentEndTime() {
         MusicPlayer.player.loopEndSeconds = MusicPlayer.player.playbackTimeSeconds
-        updateLoopTimes()
+        updateManualLoopTimes()
     }
     
     /// Reverts the loop points to their values when first entering this screen.
@@ -92,7 +95,7 @@ class LoopFinderViewController: UIViewController, LoopScrubberContainer, UITextF
         AlertUtils.showConfirmMessage(message: "Revert loop times to their original values?", viewController: self, confirmAction: { _ in
             MusicPlayer.player.loopStartSeconds = self.originalLoopStart
             MusicPlayer.player.loopEndSeconds = self.originalLoopEnd
-            self.updateLoopTimes()
+            self.updateManualLoopTimes()
         })
     }
     
@@ -120,9 +123,39 @@ class LoopFinderViewController: UIViewController, LoopScrubberContainer, UITextF
         MusicPlayer.player.updateLoopPlayback(loopPlayback: uiSwitch.isOn)
     }
     
+    /// Finds loop points for the current track automatically.
+    @IBAction func searchForLoops() {
+        /// The loop durations found by the loop finding algorithm.
+        let loopDurations: [LoopDuration] = [LoopDuration(rank: 1, confidence: 0.5, duration: 40000, endpoints: [LoopEndpoints(rank: 1, start: 40000, end: 80000), LoopEndpoints(rank: 2, start: 80000, end: 120000)]), LoopDuration(rank: 2, confidence: 0.2, duration: 80000, endpoints: [LoopEndpoints(rank: 1, start: 80000, end: 160000), LoopEndpoints(rank: 2, start: 160000, end: 240000)])]
+        loopDurationView.useNewItems(newItems: loopDurations)
+    }
+    
+    /// Changes the loop duration when selected from loop finding results.
+    /// - parameter loopDuration: The loop duration to switch to.
+    func changeLoopDuration(loopDuration: LoopDuration) {
+        loopEndpointsView.durationRank = loopDuration.rank
+        loopEndpointsView.useNewItems(newItems: loopDuration.endpoints)
+    }
+    
+    /// Changes the loop endpoints when selected from loop finding results.
+    /// - parameter loopEndpoints: The loop endpoints to switch to.
+    func changeLoopEndpoints(loopEndpoints: LoopEndpoints) {
+        MusicPlayer.player.loopStart = loopEndpoints.start
+        MusicPlayer.player.loopEnd = loopEndpoints.end
+        updateLoopTimes()
+    }
+    
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        unload(destination: segue.destination)
-        segue.destination.presentationController?.delegate = self
+        if let destination: LoopDurationViewController = segue.destination as? LoopDurationViewController {
+            loopDurationView = destination
+            destination.loopFinder = self
+        } else if let destination: LoopEndpointsViewController = segue.destination as? LoopEndpointsViewController {
+            loopEndpointsView = destination
+            destination.loopFinder = self
+        } else {
+            unload(destination: segue.destination)
+            segue.destination.presentationController?.delegate = self
+        }
     }
     
     func unload(destination: UIViewController) {
@@ -184,6 +217,25 @@ class LoopFinderViewController: UIViewController, LoopScrubberContainer, UITextF
         view.endEditing(true)
     }
     
+    /// Formats a number of seconds into a string.
+    /// - parameter seconds: Seconds to format.
+    /// - returns: Seconds formatted as a string.
+    func formatLoopTime(_ seconds: Double) -> String {
+        if loopTimeFormat == nil {
+            loopTimeFormat = NumberFormatter()
+            loopTimeFormat!.minimumFractionDigits = 0
+            loopTimeFormat!.maximumFractionDigits = 4
+        }
+        return loopTimeFormat!.string(from: NSNumber(value: seconds))!
+    }
+    
+    /// Displays the loop start/end on the corresponding text fields.
+    private func displayLoopTimes() {
+        loopStartField.text = formatLoopTime(MusicPlayer.player.loopStartSeconds)
+        loopEndField.text = formatLoopTime(MusicPlayer.player.loopEndSeconds)
+        loopScrubber.updateLoopBox()
+    }
+    
     /// Displays the configured loop times and tests automatically if enabled.
     private func updateLoopTimes() {
         displayLoopTimes()
@@ -193,10 +245,10 @@ class LoopFinderViewController: UIViewController, LoopScrubberContainer, UITextF
         loopTimeChanged = true
     }
     
-    /// Displays the loop start/end on the corresponding text fields.
-    private func displayLoopTimes() {
-        loopStartField.text = loopTimeFormat.string(from: NSNumber(value: MusicPlayer.player.loopStartSeconds))
-        loopEndField.text = loopTimeFormat.string(from: NSNumber(value: MusicPlayer.player.loopEndSeconds))
-        loopScrubber.updateLoopBox()
+    /// Updates the current loop duration times, without using loop finding algorithm results.
+    private func updateManualLoopTimes() {
+        updateLoopTimes()
+        loopDurationView.updateManual()
+        loopEndpointsView.updateManual()
     }
 }

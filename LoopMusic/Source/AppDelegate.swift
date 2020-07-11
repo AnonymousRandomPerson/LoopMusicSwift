@@ -10,6 +10,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         TrackListViewController.load()
         PlaylistListViewController.load()
+        LoopDurationViewController.load()
+        LoopEndpointsViewController.load()
         return true
     }
 
