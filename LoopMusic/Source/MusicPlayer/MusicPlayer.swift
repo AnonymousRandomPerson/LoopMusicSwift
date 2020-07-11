@@ -241,7 +241,7 @@ class MusicPlayer {
         
         try playTrack()
         
-        NotificationCenter.default.post(name: .trackName, object: nil)
+        NotificationCenter.default.post(name: .changeTrack, object: nil)
     }
     
     /// Adds the next portion of audio to the audio buffer. Converts non-interleaved to interleaved audio if necessary.

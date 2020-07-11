@@ -182,19 +182,6 @@
             </objects>
             <point key="canvasLocation" x="-554.39999999999998" y="87.706146926536732"/>
         </scene>
-        <!--Navigation Controller-->
-        <scene sceneID="UmX-EW-ua0">
-            <objects>
-                <navigationController id="Lae-Sb-ogZ" sceneMemberID="viewController">
-                    <navigationBar key="navigationBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" id="uBw-60-903">
-                        <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
-                        <autoresizingMask key="autoresizingMask"/>
-                    </navigationBar>
-                </navigationController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="SIh-qS-dFX" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="-3658" y="-780"/>
-        </scene>
         <!--General Settings-->
         <scene sceneID="3ty-mv-Yxy">
             <objects>
@@ -548,10 +535,10 @@
             </objects>
             <point key="canvasLocation" x="888" y="-280"/>
         </scene>
-        <!--View Controller-->
+        <!--Loop Finder Container-->
         <scene sceneID="dvp-fH-0IQ">
             <objects>
-                <viewController id="jMN-ee-0go" sceneMemberID="viewController">
+                <viewController id="jMN-ee-0go" userLabel="Loop Finder Container" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="GcW-fY-6KK">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="647"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -589,12 +576,8 @@
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="g2d-Ac-4vy"/>
                     </view>
-                    <connections>
-                        <segue destination="HPp-ar-rJN" kind="unwind" unwindAction="unwindWithSegue:" id="Ud0-Vr-OAy"/>
-                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="1Hn-T2-gYO" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
-                <exit id="HPp-ar-rJN" userLabel="Exit" sceneMemberID="exit"/>
             </objects>
             <point key="canvasLocation" x="130.40000000000001" y="871.21439280359823"/>
         </scene>
@@ -2731,11 +2714,11 @@
                         <viewControllerLayoutGuide type="bottom" id="14Z-Ez-peo"/>
                     </layoutGuides>
                     <view key="view" contentMode="scaleToFill" id="apZ-ji-rBm">
-                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <rect key="frame" x="0.0" y="0.0" width="287" height="156"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <button opaque="NO" tag="1" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="fill" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="yvt-FY-GsK">
-                                <rect key="frame" x="0.0" y="0.0" width="50" height="667"/>
+                                <rect key="frame" x="0.0" y="0.0" width="50" height="156"/>
                                 <color key="backgroundColor" red="0.83676900799999998" green="0.83676900799999998" blue="0.83676900799999998" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <constraints>
                                     <constraint firstAttribute="width" constant="50" id="0bA-9h-9gw"/>
@@ -2744,7 +2727,7 @@
                                 <state key="normal" title="◀︎"/>
                             </button>
                             <button opaque="NO" tag="2" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="fill" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ieG-H0-Yt5">
-                                <rect key="frame" x="325" y="0.0" width="50" height="667"/>
+                                <rect key="frame" x="237" y="0.0" width="50" height="156"/>
                                 <color key="backgroundColor" red="0.83676900799999998" green="0.83676900799999998" blue="0.83676900799999998" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <constraints>
                                     <constraint firstAttribute="width" constant="50" id="wid-oB-5mM"/>
@@ -2753,19 +2736,19 @@
                                 <state key="normal" title="▶︎"/>
                             </button>
                             <label opaque="NO" userInteractionEnabled="NO" tag="4" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Confidence:" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Dje-as-GKC">
-                                <rect key="frame" x="68" y="324" width="88" height="19.5"/>
+                                <rect key="frame" x="68" y="68.5" width="88" height="19.5"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="16"/>
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <label opaque="NO" userInteractionEnabled="NO" tag="5" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Duration:" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="TyX-sT-NwU">
-                                <rect key="frame" x="68" y="353.5" width="66.5" height="19.5"/>
+                                <rect key="frame" x="68" y="98" width="66.5" height="19.5"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="16"/>
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <label opaque="NO" userInteractionEnabled="NO" tag="3" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Rank:" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="rtR-Lm-mS4">
-                                <rect key="frame" x="68" y="294.5" width="40.5" height="19.5"/>
+                                <rect key="frame" x="68" y="39" width="40.5" height="19.5"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="16"/>
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
@@ -2928,8 +2911,8 @@
                                 </connections>
                             </textField>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Loop Finder" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="MCk-Qc-vIw">
-                                <rect key="frame" x="142" y="23" width="91" height="20.5"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <rect key="frame" x="140.5" y="23" width="94.5" height="20.5"/>
+                                <fontDescription key="fontDescription" style="UICTFontTextStyleHeadline"/>
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
@@ -3082,7 +3065,6 @@
                         <outlet property="loopEndField" destination="5Pn-Zn-oB6" id="h2D-97-YWW"/>
                         <outlet property="loopScrubber" destination="5fN-bo-4xc" id="72c-zG-csH"/>
                         <outlet property="loopStartField" destination="kM6-8W-6ev" id="Ud7-ug-yj7"/>
-                        <segue destination="QEJ-x4-U1C" kind="unwind" unwindAction="unwindWithSegue:" id="f5h-ap-4PF"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Ijm-WZ-7iX" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>

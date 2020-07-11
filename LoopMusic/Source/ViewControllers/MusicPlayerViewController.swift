@@ -4,8 +4,8 @@ import UIKit
 /// View controller for the music player (home screen) of the app.
 class MusicPlayerViewController: UIViewController, LoopScrubberContainer, UIAdaptivePresentationControllerDelegate {
     
-    /// Notification for updating the track name when the current track changes.
-    static let NOTIFICATION_TRACK_NAME: NSNotification.Name = NSNotification.Name("trackName")
+    /// Notification for updating the track name and scrubber when the current track changes.
+    static let NOTIFICATION_CHANGE_TRACK: NSNotification.Name = NSNotification.Name("changeTrack")
     
     /// Button for playing or stopping music playback.
     @IBOutlet weak var playButton: UIButton!
@@ -22,7 +22,7 @@ class MusicPlayerViewController: UIViewController, LoopScrubberContainer, UIAdap
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        NotificationCenter.default.addObserver(self, selector: #selector(updateTrackName(notification:)), name: .trackName, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(updateTrackChange(notification:)), name: .changeTrack, object: nil)
         
         do {
             try MusicPlayer.player.initialize()
@@ -56,7 +56,6 @@ class MusicPlayerViewController: UIViewController, LoopScrubberContainer, UIAdap
     @IBAction func randomizeTrack() {
         do {
             try MusicPlayer.player.randomizeTrack()
-            self.loopScrubber?.updateLoopBox()
             updateOnPlay()
         } catch {
             showErrorMessage(error: error)
@@ -71,9 +70,9 @@ class MusicPlayerViewController: UIViewController, LoopScrubberContainer, UIAdap
     /// Updates UI elements when starting or stopping the current track.
     func updateOnPlay() {
         if MusicPlayer.player.playing {
-            self.loopScrubber?.playTrack()
+            loopScrubber?.playTrack()
         } else {
-            self.loopScrubber?.stopTrack()
+            loopScrubber?.stopTrack()
         }
 
         playButton.setTitle(MusicPlayer.player.playing ? "■" : "▶", for: .normal)
@@ -83,7 +82,7 @@ class MusicPlayerViewController: UIViewController, LoopScrubberContainer, UIAdap
     }
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        self.loopScrubber.unload()
+        loopScrubber.unload()
         MusicPlayer.player.stopShuffleTimer()
         segue.destination.presentationController?.delegate = self
     }
@@ -101,7 +100,7 @@ class MusicPlayerViewController: UIViewController, LoopScrubberContainer, UIAdap
     
     /// Restarts paused elements in the view after a presented view is dismissed.
     private func reloadView() {
-        self.loopScrubber.resume()
+        loopScrubber.resume()
         MusicPlayer.player.startShuffleTimer()
     }
     
@@ -111,10 +110,11 @@ class MusicPlayerViewController: UIViewController, LoopScrubberContainer, UIAdap
         AlertUtils.showErrorMessage(error: error, viewController: self)
     }
 
-    /// Updates the track label according to the currently playing track.
+    /// Updates the track label and scrubber according to the currently playing track.
     /// - parameter notification: Notification triggering the update.
-    @objc func updateTrackName(notification: NSNotification) {
+    @objc func updateTrackChange(notification: NSNotification) {
         trackLabel?.text = MusicPlayer.player.currentTrack.name
+        loopScrubber?.updateLoopBox()
     }
     
     /// Starts playing the chosen track.
@@ -123,7 +123,6 @@ class MusicPlayerViewController: UIViewController, LoopScrubberContainer, UIAdap
         do {
             try MusicPlayer.player.loadTrack(mediaItem: track)
             try MusicPlayer.player.playTrack()
-            self.loopScrubber?.updateLoopBox()
             updateOnPlay()
         } catch {
            showErrorMessage(error: error)
