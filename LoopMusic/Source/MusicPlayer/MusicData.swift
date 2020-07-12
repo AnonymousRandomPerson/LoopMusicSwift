@@ -88,7 +88,7 @@ class MusicData {
                         noResultCallback: {() -> Void in
                             // Save track as new if not found.
                             try self.executeSql(
-                                query: String(format: "INSERT INTO Tracks (url, name) VALUES ('%@', '%@')", trackURL.absoluteString, escapedTrackName),
+                                query: String(format: "INSERT INTO Tracks (url, name, volumeMultiplier) VALUES ('%@', '%@', '%f')", trackURL.absoluteString, escapedTrackName, MusicSettings.settings.defaultRelativeVolume),
                                 lastInsertCallback: {(id: Int64) -> Void in
                                     track = MusicTrack(
                                         id: id,
@@ -96,7 +96,7 @@ class MusicData {
                                         name: trackName,
                                         loopStart: 0,
                                         loopEnd: 0,
-                                        volumeMultiplier: MusicTrack.DEFAULT_VOLUME_MULTIPLIER)
+                                        volumeMultiplier: MusicSettings.settings.defaultRelativeVolume)
                                 },
                                 errorMessage: String(format: "Failed to save %@ as new track.", trackName))
                             

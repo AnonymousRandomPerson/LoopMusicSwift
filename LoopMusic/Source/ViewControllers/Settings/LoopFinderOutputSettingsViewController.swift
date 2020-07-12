@@ -10,7 +10,7 @@ class LoopFinderOutputSettingsViewController: BaseSettingsSectionViewController 
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        registerSetting(settingView: DoubleTextFieldSettingView(setting: &MusicSettings.settings.durationValues, settingModifier: durationValuesField))
-        registerSetting(settingView: DoubleTextFieldSettingView(setting: &MusicSettings.settings.endpointPairs, settingModifier: endpointPairsField))
+        registerSetting(settingView: IntSettingView(setting: &MusicSettings.settings.durationValues, settingModifier: durationValuesField))
+        registerSetting(settingView: IntSettingView(setting: &MusicSettings.settings.endpointPairs, settingModifier: endpointPairsField))
     }
 }

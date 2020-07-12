@@ -48,41 +48,41 @@ class MusicSettings {
     /// True if the loop finder will use the current loop times as an initial estimate for finding better times.
     var initialEstimate: Bool = false
     /// How far the loop finder will deviate from the start time estimate (seconds).
-    var startTimeEstimateRadius: Double?
+    var startTimeEstimateRadius: Double = 0
     /// How far the loop finder will deviate from the end time estimate (seconds).
-    var endTimeEstimateRadius: Double?
+    var endTimeEstimateRadius: Double = 0
     /// How far the loop finder will deviate from the loop duration estimate (seconds).
-    var loopDurationEstimateRadius: Double?
+    var loopDurationEstimateRadius: Double = 0
     /// How much the loop finder penalizes start time estimate deviation.
     var startTimeEstimateDeviationPenalty: Double = 0
     /// How much the loop finder penalizes end time estimate deviation.
     var endTimeEstimateDeviationPenalty: Double = 0
     /// How much the loop finder penalizes loop duration estimate deviation.
     var loopDurationEstimateDeviationPenalty: Double = 0
-    var minimumSearchDuration: Double?
-    var durationSearchSeparation: Double?
-    var durationSearchStartIgnore: Double?
-    var durationSearchEndIgnore: Double?
+    var minimumSearchDuration: Double = 0
+    var durationSearchSeparation: Double = 0
+    var durationSearchStartIgnore: Double = 0
+    var durationSearchEndIgnore: Double = 0
     var fadeDetection: Bool = false
-    var endpointSearchDifferenceTolerance: Double?
-    var fftLength: Double?
-    var spectrogramOverlapPercentage: Double?
+    var endpointSearchDifferenceTolerance: Double = 0
+    var fftLength: Int = 0
+    var spectrogramOverlapPercentage: Double = 0
     /// Controls whether to use mono audio data rather than stereo data for certain parts of analysis. Usually gives about a 2x speedup, but may reduce accuracy.
     var useMonoAudio: Bool = false
     /// Controls how to reduce the framerate of the audio data before loop-finding. Usually gives a speedup factor equal to the reduction value, but may be less accurate. Values of 7+ may cause algorithm instability.
-    var frameRateReduction: Double?
+    var frameRateReduction: Int = 0
     /// Limit of frame rate reduction when the loop finder downsamples.
-    var frameRateReductionLimit: Double?
+    var frameRateReductionLimit: Double = 0
     /// Proportional to the frame rate reduction limit.
-    var trackLengthLimit: Double?
+    var trackLengthLimit: Double = 0
     /// Number of duration values outputted by the loop finder.
-    var durationValues: Double?
+    var durationValues: Int = 0
     /// Number of endpoint pairs outputted by the loop finder.
-    var endpointPairs: Double?
+    var endpointPairs: Int = 0
     /// If enabled, the loop will be tested automatically when loop points are changed.
     var testLoopOnChange: Bool = true
     /// The amount of time (seconds) before the loop end that audio playback will be set to when testing the loop.
-    var loopTestOffset: Double?
+    var loopTestOffset: Double = 3
     
     private init() {
     }
@@ -278,25 +278,55 @@ class MusicSettings {
     
     /// Resets all loop finder settings to their default values.
     func resetLoopFinderSettings() {
-        startTimeEstimateRadius = 0
-        endTimeEstimateRadius = 0
-        loopDurationEstimateRadius = 0
+        startTimeEstimateRadius = 1
+        endTimeEstimateRadius = 1
+        loopDurationEstimateRadius = 1
         startTimeEstimateDeviationPenalty = 0
         endTimeEstimateDeviationPenalty = 0
         loopDurationEstimateDeviationPenalty = 0
-        minimumSearchDuration = 0
-        durationSearchSeparation = 0
-        durationSearchStartIgnore = 0
-        durationSearchEndIgnore = 0
+        minimumSearchDuration = 5
+        durationSearchSeparation = 0.5
+        durationSearchStartIgnore = 15
+        durationSearchEndIgnore = 5
         fadeDetection = false
-        endpointSearchDifferenceTolerance = 0
-        fftLength = 0
-        spectrogramOverlapPercentage = 0
-        useMonoAudio = false
-        frameRateReduction = 0
-        frameRateReductionLimit = 0
-        trackLengthLimit = 0
-        durationValues = 0
-        endpointPairs = 0
+        endpointSearchDifferenceTolerance = 0.05
+        fftLength = 1 << 15
+        spectrogramOverlapPercentage = 50
+        useMonoAudio = true
+        frameRateReduction = 6
+        frameRateReductionLimit = 10
+        trackLengthLimit = Double(Int(1) << 21)
+        durationValues = 12
+        endpointPairs = 5
+    }
+    
+    /// Sets settings in the loop finder.
+    /// - parameter loopFinder: Loop finder instance to customize.
+    func customizeLoopFinder(loopFinder: LoopFinderAuto) {
+        loopFinder.t1Radius = Float(startTimeEstimateRadius)
+        loopFinder.t2Radius = Float(endTimeEstimateRadius)
+        loopFinder.tauRadius = Float(loopDurationEstimateRadius)
+        loopFinder.t1Penalty = Float(startTimeEstimateDeviationPenalty)
+        loopFinder.t2Penalty = Float(endTimeEstimateDeviationPenalty)
+        loopFinder.tauPenalty = Float(loopDurationEstimateDeviationPenalty)
+        loopFinder.minLoopLength = Float(minimumSearchDuration)
+        loopFinder.minTimeDiff = Float(durationSearchSeparation)
+        loopFinder.leftIgnore = Float(durationSearchStartIgnore)
+        loopFinder.rightIgnore = Float(durationSearchEndIgnore)
+        loopFinder.useFadeDetection = fadeDetection
+        loopFinder.sampleDiffTol = Float(endpointSearchDifferenceTolerance)
+        loopFinder.fftLength = UInt32(fftLength)
+        loopFinder.overlapPercent = Float(spectrogramOverlapPercentage)
+        loopFinder.useMonoAudio = useMonoAudio
+        loopFinder.framerateReductionFactor = Int32(frameRateReduction)
+        loopFinder.setFramerateReductionLimitFloat(Float(frameRateReductionLimit))
+        loopFinder.setLengthLimitFloat(Float(trackLengthLimit))
+        loopFinder.nBestDurations = durationValues
+        loopFinder.nBestPairs = endpointPairs
+        
+        if initialEstimate {
+            loopFinder.t1Estimate = Float(MusicPlayer.player.loopStartSeconds)
+            loopFinder.t2Estimate = Float(MusicPlayer.player.loopEndSeconds)
+        }
     }
 }

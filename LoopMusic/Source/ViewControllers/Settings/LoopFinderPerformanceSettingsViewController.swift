@@ -15,7 +15,7 @@ class LoopFinderPerformanceSettingsViewController: BaseSettingsSectionViewContro
     override func viewDidLoad() {
         super.viewDidLoad()
         registerSetting(settingView: BooleanSettingView(setting: &MusicSettings.settings.useMonoAudio, settingModifier: useMonoAudioSwitch))
-        registerSetting(settingView: DoubleTextFieldSettingView(setting: &MusicSettings.settings.frameRateReduction, settingModifier: frameRateReductionField))
+        registerSetting(settingView: IntSettingView(setting: &MusicSettings.settings.frameRateReduction, settingModifier: frameRateReductionField))
         registerSetting(settingView: DoubleTextFieldSettingView(setting: &MusicSettings.settings.frameRateReductionLimit, settingModifier: frameRateReductionLimitField))
         registerSetting(settingView: DoubleTextFieldSettingView(setting: &MusicSettings.settings.trackLengthLimit, settingModifier: trackLengthLimitField))
     }

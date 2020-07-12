@@ -1,6 +1,5 @@
 import AVFoundation
 import CoreAudio
-import Foundation
 import MediaPlayer
 
 /// Handles playback and looping of music tracks.
@@ -32,9 +31,11 @@ class MusicPlayer {
     private(set) var sampleRate: Double = 44100
     
     /// Audio data for the currently playing track.
-    private var audioBuffer: AudioBuffer?
+    private(set) var audioBuffer: AudioBuffer?
     /// True if the current audio track was converted manually.
     private var manuallyAllocatedBuffer: Bool = false
+    /// The data type of the loaded audio data.
+    private(set) var audioType: AudioType = AudioType.int32
     
     /// Lock to prevent the audio buffer from being loaded and freed at the same time.
     private var bufferLock: DispatchSemaphore = DispatchSemaphore(value: 1)
@@ -43,6 +44,13 @@ class MusicPlayer {
     
     /// Volume multiplier used when fading out.
     private var fadeMultiplier: Double = 1
+    
+    /// Audio data necessary for the loop finder.
+    var audioData: AudioData {
+        get {
+            return AudioData(audioBuffer: audioBuffer!, audioType: Int32(audioType.rawValue), numSamples: Int32(numSamples), sampleRate: sampleRate)
+        }
+    }
     
     /// True if the player has a track loaded in it.
     var trackLoaded: Bool {
@@ -64,10 +72,10 @@ class MusicPlayer {
     /// The current playback time in seconds.
     var playbackTimeSeconds: Double {
         get {
-            return convertSamplesToSeconds(sampleCounter) / 2
+            return convertSamplesToSeconds(sampleCounter)
         }
         set {
-            sampleCounter = Int(newValue * Double(sampleRate * 2))
+            sampleCounter = Int(newValue * sampleRate)
         }
     }
 
@@ -183,9 +191,9 @@ class MusicPlayer {
         let noninterleaved: Bool = origAudioDesc.mFormatFlags & kAudioFormatFlagIsNonInterleaved > 0
         /// Audio converter to convert non-interleaved audio.
         var converter: AudioConverterRef?
-        // If the audio data is non-interleaved, it needs to be converted to interleaved format to be streamed.
         /// Audio description for the converted audio if non-interleaved is converted to interleaved. Initialized outside the if clause to prevent deallocation.
         var convertedAudioDesc: AudioStreamBasicDescription = AudioStreamBasicDescription()
+        // If the audio data is non-interleaved, it needs to be converted to interleaved format to be streamed.
         if noninterleaved {
             convertedAudioDesc.mSampleRate = origAudioDesc.mSampleRate
             convertedAudioDesc.mFormatID = origAudioDesc.mFormatID
@@ -233,10 +241,13 @@ class MusicPlayer {
         // Check for the data type of the audio and load it in the audio engine accordingly.
         if origBuffer.int32ChannelData != nil {
             loadStatus = load32BitAudio(audioData, audioLength, audioDesc)
+            audioType = AudioType.int32
         } else if origBuffer.int16ChannelData != nil {
             loadStatus = load16BitAudio(audioData, audioLength, audioDesc)
+            audioType = AudioType.int16
         } else if origBuffer.floatChannelData != nil {
             loadStatus = loadFloatAudio(audioData, audioLength, audioDesc)
+            audioType = AudioType.float
         }
         
         if loadStatus != 0 {
@@ -245,6 +256,9 @@ class MusicPlayer {
         
         try loadAudioAsync(audioFile: audioFile, loadBuffer: origBuffer, audioDesc: audioDesc, converter: converter, noninterleaved: noninterleaved, currentFramesRead: startReadFrames, processUuid: trackUuid)
         
+        if currentTrack.loopEnd == 0 {
+            currentTrack.loopEnd = durationSeconds
+        }
         updateLoopPoints()
         
         try playTrack()

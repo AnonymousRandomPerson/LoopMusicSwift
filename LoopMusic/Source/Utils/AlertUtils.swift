@@ -8,7 +8,15 @@ class AlertUtils {
     /// - parameter viewController: View to show the dialog in.
     static func showErrorMessage(error: Error, viewController: UIViewController) {
         print(error)
-        let alert = UIAlertController(title: "Error", message: error.localizedDescription, preferredStyle: UIAlertController.Style.alert)
+        showErrorMessage(error: error.localizedDescription, viewController: viewController)
+    }
+    
+    /// Displays an error to the user.
+    /// - parameter error: Error to display.
+    /// - parameter viewController: View to show the dialog in.
+    static func showErrorMessage(error: String, viewController: UIViewController) {
+        print(error)
+        let alert = UIAlertController(title: "Error", message: error, preferredStyle: UIAlertController.Style.alert)
         alert.addAction(UIAlertAction(title: "Okay", style: UIAlertAction.Style.default, handler: nil))
         viewController.present(alert, animated: true, completion: nil)
     }

@@ -74,12 +74,14 @@ class MusicDataTests: XCTestCase {
         let loadedTrack: LoopMusic.MusicTrack = try data.loadTrack(mediaItem: TestMPMediaItem())
         XCTAssertEqual(TRACK_URL, loadedTrack.url.absoluteString)
         XCTAssertEqual(TRACK_NAME, loadedTrack.name)
+        XCTAssertEqual(MusicTrack.DEFAULT_VOLUME_MULTIPLIER, loadedTrack.volumeMultiplier, accuracy: EPSILON)
         
         try data.executeSql(
-            query: "SELECT url, name FROM Tracks",
+            query: String(format: "SELECT url, name, volumeMultiplier FROM Tracks WHERE url = '%@'", TRACK_URL),
             stepCallback: { (statement) in
                 XCTAssertEqual(TRACK_URL, String(cString: sqlite3_column_text(statement, 0)))
                 XCTAssertEqual(TRACK_NAME, String(cString: sqlite3_column_text(statement, 1)))
+                XCTAssertEqual(MusicTrack.DEFAULT_VOLUME_MULTIPLIER, sqlite3_column_double(statement, 2), accuracy: EPSILON)
             },
             noResultCallback: nil, errorMessage: "")
     }
@@ -94,7 +96,7 @@ class MusicDataTests: XCTestCase {
         try data.updateVolumeMultiplier(track: loadedTrack)
         
         try data.executeSql(
-            query: "SELECT volumeMultiplier FROM Tracks",
+            query: String(format: "SELECT volumeMultiplier FROM Tracks WHERE url = '%@'", TRACK_URL),
             stepCallback: { (statement) in
                 XCTAssertEqual(0.7, sqlite3_column_double(statement, 0), accuracy: EPSILON)
             },
@@ -112,7 +114,7 @@ class MusicDataTests: XCTestCase {
         try data.updateLoopPoints(track: loadedTrack)
         
         try data.executeSql(
-            query: "SELECT loopStart, loopEnd FROM Tracks",
+            query: String(format: "SELECT loopStart, loopEnd FROM Tracks WHERE url = '%@'", TRACK_URL),
             stepCallback: { (statement) in
                 XCTAssertEqual(1, sqlite3_column_double(statement, 0), accuracy: EPSILON)
                 XCTAssertEqual(5, sqlite3_column_double(statement, 1), accuracy: EPSILON)

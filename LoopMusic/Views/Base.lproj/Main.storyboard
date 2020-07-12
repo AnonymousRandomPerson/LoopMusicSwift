@@ -535,10 +535,10 @@
             </objects>
             <point key="canvasLocation" x="888" y="-280"/>
         </scene>
-        <!--Loop Finder Container-->
+        <!--Loop Finder Outer-->
         <scene sceneID="dvp-fH-0IQ">
             <objects>
-                <viewController id="jMN-ee-0go" userLabel="Loop Finder Container" sceneMemberID="viewController">
+                <viewController id="jMN-ee-0go" userLabel="Loop Finder Outer" customClass="LoopFinderOuterViewController" customModule="LoopMusic" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="GcW-fY-6KK">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="647"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -2076,7 +2076,7 @@
                                                         <constraint firstAttribute="width" constant="90" id="16p-H7-x6C"/>
                                                     </constraints>
                                                     <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                                                    <textInputTraits key="textInputTraits" keyboardType="decimalPad" returnKeyType="done" enablesReturnKeyAutomatically="YES"/>
+                                                    <textInputTraits key="textInputTraits" keyboardType="numberPad" returnKeyType="done" enablesReturnKeyAutomatically="YES"/>
                                                     <connections>
                                                         <action selector="settingChangedWithSender:" destination="r2h-Y4-zMs" eventType="editingDidEnd" id="o2s-1y-ttF"/>
                                                     </connections>
@@ -2248,7 +2248,7 @@
                                                         <constraint firstAttribute="width" constant="90" id="Qzg-yi-ddy"/>
                                                     </constraints>
                                                     <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                                                    <textInputTraits key="textInputTraits" keyboardType="decimalPad" returnKeyType="done" enablesReturnKeyAutomatically="YES"/>
+                                                    <textInputTraits key="textInputTraits" keyboardType="numberPad" returnKeyType="done" enablesReturnKeyAutomatically="YES"/>
                                                     <connections>
                                                         <action selector="settingChangedWithSender:" destination="a0q-ZT-cm4" eventType="editingDidEnd" id="bu8-0V-bwX"/>
                                                     </connections>
@@ -2419,7 +2419,7 @@
                                                         <constraint firstAttribute="width" constant="90" id="3YG-LA-9oZ"/>
                                                     </constraints>
                                                     <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                                                    <textInputTraits key="textInputTraits" keyboardType="decimalPad" returnKeyType="done" enablesReturnKeyAutomatically="YES"/>
+                                                    <textInputTraits key="textInputTraits" keyboardType="numberPad" returnKeyType="done" enablesReturnKeyAutomatically="YES"/>
                                                     <connections>
                                                         <action selector="settingChangedWithSender:" destination="FxN-SK-PjD" eventType="editingDidEnd" id="ogj-Qo-jtg"/>
                                                     </connections>
@@ -2455,7 +2455,7 @@
                                                         <constraint firstAttribute="width" constant="90" id="g37-dj-ouO"/>
                                                     </constraints>
                                                     <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                                                    <textInputTraits key="textInputTraits" keyboardType="decimalPad" returnKeyType="done" enablesReturnKeyAutomatically="YES"/>
+                                                    <textInputTraits key="textInputTraits" keyboardType="numberPad" returnKeyType="done" enablesReturnKeyAutomatically="YES"/>
                                                     <connections>
                                                         <action selector="settingChangedWithSender:" destination="FxN-SK-PjD" eventType="editingDidEnd" id="Xkp-fu-hBZ"/>
                                                     </connections>
@@ -2857,10 +2857,10 @@
             </objects>
             <point key="canvasLocation" x="926" y="1618"/>
         </scene>
-        <!--Loop Finder View Controller-->
+        <!--Loop Finder-->
         <scene sceneID="vJJ-mh-dVU">
             <objects>
-                <viewController id="k68-WG-Lgy" customClass="LoopFinderViewController" customModule="LoopMusic" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController id="k68-WG-Lgy" userLabel="Loop Finder" customClass="LoopFinderViewController" customModule="LoopMusic" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="MyJ-4H-taq">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="650"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>

@@ -28,7 +28,7 @@ class LoopFinderInternalSettingsViewController: BaseSettingsSectionViewControlle
         registerSetting(settingView: DoubleTextFieldSettingView(setting: &MusicSettings.settings.durationSearchEndIgnore, settingModifier: durationSearchEndIgnoreField))
         registerSetting(settingView: BooleanSettingView(setting: &MusicSettings.settings.fadeDetection, settingModifier: fadeDetectionSwitch))
         registerSetting(settingView: DoubleTextFieldSettingView(setting: &MusicSettings.settings.endpointSearchDifferenceTolerance, settingModifier: endpointSearchDifferenceToleranceField))
-        registerSetting(settingView: DoubleTextFieldSettingView(setting: &MusicSettings.settings.fftLength, settingModifier: fftLengthField))
+        registerSetting(settingView: IntSettingView(setting: &MusicSettings.settings.fftLength, settingModifier: fftLengthField))
         registerSetting(settingView: DoubleTextFieldSettingView(setting: &MusicSettings.settings.spectrogramOverlapPercentage, settingModifier: spectrogramOverlapPercentageField))
     }
 }

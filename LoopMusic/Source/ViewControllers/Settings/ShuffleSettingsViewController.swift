@@ -11,7 +11,7 @@ class ShuffleSettingsViewController: BaseSettingsSectionViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         registerSetting(settingView: ShuffleSettingView(setting: &MusicSettings.settings.shuffleSetting, settingModifier: shuffleSettingControl))
-        registerSetting(settingView: DoubleTextFieldSettingView(setting: &MusicSettings.settings.fadeDuration, settingModifier: fadeDurationField))
+        registerSetting(settingView: DoubleTextFieldOptionalSettingView(setting: &MusicSettings.settings.fadeDuration, settingModifier: fadeDurationField))
     }
     
     /// Marks the screen as unwindable for segues.

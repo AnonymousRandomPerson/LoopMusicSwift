@@ -37,39 +37,39 @@ struct MusicSettingsCodable: Codable {
     /// True if the loop finder will use the current loop times as an initial estimate for finding better times.
     var initialEstimate: Bool = false
     /// How far the loop finder will deviate from the start time estimate (seconds).
-    var startTimeEstimateRadius: Double?
+    var startTimeEstimateRadius: Double = 0
     /// How far the loop finder will deviate from the end time estimate (seconds).
-    var endTimeEstimateRadius: Double?
+    var endTimeEstimateRadius: Double = 0
     /// How far the loop finder will deviate from the loop duration estimate (seconds).
-    var loopDurationEstimateRadius: Double?
+    var loopDurationEstimateRadius: Double = 0
     /// How much the loop finder penalizes start time estimate deviation.
     var startTimeEstimateDeviationPenalty: Double = 0
     /// How much the loop finder penalizes end time estimate deviation.
     var endTimeEstimateDeviationPenalty: Double = 0
     /// How much the loop finder penalizes loop duration estimate deviation.
     var loopDurationEstimateDeviationPenalty: Double = 0
-    var minimumSearchDuration: Double?
-    var durationSearchSeparation: Double?
-    var durationSearchStartIgnore: Double?
-    var durationSearchEndIgnore: Double?
+    var minimumSearchDuration: Double = 0
+    var durationSearchSeparation: Double = 0
+    var durationSearchStartIgnore: Double = 0
+    var durationSearchEndIgnore: Double = 0
     var fadeDetection: Bool = false
-    var endpointSearchDifferenceTolerance: Double?
-    var fftLength: Double?
-    var spectrogramOverlapPercentage: Double?
+    var endpointSearchDifferenceTolerance: Double = 0
+    var fftLength: Int = 0
+    var spectrogramOverlapPercentage: Double = 0
     /// Controls whether to use mono audio data rather than stereo data for certain parts of analysis. Usually gives about a 2x speedup, but may reduce accuracy.
     var useMonoAudio: Bool = false
     /// Controls how to reduce the framerate of the audio data before loop-finding. Usually gives a speedup factor equal to the reduction value, but may be less accurate. Values of 7+ may cause algorithm instability.
-    var frameRateReduction: Double?
+    var frameRateReduction: Int = 0
     /// Limit of frame rate reduction when the loop finder downsamples.
-    var frameRateReductionLimit: Double?
+    var frameRateReductionLimit: Double = 0
     /// Proportional to the frame rate reduction limit.
-    var trackLengthLimit: Double?
+    var trackLengthLimit: Double = 0
     /// Number of duration values outputted by the loop finder.
-    var durationValues: Double?
+    var durationValues: Int = 0
     /// Number of endpoint pairs outputted by the loop finder.
-    var endpointPairs: Double?
+    var endpointPairs: Int = 0
     /// If enabled, the loop will be tested automatically when loop points are changed.
     var testLoopOnChange: Bool = true
     /// The amount of time (seconds) before the loop end that audio playback will be set to when testing the loop.
-    var loopTestOffset: Double?
+    var loopTestOffset: Double = 0
 }

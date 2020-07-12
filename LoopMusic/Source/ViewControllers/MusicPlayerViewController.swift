@@ -101,6 +101,7 @@ class MusicPlayerViewController: UIViewController, LoopScrubberContainer, UIAdap
     /// Restarts paused elements in the view after a presented view is dismissed.
     private func reloadView() {
         loopScrubber.resume()
+        loopScrubber.updateLoopBox()
         MusicPlayer.player.startShuffleTimer()
     }
     
