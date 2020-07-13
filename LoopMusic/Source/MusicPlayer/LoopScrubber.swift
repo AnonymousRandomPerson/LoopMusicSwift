@@ -12,6 +12,9 @@ class LoopScrubber: UISlider {
     /// Renders the rectangle marking the looped portion of the track.
     private var loopBox: UIView?
     
+    /// Width of the thumb image.
+    private var thumbWidth: CGFloat = 0
+    
     required init?(coder: NSCoder) {
         super.init(coder: coder)
     }
@@ -29,6 +32,13 @@ class LoopScrubber: UISlider {
                 updateLoopBox()
             }
         }
+    }
+    
+    override func thumbRect(forBounds bounds: CGRect, trackRect rect: CGRect, value: Float) -> CGRect {
+        /// Thumb image to retrieve the width from.
+        let thumbRect: CGRect = super.thumbRect(forBounds: bounds, trackRect: rect, value: value)
+        thumbWidth = thumbRect.width
+        return thumbRect
     }
     
     /// Starts the slider update loop when a track starts.
@@ -49,10 +59,12 @@ class LoopScrubber: UISlider {
     /// Updates the position of the loop box according to the current track.
     func updateLoopBox() {
         if MusicPlayer.player.trackLoaded {
+            /// Width of the scrollable area of the slider (excluding the edges past the thumb bounding box).
+            let scrollableWidth: CGFloat = self.bounds.width - thumbWidth
             self.loopBox?.frame = CGRect(
-                x: CGFloat(Float(MusicPlayer.player.loopStart) / Float(MusicPlayer.player.numSamples)) * self.bounds.width,
+                x: CGFloat(Float(MusicPlayer.player.loopStart) / Float(MusicPlayer.player.numSamples)) * scrollableWidth,
                 y: 0,
-                width: CGFloat(Float(MusicPlayer.player.loopEnd - MusicPlayer.player.loopStart) / Float(MusicPlayer.player.numSamples)) * self.bounds.width,
+                width: CGFloat(Float(MusicPlayer.player.loopEnd - MusicPlayer.player.loopStart) / Float(MusicPlayer.player.numSamples)) * scrollableWidth + thumbWidth,
                 height: self.bounds.height)
             self.loopBox?.backgroundColor = UIColor.green.withAlphaComponent(0.25)
         }
