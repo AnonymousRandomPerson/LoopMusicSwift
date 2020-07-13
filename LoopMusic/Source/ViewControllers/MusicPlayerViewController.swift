@@ -102,7 +102,9 @@ class MusicPlayerViewController: UIViewController, LoopScrubberContainer, UIAdap
     private func reloadView() {
         loopScrubber.resume()
         loopScrubber.updateLoopBox()
-        MusicPlayer.player.startShuffleTimer()
+        if MusicPlayer.player.playing {
+            MusicPlayer.player.startShuffleTimer()
+        }
     }
     
     /// Displays an error to the user.

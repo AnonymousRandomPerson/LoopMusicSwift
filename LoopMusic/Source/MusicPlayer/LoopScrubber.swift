@@ -48,12 +48,14 @@ class LoopScrubber: UISlider {
     
     /// Updates the position of the loop box according to the current track.
     func updateLoopBox() {
-        self.loopBox?.frame = CGRect(
-            x: CGFloat(Float(MusicPlayer.player.loopStart) / Float(MusicPlayer.player.numSamples)) * self.bounds.width,
-            y: 0,
-            width: CGFloat(Float(MusicPlayer.player.loopEnd - MusicPlayer.player.loopStart) / Float(MusicPlayer.player.numSamples)) * self.bounds.width,
-            height: self.bounds.height)
-        self.loopBox?.backgroundColor = UIColor.green.withAlphaComponent(0.25)
+        if MusicPlayer.player.trackLoaded {
+            self.loopBox?.frame = CGRect(
+                x: CGFloat(Float(MusicPlayer.player.loopStart) / Float(MusicPlayer.player.numSamples)) * self.bounds.width,
+                y: 0,
+                width: CGFloat(Float(MusicPlayer.player.loopEnd - MusicPlayer.player.loopStart) / Float(MusicPlayer.player.numSamples)) * self.bounds.width,
+                height: self.bounds.height)
+            self.loopBox?.backgroundColor = UIColor.green.withAlphaComponent(0.25)
+        }
     }
     
     func setPlaybackPosition() {
