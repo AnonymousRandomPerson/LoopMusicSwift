@@ -31,7 +31,9 @@ class MediaPlayerUtils {
         query.filterPredicates = NSSet(object: MPMediaPropertyPredicate(value: playlistName, forProperty: MPMediaItemPropertyTitle)) as? Set<MPMediaPredicate>
         if let playlists: [MPMediaPlaylist] = query.collections as? [MPMediaPlaylist] {
             for playlist in playlists {
-                return playlist
+                if playlist.name == playlistName {
+                    return playlist
+                }
             }
         }
         return ALL_TRACKS_PLAYLIST
