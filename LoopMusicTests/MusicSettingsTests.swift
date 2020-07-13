@@ -23,6 +23,7 @@ class MusicSettingsTests: XCTestCase {
             XCTFail(String(format: "Failed to load settings file. %@", error.localizedDescription))
         }
         settings.settingsFileName = TEST_SETTINGS_FILE
+        settings.currentPlaylist = MediaPlayerUtils.ALL_TRACKS_PLAYLIST
         settings.playOnInit = false
         settings.masterVolume = 0
         settings.defaultRelativeVolume = 0
