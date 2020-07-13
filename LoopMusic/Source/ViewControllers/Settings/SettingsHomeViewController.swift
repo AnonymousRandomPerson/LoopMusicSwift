@@ -20,10 +20,18 @@ class SettingsHomeViewController: UITableViewController, UIAdaptivePresentationC
     
     func presentationControllerDidDismiss(_ presentationController: UIPresentationController) {
         (presentationController.presentedViewController as? Unloadable)?.unload(destination: self)
+        reloadView()
     }
     
     /// Marks the screen as unwindable for segues.
     /// - parameter segue: Segue object performing the segue.
     @IBAction func unwind(segue: UIStoryboardSegue) {
+        reloadView()
+    }
+    
+    func reloadView() {
+        if let index: IndexPath = self.tableView.indexPathForSelectedRow {
+            self.tableView.deselectRow(at: index, animated: false)
+        }
     }
 }

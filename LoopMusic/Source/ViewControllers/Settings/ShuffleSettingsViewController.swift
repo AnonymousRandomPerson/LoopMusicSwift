@@ -14,11 +14,6 @@ class ShuffleSettingsViewController: BaseSettingsSectionViewController {
         registerSetting(settingView: DoubleTextFieldOptionalSettingView(setting: &MusicSettings.settings.fadeDuration, settingModifier: fadeDurationField))
     }
     
-    /// Marks the screen as unwindable for segues.
-    /// - parameter segue: Segue object performing the segue.
-    @IBAction func unwind(segue: UIStoryboardSegue) {
-    }
-    
     /// Stops or starts the shuffle timer based on the new shuffle setting.
     @IBAction func shuffleSettingChanged(sender: UISegmentedControl) {
         super.settingChanged(sender: sender)
