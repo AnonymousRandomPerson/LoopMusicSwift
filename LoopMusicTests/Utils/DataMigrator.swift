@@ -14,7 +14,7 @@ class DataMigrator: XCTestCase {
     override func tearDown() {
     }
 
-    /// To run, place the old database in the test folder and rename it to "TracksOld.db". Then add "test" in front of this function's name and run it.
+    /// To run, place the old database in the LoopMusicTests/Utils folder and rename it to "TracksOld.db". Then add "test" in front of this function's name and run it.
     /// WARNING: This will replace the contents of the Tracks table in the app's database with the migrated data.
     func migrateOldDb() throws {
         try data.closeConnection()

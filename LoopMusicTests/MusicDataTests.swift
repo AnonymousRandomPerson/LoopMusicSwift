@@ -88,7 +88,7 @@ class MusicDataTests: XCTestCase {
     
     /// Tests that volume multiplier is updated correctly.
     func testUpdateVolumeMultiplier() throws {
-        try data.executeSql(query: String(format: "INSERT INTO Tracks (id, url, name, loopStart, loopEnd, volumeMultiplier) VALUES (1, '%@', '%@', 2, 3, 0.5)", TRACK_URL, TRACK_NAME), errorMessage: "")
+        try data.executeSql(query: String(format: "INSERT INTO Tracks (url, name, loopStart, loopEnd, volumeMultiplier) VALUES ('%@', '%@', 2, 3, 0.5)", TRACK_URL, TRACK_NAME), errorMessage: "")
         
         /// Loaded track to assert on from the database.
         var loadedTrack: LoopMusic.MusicTrack = try data.loadTrack(mediaItem: TestMPMediaItem())
@@ -105,7 +105,7 @@ class MusicDataTests: XCTestCase {
     
     /// Tests that loop points are updated correctly.
     func testUpdateLoopPoints() throws {
-        try data.executeSql(query: String(format: "INSERT INTO Tracks (id, url, name, loopStart, loopEnd, volumeMultiplier) VALUES (1, '%@', '%@', 2, 3, 0.5)", TRACK_URL, TRACK_NAME), errorMessage: "")
+        try data.executeSql(query: String(format: "INSERT INTO Tracks (url, name, loopStart, loopEnd, volumeMultiplier) VALUES ('%@', '%@', 2, 3, 0.5)", TRACK_URL, TRACK_NAME), errorMessage: "")
         
         /// Loaded track to assert on from the database.
         var loadedTrack: LoopMusic.MusicTrack = try data.loadTrack(mediaItem: TestMPMediaItem())
