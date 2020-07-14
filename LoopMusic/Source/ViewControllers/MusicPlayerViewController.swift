@@ -22,7 +22,9 @@ class MusicPlayerViewController: UIViewController, LoopScrubberContainer, UIAdap
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        NotificationCenter.default.addObserver(self, selector: #selector(updateTrackChange(notification:)), name: .changeTrack, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(updateTrackChange), name: .changeTrack, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(interruptAudio(notification:)),
+                                               name: AVAudioSession.interruptionNotification, object: nil)
         
         do {
             try MusicPlayer.player.initialize()
@@ -114,10 +116,35 @@ class MusicPlayerViewController: UIViewController, LoopScrubberContainer, UIAdap
     }
 
     /// Updates the track label and scrubber according to the currently playing track.
-    /// - parameter notification: Notification triggering the update.
-    @objc func updateTrackChange(notification: NSNotification) {
+    @objc func updateTrackChange() {
         trackLabel?.text = MusicPlayer.player.currentTrack.name
         loopScrubber?.updateLoopBox()
+    }
+
+    /// Handles audio interruptions from events like phone calls or alarms.
+    /// - parameter notification: Object with notification metadata.
+    @objc func interruptAudio(notification: Notification) {
+        guard let userInfo = notification.userInfo,
+            let typeValue = userInfo[AVAudioSessionInterruptionTypeKey] as? UInt,
+            let notificationType = AVAudioSession.InterruptionType(rawValue: typeValue) else {
+                return
+        }
+        
+        switch notificationType {
+        case .began:
+            do {
+                try MusicPlayer.player.interruptTrack()
+            } catch {
+               showErrorMessage(error: error)
+            }
+        case .ended:
+            do {
+                try MusicPlayer.player.resumeTrack()
+            } catch {
+               showErrorMessage(error: error)
+            }
+        default: ()
+        }
     }
     
     /// Starts playing the chosen track.

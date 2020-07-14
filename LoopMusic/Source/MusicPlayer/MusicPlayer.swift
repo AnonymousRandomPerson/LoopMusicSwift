@@ -20,6 +20,8 @@ class MusicPlayer {
     private(set) var currentTrack: MusicTrack = MusicTrack.BLANK_MUSIC_TRACK
     /// True if the player is currently playing a track.
     private(set) var playing: Bool = false
+    /// True if the player was interrupted by an audio event (e.g., phone call) while playing.
+    private(set) var interrupted: Bool = false
 
     /// Timer used to shuffle tracks after playing for a while.
     private var shuffleTimer: Timer?
@@ -411,6 +413,22 @@ class MusicPlayer {
                 throw MessageError("Failed to stop audio.", stopStatus)
             }
         }
+    }
+    
+    /// Stops playing the currently loaded track and marks playback as interrupted.
+    func interruptTrack() throws {
+        if playing {
+            try stopTrack()
+            interrupted = true
+        }
+    }
+    
+    /// Resumes playback after an interruption if it was playing before.
+    func resumeTrack() throws {
+        if interrupted {
+            try playTrack()
+        }
+        interrupted = false
     }
     
     /// Updates the loop start/end within the audio engine.
