@@ -79,7 +79,9 @@ class MusicPlayerViewController: UIViewController, LoopScrubberContainer, UIAdap
             loopScrubber?.stopTrack()
         }
 
-        playButton.setTitle(MusicPlayer.player.playing ? "▮▮" : "▶", for: .normal)
+        // \u{f04c} = pause, \u{f04b} = play
+        // Using Font Awesome 5 Free: https://fontawesome.com/license/free
+        playButton.setTitle(MusicPlayer.player.playing ? "\u{f04c}" : "\u{f04b}", for: .normal)
         playButton.isEnabled = MusicPlayer.player.trackLoaded
         
         loopFinderButton.isEnabled = MusicPlayer.player.playing

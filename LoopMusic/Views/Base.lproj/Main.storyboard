@@ -7,6 +7,11 @@
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
+    <customFonts key="customFonts">
+        <array key="fa-solid-900.ttf">
+            <string>FontAwesome5Free-Solid</string>
+        </array>
+    </customFonts>
     <scenes>
         <!--Settings Home-->
         <scene sceneID="vMp-d7-fdz">
@@ -356,7 +361,7 @@
                                 <nil key="highlightedColor"/>
                             </label>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="PFV-4N-Rnj" userLabel="Random Button">
-                                <rect key="frame" x="144" y="194" width="87" height="41"/>
+                                <rect key="frame" x="144" y="183" width="87" height="41"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="24"/>
                                 <state key="normal" title="Random"/>
                                 <connections>
@@ -364,9 +369,9 @@
                                 </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="sOX-8u-f3x" userLabel="Play Button">
-                                <rect key="frame" x="168" y="115" width="39" height="70"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="48"/>
-                                <state key="normal" title="▶"/>
+                                <rect key="frame" x="170" y="122" width="35" height="52"/>
+                                <fontDescription key="fontDescription" name="FontAwesome5Free-Solid" family="Font Awesome 5 Free" pointSize="40"/>
+                                <state key="normal" title=""/>
                                 <connections>
                                     <action selector="toggleAudio" destination="BYZ-38-t0r" eventType="touchUpInside" id="4IK-9V-82r"/>
                                 </connections>
@@ -429,7 +434,7 @@
                             <constraint firstItem="oky-Ed-D5H" firstAttribute="top" secondItem="POc-xN-ihv" secondAttribute="bottom" constant="8" id="SGr-ll-MBL"/>
                             <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" secondItem="3Kj-gi-vbC" secondAttribute="trailing" constant="20" id="UPu-sC-BOT"/>
                             <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" secondItem="BWM-Fe-EFr" secondAttribute="trailing" constant="20" id="ZfV-CW-cN0"/>
-                            <constraint firstItem="sOX-8u-f3x" firstAttribute="top" secondItem="B0F-RG-7s9" secondAttribute="bottom" constant="8" id="cqi-hT-4P4"/>
+                            <constraint firstItem="sOX-8u-f3x" firstAttribute="top" secondItem="B0F-RG-7s9" secondAttribute="bottom" constant="15" id="cqi-hT-4P4"/>
                             <constraint firstItem="oky-Ed-D5H" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" constant="20" id="dBy-SY-M15"/>
                             <constraint firstItem="sOX-8u-f3x" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="gFZ-5h-bMU"/>
                             <constraint firstItem="3Kj-gi-vbC" firstAttribute="top" secondItem="6Tk-OE-BBY" secondAttribute="top" constant="21" id="mQC-zN-Fwk"/>
