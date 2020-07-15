@@ -20,11 +20,13 @@ class MusicPlayer {
     private(set) var currentTrack: MusicTrack = MusicTrack.BLANK_MUSIC_TRACK
     /// True if the player is currently playing a track.
     private(set) var playing: Bool = false
-    /// True if the player was interrupted by an audio event (e.g., phone call) while playing.
-    private(set) var interrupted: Bool = false
+    /// True if the player is paused.
+    private(set) var paused: Bool = false
 
     /// Timer used to shuffle tracks after playing for a while.
     private var shuffleTimer: Timer?
+    /// Time remaining for the shuffle timer if it was paused.
+    private var shuffleTimeRemaining: TimeInterval?
 
     /// Timer used to fade out tracks before shuffling them.
     private var fadeTimer: Timer?
@@ -387,7 +389,7 @@ class MusicPlayer {
         }
     }
     
-    /// Starts playing the currently loaded track.
+    /// Starts playing the currently loaded track (or resumes it, if paused).
     func playTrack() throws {
         if !playing {
             fadeMultiplier = 1
@@ -402,9 +404,23 @@ class MusicPlayer {
         }
     }
     
-    /// Stops playing the currently loaded track.
-    func stopTrack() throws {
+    /// Pauses playback of the currently loaded track.
+    func pauseTrack() throws {
         if playing {
+            playing = false
+            paused = true
+            pauseShuffleTimer()
+            /// Status code for pausing audio.
+            let pauseStatus: OSStatus = pauseAudio()
+            if pauseStatus != 0 {
+                throw MessageError("Failed to pause audio.", pauseStatus)
+            }
+        }
+    }
+
+    /// Stops playing the currently loaded track and resets playback.
+    func stopTrack() throws {
+        if playing || paused {
             playing = false
             stopShuffleTimer()
             /// Status code for stopping audio.
@@ -413,22 +429,6 @@ class MusicPlayer {
                 throw MessageError("Failed to stop audio.", stopStatus)
             }
         }
-    }
-    
-    /// Stops playing the currently loaded track and marks playback as interrupted.
-    func interruptTrack() throws {
-        if playing {
-            try stopTrack()
-            interrupted = true
-        }
-    }
-    
-    /// Resumes playback after an interruption if it was playing before.
-    func resumeTrack() throws {
-        if interrupted {
-            try playTrack()
-        }
-        interrupted = false
     }
     
     /// Updates the loop start/end within the audio engine.
@@ -493,12 +493,12 @@ class MusicPlayer {
         }
     }
     
-    /// Starts the timer used to shuffle tracks.
+    /// Starts the timer used to shuffle tracks (or resumes it, if paused).
     func startShuffleTimer() {
         if shuffleTimer != nil {
-            stopShuffleTimer()
+            rawStopShuffleTimer()
         }
-        if let shuffleTime: Double = MusicSettings.settings.calculateShuffleTime(track: currentTrack) {
+        if let shuffleTime: Double = shuffleTimeRemaining ?? MusicSettings.settings.calculateShuffleTime(track: currentTrack) {
             shuffleTimer = Timer.scheduledTimer(withTimeInterval: shuffleTime, repeats: false) { timer in
                 do {
                     if let fadeDuration: Double = MusicSettings.settings.fadeDuration {
@@ -525,14 +525,30 @@ class MusicPlayer {
         }
     }
     
-    /// Stops the timer used to shuffle tracks.
-    func stopShuffleTimer() {
+    /// Stops the timer used to shuffle tracks without clearing the shuffleTimeRemaining field.
+    private func rawStopShuffleTimer() {
         shuffleTimer?.invalidate()
         shuffleTimer = nil
         fadeTimer?.invalidate()
         fadeTimer = nil
     }
     
+    /// Stops the timer used to shuffle tracks.
+    func stopShuffleTimer() {
+        rawStopShuffleTimer()
+        shuffleTimeRemaining = nil
+    }
+
+    /// Pauses the timer used to shuffle tracks.
+    func pauseShuffleTimer() {
+        // Record the remaining time before invalidating the timer.
+        if let timeRemaining = shuffleTimer?.fireDate.timeIntervalSinceNow {
+            // Max with 0 just in case...
+            shuffleTimeRemaining = max(0, timeRemaining)
+        }
+        rawStopShuffleTimer()
+    }
+
     /// Converts a sample number into seconds using the current sample rate.
     /// - parameter samples: The number of samples to convert.
     /// - returns: The given samples converted to seconds.

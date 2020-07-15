@@ -74,11 +74,15 @@ class LoopScrubber: UISlider {
         MusicPlayer.player.sampleCounter = Int(self.value * Float(MusicPlayer.player.numSamples))
     }
     
+    /// Pauses the scrubber when playback is paused.
+    func pauseTrack() {
+        self.unload()
+    }
+
     /// Disables the scrubber when playback stops.
     func stopTrack() {
         self.unload()
         self.value = 0
-        self.isEnabled = false
     }
     
     /// Invalidates the playback timer before unloading the view.

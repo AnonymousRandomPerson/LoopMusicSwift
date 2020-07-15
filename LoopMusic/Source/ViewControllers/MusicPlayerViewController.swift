@@ -44,7 +44,7 @@ class MusicPlayerViewController: UIViewController, LoopScrubberContainer, UIAdap
     @IBAction func toggleAudio() {
         do {
             if MusicPlayer.player.playing {
-                try MusicPlayer.player.stopTrack()
+                try MusicPlayer.player.pauseTrack()
             } else {
                 try MusicPlayer.player.playTrack()
             }
@@ -69,15 +69,17 @@ class MusicPlayerViewController: UIViewController, LoopScrubberContainer, UIAdap
         loopScrubber.setPlaybackPosition()
     }
     
-    /// Updates UI elements when starting or stopping the current track.
+    /// Updates UI elements when starting, pausing, or stopping the current track.
     func updateOnPlay() {
         if MusicPlayer.player.playing {
             loopScrubber?.playTrack()
+        } else if MusicPlayer.player.paused {
+            loopScrubber?.pauseTrack()
         } else {
             loopScrubber?.stopTrack()
         }
 
-        playButton.setTitle(MusicPlayer.player.playing ? "■" : "▶", for: .normal)
+        playButton.setTitle(MusicPlayer.player.playing ? "▮▮" : "▶", for: .normal)
         playButton.isEnabled = MusicPlayer.player.trackLoaded
         
         loopFinderButton.isEnabled = MusicPlayer.player.playing
@@ -133,13 +135,13 @@ class MusicPlayerViewController: UIViewController, LoopScrubberContainer, UIAdap
         switch notificationType {
         case .began:
             do {
-                try MusicPlayer.player.interruptTrack()
+                try MusicPlayer.player.pauseTrack()
             } catch {
                showErrorMessage(error: error)
             }
         case .ended:
             do {
-                try MusicPlayer.player.resumeTrack()
+                try MusicPlayer.player.playTrack()
             } catch {
                showErrorMessage(error: error)
             }

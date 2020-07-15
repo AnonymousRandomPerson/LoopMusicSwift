@@ -30,6 +30,9 @@ AudioQueueBufferRef buffers[NUM_BUFFERS];
 /// True if audio is currently playing.
 bool playing = false;
 
+/// True if the audio is currently paused (but not stopped).
+bool paused = false;
+
 /// True if loop times are used to loop playback.
 bool loopPlayback = true;
 
@@ -139,16 +142,26 @@ void setLoopPlayback(bool newLoopPlayback) {
 }
 
 OSStatus playAudio() {
-    // Preload the first set of audio data.
-    for (unsigned int i = 0; i < NUM_BUFFERS; i++) {
-        audioCallback(NULL, queue, buffers[i]);
+    // Preload the first set of audio data if the queue wasn't paused.
+    if (!paused) {
+        for (unsigned int i = 0; i < NUM_BUFFERS; i++) {
+            audioCallback(NULL, queue, buffers[i]);
+        }
     }
     playing = true;
+    paused = false;
     return AudioQueueStart(queue, NULL);
+}
+
+OSStatus pauseAudio() {
+    playing = false;
+    paused = true;
+    return AudioQueuePause(queue);
 }
 
 OSStatus stopAudio() {
     playing = false;
+    paused = false;
     OSStatus status = AudioQueueStop(queue, true);
     if (status != 0) {
         return status;
