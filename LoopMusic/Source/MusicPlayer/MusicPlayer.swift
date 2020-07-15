@@ -77,7 +77,7 @@ class MusicPlayer {
             return convertSamplesToSeconds(sampleCounter)
         }
         set {
-            sampleCounter = Int(newValue * sampleRate)
+            sampleCounter = Int(round(newValue * sampleRate))
         }
     }
 
