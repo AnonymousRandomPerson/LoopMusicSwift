@@ -1396,7 +1396,7 @@
                                     </tableViewCell>
                                 </cells>
                             </tableViewSection>
-                            <tableViewSection footerTitle="Minimum time (seconds) that the base shuffle time can be, taking precedence over base shuffle repeats." id="iuX-bB-Dna">
+                            <tableViewSection footerTitle="Minimum time (minutes) that the base shuffle time can be, taking precedence over base shuffle repeats." id="iuX-bB-Dna">
                                 <cells>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" id="Bl0-ha-sWp">
                                         <rect key="frame" x="0.0" y="261" width="375" height="43.5"/>
@@ -1436,7 +1436,7 @@
                                     </tableViewCell>
                                 </cells>
                             </tableViewSection>
-                            <tableViewSection footerTitle="Maximum time (seconds) that the base shuffle time can be, taking precedence over base shuffle repeats." id="16X-KA-ddV">
+                            <tableViewSection footerTitle="Maximum time (minutes) that the base shuffle time can be, taking precedence over base shuffle repeats." id="16X-KA-ddV">
                                 <cells>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" id="fV9-Hb-qjP">
                                         <rect key="frame" x="0.0" y="368.5" width="375" height="43.5"/>
