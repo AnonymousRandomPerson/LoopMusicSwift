@@ -7,6 +7,11 @@
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
+    <customFonts key="customFonts">
+        <array key="fa-solid-900.ttf">
+            <string>FontAwesome5Free-Solid</string>
+        </array>
+    </customFonts>
     <scenes>
         <!--Settings Home-->
         <scene sceneID="vMp-d7-fdz">
@@ -106,7 +111,7 @@
                                     </tableViewCell>
                                 </cells>
                             </tableViewSection>
-                            <tableViewSection footerTitle="Settings for timed track shuffling." id="yDz-xh-0Ii">
+                            <tableViewSection footerTitle="Settings for track shuffling." id="yDz-xh-0Ii">
                                 <cells>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="gray" accessoryType="disclosureIndicator" indentationWidth="10" id="sRg-3D-ggB">
                                         <rect key="frame" x="0.0" y="233" width="375" height="43.5"/>
@@ -356,7 +361,7 @@
                                 <nil key="highlightedColor"/>
                             </label>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="PFV-4N-Rnj" userLabel="Random Button">
-                                <rect key="frame" x="144" y="194" width="87" height="41"/>
+                                <rect key="frame" x="144" y="188" width="87" height="41"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="24"/>
                                 <state key="normal" title="Random"/>
                                 <connections>
@@ -364,9 +369,9 @@
                                 </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="sOX-8u-f3x" userLabel="Play Button">
-                                <rect key="frame" x="168" y="115" width="39" height="70"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="48"/>
-                                <state key="normal" title="▶"/>
+                                <rect key="frame" x="170" y="127" width="35" height="52"/>
+                                <fontDescription key="fontDescription" name="FontAwesome5Free-Solid" family="Font Awesome 5 Free" pointSize="40"/>
+                                <state key="normal" title=""/>
                                 <connections>
                                     <action selector="toggleAudio" destination="BYZ-38-t0r" eventType="touchUpInside" id="4IK-9V-82r"/>
                                 </connections>
@@ -413,6 +418,22 @@
                                     <action selector="setPlaybackPosition" destination="BYZ-38-t0r" eventType="valueChanged" id="5N1-7o-uQ9"/>
                                 </connections>
                             </slider>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="1sB-3k-rV1" userLabel="Back Button">
+                                <rect key="frame" x="95" y="127" width="40" height="52"/>
+                                <fontDescription key="fontDescription" name="FontAwesome5Free-Solid" family="Font Awesome 5 Free" pointSize="40"/>
+                                <state key="normal" title=""/>
+                                <connections>
+                                    <action selector="rewind" destination="BYZ-38-t0r" eventType="touchUpInside" id="N45-1Z-ccJ"/>
+                                </connections>
+                            </button>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Vhl-uE-db5" userLabel="Next Button">
+                                <rect key="frame" x="240" y="127" width="40" height="52"/>
+                                <fontDescription key="fontDescription" name="FontAwesome5Free-Solid" family="Font Awesome 5 Free" pointSize="40"/>
+                                <state key="normal" title=""/>
+                                <connections>
+                                    <action selector="nextTrack" destination="BYZ-38-t0r" eventType="touchUpInside" id="C1E-OI-vdg"/>
+                                </connections>
+                            </button>
                         </subviews>
                         <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <constraints>
@@ -422,6 +443,7 @@
                             <constraint firstItem="6Tk-OE-BBY" firstAttribute="bottom" secondItem="oky-Ed-D5H" secondAttribute="bottom" constant="20" id="F63-Wu-dU7"/>
                             <constraint firstItem="B0F-RG-7s9" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" constant="20" id="GLs-YH-Le3"/>
                             <constraint firstItem="POc-xN-ihv" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" constant="20" id="GRU-Gh-5dX"/>
+                            <constraint firstItem="sOX-8u-f3x" firstAttribute="leading" secondItem="1sB-3k-rV1" secondAttribute="trailing" constant="35" id="HKy-1c-eRS"/>
                             <constraint firstItem="3Kj-gi-vbC" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" constant="20" id="L3o-OY-1wm"/>
                             <constraint firstItem="B0F-RG-7s9" firstAttribute="centerX" secondItem="6Tk-OE-BBY" secondAttribute="centerX" id="M8V-4D-85R"/>
                             <constraint firstItem="BWM-Fe-EFr" firstAttribute="top" secondItem="HBq-hh-FHj" secondAttribute="bottom" constant="8" id="RbZ-n5-4ar"/>
@@ -429,11 +451,14 @@
                             <constraint firstItem="oky-Ed-D5H" firstAttribute="top" secondItem="POc-xN-ihv" secondAttribute="bottom" constant="8" id="SGr-ll-MBL"/>
                             <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" secondItem="3Kj-gi-vbC" secondAttribute="trailing" constant="20" id="UPu-sC-BOT"/>
                             <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" secondItem="BWM-Fe-EFr" secondAttribute="trailing" constant="20" id="ZfV-CW-cN0"/>
-                            <constraint firstItem="sOX-8u-f3x" firstAttribute="top" secondItem="B0F-RG-7s9" secondAttribute="bottom" constant="8" id="cqi-hT-4P4"/>
+                            <constraint firstItem="Vhl-uE-db5" firstAttribute="leading" secondItem="sOX-8u-f3x" secondAttribute="trailing" constant="35" id="aVA-Tr-jw1"/>
+                            <constraint firstItem="sOX-8u-f3x" firstAttribute="top" secondItem="B0F-RG-7s9" secondAttribute="bottom" constant="20" id="cqi-hT-4P4"/>
                             <constraint firstItem="oky-Ed-D5H" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" constant="20" id="dBy-SY-M15"/>
                             <constraint firstItem="sOX-8u-f3x" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="gFZ-5h-bMU"/>
                             <constraint firstItem="3Kj-gi-vbC" firstAttribute="top" secondItem="6Tk-OE-BBY" secondAttribute="top" constant="21" id="mQC-zN-Fwk"/>
+                            <constraint firstItem="sOX-8u-f3x" firstAttribute="centerY" secondItem="1sB-3k-rV1" secondAttribute="centerY" id="phO-Td-Iit"/>
                             <constraint firstItem="PFV-4N-Rnj" firstAttribute="centerX" secondItem="6Tk-OE-BBY" secondAttribute="centerX" id="sIl-OK-ATk"/>
+                            <constraint firstItem="Vhl-uE-db5" firstAttribute="centerY" secondItem="sOX-8u-f3x" secondAttribute="centerY" id="sqi-bx-3Ld"/>
                             <constraint firstItem="B0F-RG-7s9" firstAttribute="top" secondItem="3Kj-gi-vbC" secondAttribute="bottom" constant="35.666666666666671" id="uJG-ZF-ghi"/>
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
@@ -738,10 +763,51 @@
                                     </tableViewCell>
                                 </cells>
                             </tableViewSection>
+                            <tableViewSection id="uNQ-f4-BYH">
+                                <string key="footerTitle">If set, the maximum number of recently played tracks that will be remembered for navigating through song history and for avoiding repeated tracks when shuffling.</string>
+                                <cells>
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="none" indentationWidth="10" id="n8q-pc-ZVx">
+                                        <rect key="frame" x="0.0" y="169.5" width="375" height="43.5"/>
+                                        <autoresizingMask key="autoresizingMask"/>
+                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="n8q-pc-ZVx" id="Nfe-Og-8yE">
+                                            <rect key="frame" x="0.0" y="0.0" width="375" height="43.5"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                            <subviews>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="History Length" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="NLc-EZ-woD">
+                                                    <rect key="frame" x="16" y="11" width="245" height="21.5"/>
+                                                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                                    <nil key="textColor"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
+                                                <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" textAlignment="center" minimumFontSize="17" clearButtonMode="whileEditing" translatesAutoresizingMaskIntoConstraints="NO" id="P59-mi-BTL" userLabel="History Length Field">
+                                                    <rect key="frame" x="269" y="4" width="90" height="34.5"/>
+                                                    <constraints>
+                                                        <constraint firstAttribute="width" constant="90" id="xWe-Yr-XvE"/>
+                                                    </constraints>
+                                                    <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                                    <textInputTraits key="textInputTraits" keyboardType="numberPad" returnKeyType="done" enablesReturnKeyAutomatically="YES"/>
+                                                    <connections>
+                                                        <action selector="shuffleHistoryLengthChangedWithSender:" destination="4b3-sS-mfn" eventType="editingDidEnd" id="ajM-a3-Ljl"/>
+                                                    </connections>
+                                                </textField>
+                                            </subviews>
+                                            <constraints>
+                                                <constraint firstAttribute="bottom" secondItem="NLc-EZ-woD" secondAttribute="bottom" constant="11.5" id="NWV-2B-RsF"/>
+                                                <constraint firstAttribute="bottom" secondItem="P59-mi-BTL" secondAttribute="bottom" constant="5.5" id="eZu-Kd-0Vj"/>
+                                                <constraint firstItem="P59-mi-BTL" firstAttribute="leading" secondItem="NLc-EZ-woD" secondAttribute="trailing" constant="8" id="kcw-f8-oit"/>
+                                                <constraint firstAttribute="trailing" secondItem="P59-mi-BTL" secondAttribute="trailing" constant="16" id="sXH-5L-jec"/>
+                                                <constraint firstItem="P59-mi-BTL" firstAttribute="top" secondItem="Nfe-Og-8yE" secondAttribute="top" constant="4" id="sx2-wC-WDO"/>
+                                                <constraint firstItem="NLc-EZ-woD" firstAttribute="leading" secondItem="Nfe-Og-8yE" secondAttribute="leading" constant="16" id="v0k-eL-SJL"/>
+                                                <constraint firstItem="NLc-EZ-woD" firstAttribute="top" secondItem="Nfe-Og-8yE" secondAttribute="top" constant="11" id="xUe-kv-mx4"/>
+                                            </constraints>
+                                        </tableViewCellContentView>
+                                    </tableViewCell>
+                                </cells>
+                            </tableViewSection>
                             <tableViewSection headerTitle="Shuffle Mode" footerTitle="No automatic track shuffling." id="dcD-nQ-GPh">
                                 <cells>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="none" indentationWidth="10" id="3TS-xM-6cG">
-                                        <rect key="frame" x="0.0" y="197" width="375" height="43.5"/>
+                                        <rect key="frame" x="0.0" y="320.5" width="375" height="43.5"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="3TS-xM-6cG" id="36N-vQ-LGm">
                                             <rect key="frame" x="0.0" y="0.0" width="375" height="43.5"/>
@@ -772,7 +838,7 @@
                             <tableViewSection footerTitle="Settings for time shuffle mode." id="ASG-LY-BiU">
                                 <cells>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="gray" accessoryType="disclosureIndicator" indentationWidth="10" id="tr9-Hq-mlG">
-                                        <rect key="frame" x="0.0" y="288.5" width="375" height="43.5"/>
+                                        <rect key="frame" x="0.0" y="412" width="375" height="43.5"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="tr9-Hq-mlG" id="li8-SK-UrO">
                                             <rect key="frame" x="0.0" y="0.0" width="348" height="43.5"/>
@@ -801,7 +867,7 @@
                             <tableViewSection footerTitle="Settings for repeats shuffle mode." id="ZpK-c0-TWc">
                                 <cells>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="gray" accessoryType="disclosureIndicator" indentationWidth="10" id="UGX-1C-dYq">
-                                        <rect key="frame" x="0.0" y="380" width="375" height="43.5"/>
+                                        <rect key="frame" x="0.0" y="503.5" width="375" height="43.5"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="UGX-1C-dYq" id="WqF-wa-h9X">
                                             <rect key="frame" x="0.0" y="0.0" width="348" height="43.5"/>
@@ -835,6 +901,7 @@
                     </tableView>
                     <connections>
                         <outlet property="fadeDurationField" destination="1zH-ns-RkT" id="SJj-tS-MYm"/>
+                        <outlet property="shuffleHistoryLengthField" destination="P59-mi-BTL" id="3B5-Lv-bvi"/>
                         <outlet property="shuffleSettingControl" destination="nur-u0-FtO" id="HFI-jt-FYs"/>
                     </connections>
                 </tableViewController>

@@ -26,6 +26,8 @@ class MusicSettings {
     var shuffleSetting: ShuffleSetting = ShuffleSetting.none
     /// Duration of fade-out just before shuffling tracks.
     var fadeDuration: Double?
+    /// Number of tracks to store in history for recalling old tracks and for avoiding repeats when shuffling.
+    var shuffleHistoryLength: Int?
     
     /// For time shuffle, the base amount of time (minutes) to shuffle tracks at.
     var shuffleTime: Double?
@@ -101,6 +103,7 @@ class MusicSettings {
             defaultRelativeVolume = settingsFile.defaultRelativeVolume
             shuffleSetting = ShuffleSetting(rawValue: settingsFile.shuffleSetting ?? "") ?? ShuffleSetting.none
             fadeDuration = settingsFile.fadeDuration
+            shuffleHistoryLength = settingsFile.shuffleHistoryLength
             shuffleTime = settingsFile.shuffleTime
             shuffleTimeVariance = settingsFile.shuffleTimeVariance
             minShuffleRepeats = settingsFile.minShuffleRepeats
@@ -154,6 +157,7 @@ class MusicSettings {
             settingsFile.shuffleSetting = shuffleSetting.rawValue
             settingsFile.shuffleTime = shuffleTime
             settingsFile.fadeDuration = fadeDuration
+            settingsFile.shuffleHistoryLength = shuffleHistoryLength
             settingsFile.shuffleTimeVariance = shuffleTimeVariance
             settingsFile.minShuffleRepeats = minShuffleRepeats
             settingsFile.maxShuffleRepeats = maxShuffleRepeats

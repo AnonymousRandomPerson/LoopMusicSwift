@@ -29,6 +29,9 @@ void setLoopPlayback(bool);
 /// Starts playing the loaded audio.
 OSStatus playAudio(void);
 
+/// Pauses playback of the loaded audio.
+OSStatus pauseAudio(void);
+
 /// Stops playing the loaded audio.
 OSStatus stopAudio(void);
 

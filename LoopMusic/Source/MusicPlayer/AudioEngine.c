@@ -30,6 +30,12 @@ AudioQueueBufferRef buffers[NUM_BUFFERS];
 /// True if audio is currently playing.
 bool playing = false;
 
+/// True if the audio is currently paused (but not stopped).
+bool paused = false;
+
+/// Sample counter at the time of an active pause. Will be -1 if inapplicable.
+int64_t sampleCounterOnPause;
+
 /// True if loop times are used to loop playback.
 bool loopPlayback = true;
 
@@ -139,16 +145,45 @@ void setLoopPlayback(bool newLoopPlayback) {
 }
 
 OSStatus playAudio() {
-    // Preload the first set of audio data.
-    for (unsigned int i = 0; i < NUM_BUFFERS; i++) {
-        audioCallback(NULL, queue, buffers[i]);
+    // Preload the first set of audio data either if the queue wasn't paused, or if the sample counter has changed since playback was paused.
+    if (!paused || (paused && sampleCounter != sampleCounterOnPause)) {
+        // If the latter condition was true, then stop playback first to flush the audio queue.
+        if (paused) {
+            // Record the sample counter before calling stop, since audioCallback can be called a few times while the audio queue stops.
+            const int64_t preStopSampleCounter = sampleCounter;
+            OSStatus status = AudioQueueStop(queue, true);
+            if (status != 0) {
+                return status;
+            }
+            // Now rollback the sample counter to be what it was before stopping.
+            sampleCounter = preStopSampleCounter;
+        }
+        for (unsigned int i = 0; i < NUM_BUFFERS; i++) {
+            audioCallback(NULL, queue, buffers[i]);
+        }
     }
     playing = true;
+    paused = false;
+    sampleCounterOnPause = -1;
     return AudioQueueStart(queue, NULL);
+}
+
+OSStatus pauseAudio() {
+    playing = false;
+    paused = true;
+    OSStatus status = AudioQueuePause(queue);
+    if (status != 0) {
+        return status;
+    }
+    // Need to record this after pausing since audioCallback can still be called for a bit until the audio actually pauses.
+    sampleCounterOnPause = sampleCounter;
+    return status;
 }
 
 OSStatus stopAudio() {
     playing = false;
+    paused = false;
+    sampleCounterOnPause = -1;
     OSStatus status = AudioQueueStop(queue, true);
     if (status != 0) {
         return status;

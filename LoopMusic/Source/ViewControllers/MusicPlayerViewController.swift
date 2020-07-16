@@ -44,7 +44,7 @@ class MusicPlayerViewController: UIViewController, LoopScrubberContainer, UIAdap
     @IBAction func toggleAudio() {
         do {
             if MusicPlayer.player.playing {
-                try MusicPlayer.player.stopTrack()
+                try MusicPlayer.player.pauseTrack()
             } else {
                 try MusicPlayer.player.playTrack()
             }
@@ -54,6 +54,26 @@ class MusicPlayerViewController: UIViewController, LoopScrubberContainer, UIAdap
         }
     }
     
+    /// If the playback time is before a certain threshold and there are previous tracks in recent memory, play the previous track. Otherwise, reset playback.
+    @IBAction func rewind() {
+        do {
+            try MusicPlayer.player.rewind()
+            updateOnPlay()
+        } catch {
+            showErrorMessage(error: error)
+        }
+    }
+
+    /// Plays the next track, or a random one if there is no next track.
+    @IBAction func nextTrack() {
+        do {
+            try MusicPlayer.player.loadNextTrack()
+            updateOnPlay()
+        } catch {
+            showErrorMessage(error: error)
+        }
+    }
+
     /// Plays a random track from the current playlist.
     @IBAction func randomizeTrack() {
         do {
@@ -69,15 +89,20 @@ class MusicPlayerViewController: UIViewController, LoopScrubberContainer, UIAdap
         loopScrubber.setPlaybackPosition()
     }
     
-    /// Updates UI elements when starting or stopping the current track.
+    /// Updates UI elements when starting, pausing, or stopping the current track.
     func updateOnPlay() {
+        loopScrubber?.updateValue() // Make sure the scrubber value is up to date
         if MusicPlayer.player.playing {
             loopScrubber?.playTrack()
+        } else if MusicPlayer.player.paused {
+            loopScrubber?.pauseTrack()
         } else {
             loopScrubber?.stopTrack()
         }
 
-        playButton.setTitle(MusicPlayer.player.playing ? "■" : "▶", for: .normal)
+        // \u{f04c} = pause, \u{f04b} = play
+        // Using Font Awesome 5 Free: https://fontawesome.com/license/free
+        playButton.setTitle(MusicPlayer.player.playing ? "\u{f04c}" : "\u{f04b}", for: .normal)
         playButton.isEnabled = MusicPlayer.player.trackLoaded
         
         loopFinderButton.isEnabled = MusicPlayer.player.playing
@@ -133,13 +158,13 @@ class MusicPlayerViewController: UIViewController, LoopScrubberContainer, UIAdap
         switch notificationType {
         case .began:
             do {
-                try MusicPlayer.player.interruptTrack()
+                try MusicPlayer.player.pauseTrack()
             } catch {
                showErrorMessage(error: error)
             }
         case .ended:
             do {
-                try MusicPlayer.player.resumeTrack()
+                try MusicPlayer.player.playTrack()
             } catch {
                showErrorMessage(error: error)
             }
