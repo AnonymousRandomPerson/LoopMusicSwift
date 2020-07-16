@@ -75,7 +75,7 @@
 		39EB89B6247A25D8002E0901 /* DoubleTextFieldOptionalSettingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 39EB89B5247A25D8002E0901 /* DoubleTextFieldOptionalSettingView.swift */; };
 		39EC8AE2245A6E0F00D5240D /* PlaylistListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 39EC8AE1245A6E0F00D5240D /* PlaylistListViewController.swift */; };
 		39F1799A22DBCD4800D3CDFF /* AudioEngine.c in Sources */ = {isa = PBXBuildFile; fileRef = 39F1799922DBCD4800D3CDFF /* AudioEngine.c */; };
-		92561C0F24BF7ECF00AA807E /* fa-solid-900.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 92561C0E24BF7EB500AA807E /* fa-solid-900.ttf */; };
+		92252D1524C025F80033A854 /* fa-solid-900.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 92252D1424C025F80033A854 /* fa-solid-900.ttf */; };
 		92561C1124BFC5B200AA807E /* IntOptionalSettingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 92561C1024BFC5B200AA807E /* IntOptionalSettingView.swift */; };
 		926A2CAC24BFD0A90069D2BC /* NonnegativeIntOptionalSettingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 926A2CAB24BFD0A90069D2BC /* NonnegativeIntOptionalSettingView.swift */; };
 /* End PBXBuildFile section */
@@ -182,7 +182,7 @@
 		39EB89B5247A25D8002E0901 /* DoubleTextFieldOptionalSettingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DoubleTextFieldOptionalSettingView.swift; sourceTree = "<group>"; };
 		39EC8AE1245A6E0F00D5240D /* PlaylistListViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlaylistListViewController.swift; sourceTree = "<group>"; };
 		39F1799922DBCD4800D3CDFF /* AudioEngine.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = AudioEngine.c; sourceTree = "<group>"; };
-		92561C0E24BF7EB500AA807E /* fa-solid-900.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = "fa-solid-900.ttf"; path = "../../../fa-glyphs/fa-solid-900.ttf"; sourceTree = "<group>"; };
+		92252D1424C025F80033A854 /* fa-solid-900.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "fa-solid-900.ttf"; sourceTree = "<group>"; };
 		92561C1024BFC5B200AA807E /* IntOptionalSettingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IntOptionalSettingView.swift; sourceTree = "<group>"; };
 		926A2CAB24BFD0A90069D2BC /* NonnegativeIntOptionalSettingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NonnegativeIntOptionalSettingView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -292,7 +292,7 @@
 			isa = PBXGroup;
 			children = (
 				390BDAA822AA0CE700E01411 /* Assets.xcassets */,
-				92561C0D24BF7E9F00AA807E /* Fonts */,
+				92252D1324C025F80033A854 /* Fonts */,
 				390BDAAD22AA0CE700E01411 /* Info.plist */,
 				390BDAA522AA0CE600E01411 /* LoopMusic.xcdatamodeld */,
 				391F734422AA0E5A00FAC111 /* Source */,
@@ -417,10 +417,10 @@
 			path = LoopFinder;
 			sourceTree = "<group>";
 		};
-		92561C0D24BF7E9F00AA807E /* Fonts */ = {
+		92252D1324C025F80033A854 /* Fonts */ = {
 			isa = PBXGroup;
 			children = (
-				92561C0E24BF7EB500AA807E /* fa-solid-900.ttf */,
+				92252D1424C025F80033A854 /* fa-solid-900.ttf */,
 			);
 			path = Fonts;
 			sourceTree = "<group>";
@@ -536,7 +536,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				390BDAAC22AA0CE700E01411 /* LaunchScreen.storyboard in Resources */,
-				92561C0F24BF7ECF00AA807E /* fa-solid-900.ttf in Resources */,
+				92252D1524C025F80033A854 /* fa-solid-900.ttf in Resources */,
 				390BDAA922AA0CE700E01411 /* Assets.xcassets in Resources */,
 				390BDAA422AA0CE600E01411 /* Main.storyboard in Resources */,
 			);
