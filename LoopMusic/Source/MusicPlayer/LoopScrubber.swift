@@ -55,7 +55,7 @@ class LoopScrubber: UISlider {
     /// Starts the slider update loop.
     func startTimer() {
         if self.playbackTimer == nil {
-            self.playbackTimer = Timer.scheduledTimer(withTimeInterval: LoopScrubber.self.PLAYBACK_TIMER_INTERVAL, repeats: true) { timer in self.updateValue() }
+            self.playbackTimer = Timer.scheduledTimer(withTimeInterval: LoopScrubber.self.PLAYBACK_TIMER_INTERVAL, repeats: true) { [weak self] _ in self?.updateValue() }
         }
     }
     

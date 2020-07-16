@@ -293,7 +293,7 @@ class MusicPlayer {
     /// - parameter converter: Audio converter to convert non-interleaved audio.
     /// - parameter noninterleaved: True if the audio is non-interleaved.
     /// - parameter offset: Offset for inserting converted data into the class-level audio buffer.
-    func convertAndAddAudio(origBuffer: AVAudioPCMBuffer, audioDesc: AudioStreamBasicDescription, converter: AudioConverterRef?, noninterleaved: Bool, offset: Int) throws {
+    private func convertAndAddAudio(origBuffer: AVAudioPCMBuffer, audioDesc: AudioStreamBasicDescription, converter: AudioConverterRef?, noninterleaved: Bool, offset: Int) throws {
         if noninterleaved {
             try convertToInterleavedAudio(origBuffer: origBuffer, audioDesc: audioDesc, converter: converter!, offset: offset)
         } else {
@@ -307,7 +307,7 @@ class MusicPlayer {
     /// - parameter audioDesc: Audio description for the converted audio data.
     /// - parameter converter: Audio converter to convert audio data with.
     /// - parameter offset: Offset for inserting converted data into the class-level audio buffer.
-    func convertToInterleavedAudio(origBuffer: AVAudioPCMBuffer, audioDesc: AudioStreamBasicDescription, converter: AudioConverterRef, offset: Int) throws {
+    private func convertToInterleavedAudio(origBuffer: AVAudioPCMBuffer, audioDesc: AudioStreamBasicDescription, converter: AudioConverterRef, offset: Int) throws {
         /// Internal audio buffer list from the audio buffer.
         let origAudioBuffer: AudioBufferList = origBuffer.audioBufferList.pointee
         // Allocate memory for a buffer to store the converted audio data.
@@ -334,7 +334,7 @@ class MusicPlayer {
     /// Transfers audio data from an audio buffer to the class-level audio buffer.
     /// - parameter buffer: Audio buffer to transfer data from.
     /// - parameter offset: Offset for inserting data into the class-level audio buffer.
-    func addToAudioBuffer(buffer: AudioBuffer, offset: Int) {
+    private func addToAudioBuffer(buffer: AudioBuffer, offset: Int) {
         /// Memory address to start copying audio data into the class-level buffer.
         let dataOffset: UnsafeMutableRawPointer = audioBuffer!.mData! + offset
         dataOffset.copyMemory(from: buffer.mData!, byteCount: Int(buffer.mDataByteSize))
@@ -348,7 +348,7 @@ class MusicPlayer {
     /// - parameter noninterleaved: True if the audio is non-interleaved.
     /// - parameter currentFramesRead: The number of audio frames that have been read so far.
     /// - parameter processUuid: The UUID of the audio track process. If the track changes, this will not match and the async task will cancel.
-    func loadAudioAsync(audioFile: AVAudioFile, loadBuffer: AVAudioPCMBuffer, audioDesc: AudioStreamBasicDescription, converter: AudioConverterRef?, noninterleaved: Bool, currentFramesRead: AVAudioFrameCount, processUuid: UUID) throws {
+    private func loadAudioAsync(audioFile: AVAudioFile, loadBuffer: AVAudioPCMBuffer, audioDesc: AudioStreamBasicDescription, converter: AudioConverterRef?, noninterleaved: Bool, currentFramesRead: AVAudioFrameCount, processUuid: UUID) throws {
         if currentFramesRead >= audioFile.length {
             try disposeConverter(converter: converter)
             return
@@ -384,7 +384,7 @@ class MusicPlayer {
     /// - parameter noninterleaved: True if the audio is non-interleaved.
     /// - parameter currentFramesRead: The number of audio frames that have been read so far.
     /// - parameter processUuid: The UUID of the audio track process. If the track changes, this will not match and the async task will cancel.
-    func addAudioAsync(loadBuffer: AVAudioPCMBuffer, audioDesc: AudioStreamBasicDescription, converter: AudioConverterRef?, noninterleaved: Bool, currentFramesRead: AVAudioFrameCount, processUuid: UUID) throws {
+    private func addAudioAsync(loadBuffer: AVAudioPCMBuffer, audioDesc: AudioStreamBasicDescription, converter: AudioConverterRef?, noninterleaved: Bool, currentFramesRead: AVAudioFrameCount, processUuid: UUID) throws {
         defer { bufferLock.signal() }
         if processUuid == self.trackUuid {
             try self.convertAndAddAudio(origBuffer: loadBuffer, audioDesc: audioDesc, converter: converter, noninterleaved: noninterleaved, offset: Int(currentFramesRead * audioDesc.mBytesPerFrame))
@@ -396,7 +396,7 @@ class MusicPlayer {
     
     /// Disposes an audio converter.
     /// - parameter converter: The converter to dispose.
-    func disposeConverter(converter: AudioConverterRef?) throws {
+    private func disposeConverter(converter: AudioConverterRef?) throws {
         if let converter: AudioConverterRef = converter {
             /// Status code for disposing the audio converter.
             let deallocateStatus: OSStatus = AudioConverterDispose(converter)
@@ -449,7 +449,7 @@ class MusicPlayer {
     }
     
     /// Updates the loop start/end within the audio engine.
-    func updateLoopPoints() {
+    private func updateLoopPoints() {
         setLoopPoints((Int64) (currentTrack.loopStart * sampleRate), (Int64) (currentTrack.loopEnd * sampleRate))
     }
     
@@ -579,7 +579,7 @@ class MusicPlayer {
     }
     
     /// Enables background audio playback for the app.
-    func enableBackgroundAudio() throws {
+    private func enableBackgroundAudio() throws {
         do {
             try AVAudioSession.sharedInstance().setCategory(.playback, mode: .default, options: [.mixWithOthers])
             try AVAudioSession.sharedInstance().setActive(true)
