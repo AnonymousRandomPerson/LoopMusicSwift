@@ -76,6 +76,8 @@
 		39EC8AE2245A6E0F00D5240D /* PlaylistListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 39EC8AE1245A6E0F00D5240D /* PlaylistListViewController.swift */; };
 		39F1799A22DBCD4800D3CDFF /* AudioEngine.c in Sources */ = {isa = PBXBuildFile; fileRef = 39F1799922DBCD4800D3CDFF /* AudioEngine.c */; };
 		92561C0F24BF7ECF00AA807E /* fa-solid-900.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 92561C0E24BF7EB500AA807E /* fa-solid-900.ttf */; };
+		92561C1124BFC5B200AA807E /* IntOptionalSettingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 92561C1024BFC5B200AA807E /* IntOptionalSettingView.swift */; };
+		926A2CAC24BFD0A90069D2BC /* NonnegativeIntOptionalSettingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 926A2CAB24BFD0A90069D2BC /* NonnegativeIntOptionalSettingView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -181,6 +183,8 @@
 		39EC8AE1245A6E0F00D5240D /* PlaylistListViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlaylistListViewController.swift; sourceTree = "<group>"; };
 		39F1799922DBCD4800D3CDFF /* AudioEngine.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = AudioEngine.c; sourceTree = "<group>"; };
 		92561C0E24BF7EB500AA807E /* fa-solid-900.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = "fa-solid-900.ttf"; path = "../../../fa-glyphs/fa-solid-900.ttf"; sourceTree = "<group>"; };
+		92561C1024BFC5B200AA807E /* IntOptionalSettingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IntOptionalSettingView.swift; sourceTree = "<group>"; };
+		926A2CAB24BFD0A90069D2BC /* NonnegativeIntOptionalSettingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NonnegativeIntOptionalSettingView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -368,9 +372,11 @@
 				39812B742478D5BF002AFBCA /* BooleanSettingView.swift */,
 				395D897C24738AAA00B9FD1C /* DoubleSliderSettingView.swift */,
 				39EB89B5247A25D8002E0901 /* DoubleTextFieldOptionalSettingView.swift */,
+				3973B5F324BAB00F00883011 /* DoubleTextFieldSettingView.swift */,
+				92561C1024BFC5B200AA807E /* IntOptionalSettingView.swift */,
+				926A2CAB24BFD0A90069D2BC /* NonnegativeIntOptionalSettingView.swift */,
 				3973B5F124BAABF300883011 /* IntSettingView.swift */,
 				39812B722478D1F3002AFBCA /* ShuffleSettingView.swift */,
-				3973B5F324BAB00F00883011 /* DoubleTextFieldSettingView.swift */,
 			);
 			path = SettingViews;
 			sourceTree = "<group>";
@@ -573,11 +579,13 @@
 				3973B5F424BAB00F00883011 /* DoubleTextFieldSettingView.swift in Sources */,
 				3977EA8A24BB96BF0035FF0E /* LoopFinderOuterViewController.swift in Sources */,
 				39F1799A22DBCD4800D3CDFF /* AudioEngine.c in Sources */,
+				926A2CAC24BFD0A90069D2BC /* NonnegativeIntOptionalSettingView.swift in Sources */,
 				39A8D8FE24626DC600652E70 /* AlertUtils.swift in Sources */,
 				39191C2E22E6BCDB00C09D67 /* MessageError.swift in Sources */,
 				3979377922ACAA9A00C5DB09 /* MusicTrack.swift in Sources */,
 				39B098D12468F54000526910 /* GeneralSettingsViewController.swift in Sources */,
 				39812B712478D07A002AFBCA /* BaseSettingView.swift in Sources */,
+				92561C1124BFC5B200AA807E /* IntOptionalSettingView.swift in Sources */,
 				39B098CF2468F4F800526910 /* SettingsHomeViewController.swift in Sources */,
 				39812B752478D5BF002AFBCA /* BooleanSettingView.swift in Sources */,
 				39EB89B6247A25D8002E0901 /* DoubleTextFieldOptionalSettingView.swift in Sources */,

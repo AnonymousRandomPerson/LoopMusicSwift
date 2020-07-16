@@ -11,6 +11,8 @@ struct MusicSettingsCodable: Codable {
     var shuffleSetting: String?
     /// Duration of fade-out just before shuffling tracks.
     var fadeDuration: Double?
+    /// Number of tracks to store in history for recalling old tracks and for avoiding repeats when shuffling.
+    var shuffleHistoryLength: Int?
     /// Global volume multiplier for all tracks.
     var masterVolume: Double = 1
     /// Default relative volume for newly added tracks.

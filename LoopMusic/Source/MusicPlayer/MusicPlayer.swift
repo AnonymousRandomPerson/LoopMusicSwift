@@ -12,12 +12,19 @@ class MusicPlayer {
     
     /// The amount of time (seconds) between each volume decrement when fading out.
     static let FADE_DECREMENT_TIME: Double = 0.1
-    
+
+    /// The threshold time (seconds) for playback before which rewinding will try to play the previous track, and after which rewinding will just reset the current playback. This is 3 seconds in Apple Music 1.0.5.14.
+    static let REWIND_THRESHOLD_TIME: Double = 3
+
     /// Singleton instance.
     static let player: MusicPlayer = MusicPlayer()
     
     /// The track currently loaded in the music player.
     private(set) var currentTrack: MusicTrack = MusicTrack.BLANK_MUSIC_TRACK
+    /// Previous tracks loaded in the music player (including the current one), ordered chronologically.
+    private(set) var trackHistory: [MPMediaItem] = []
+    /// trackHistory index of the track currently loaded in the music player. Will be -1 if trackHistory is empty (or if the current track was pruned away recently).
+    private(set) var trackHistoryIndex: Int = -1
     /// True if the player is currently playing a track.
     private(set) var playing: Bool = false
     /// True if the player is paused.
@@ -158,7 +165,8 @@ class MusicPlayer {
     
     /// Loads a track into the music player.
     /// - parameter mediaItem: The audio track to play.
-    func loadTrack(mediaItem: MPMediaItem) throws {
+    /// - parameter updateHistory: Whether or not to record the loaded track in the player's history (including updating the history index). Defaults to true.
+    func loadTrack(mediaItem: MPMediaItem, updateHistory: Bool = true) throws {
         try stopTrack()
         
         // Unload the buffer for the previous track.
@@ -259,7 +267,16 @@ class MusicPlayer {
         }
         
         try loadAudioAsync(audioFile: audioFile, loadBuffer: origBuffer, audioDesc: audioDesc, converter: converter, noninterleaved: noninterleaved, currentFramesRead: startReadFrames, processUuid: trackUuid)
-        
+
+        // Update track history queue if specified.
+        if updateHistory {
+            // Only add to the history if the loaded track is not already the most recent in history.
+            if trackHistory.last == nil || mediaItem != trackHistory.last! {
+                rememberTrack(track: mediaItem)
+            }
+            trackHistoryIndex = trackHistory.count - 1
+        }
+
         if currentTrack.loopEnd == 0 {
             currentTrack.loopEnd = durationSeconds
         }
@@ -457,29 +474,107 @@ class MusicPlayer {
         try MusicData.data.updateLoopPoints(track: currentTrack)
     }
     
+    /// Prune the oldest entries in the track history queue if the queue is above maximum capacity.
+    func pruneTrackHistory() {
+        // It should be, like, doubly-impossible for this setting to be negative...but max it with 0 just in case.
+        let historyLength = max(0, MusicSettings.settings.shuffleHistoryLength ?? 0)
+        let numToRemove = max(0, trackHistory.count - historyLength)
+        trackHistory.removeFirst(numToRemove)
+        // Also need to shift the index back by the number removed. But make sure it doesn't go below -1. -1 means the current index was pruned, and loading the next track should load the first in the queue.
+        trackHistoryIndex = max(-1, trackHistoryIndex - numToRemove)
+    }
+
+    /// Push a new track onto the track history queue, and remove the oldest entries if above maximum capacity.
+    private func rememberTrack(track: MPMediaItem) {
+        if (MusicSettings.settings.shuffleHistoryLength ?? 0) > 0 {
+            trackHistory.append(track)
+        }
+        pruneTrackHistory()
+    }
+
     /// Chooses a random track from the current playlist and starts playing it.
     func randomizeTrack() throws {
         /// Tracks list to randomly choose from.
-        let tracks: [MPMediaItem] = MediaPlayerUtils.getTracksInPlaylist()
+        var tracks: [MPMediaItem] = MediaPlayerUtils.getTracksInPlaylist()
+        /// Tracks that haven't been played recently.
+        let newTracks: [MPMediaItem] = tracks.filter { !trackHistory.contains($0) }
         
+        /// Pick from new tracks if possible, otherwise fall back to the full track list.
+        if newTracks.count > 0 {
+            tracks = newTracks
+        } else if tracks.count > 1 && trackHistory.count > 0 {
+            // If possible, at least try to avoid an immediate repeat.
+            tracks = tracks.filter { $0 != trackHistory.last! }
+        }
         if tracks.count == 0 {
             throw MessageError("No compatible tracks found.")
         }
         
         /// Randomly chosen track to play.
-        let randomTrack: MPMediaItem = tracks[Int.random(in: 0..<tracks.count)]
+        let randomTrack: MPMediaItem = tracks.randomElement()!
 
         try loadTrack(mediaItem: randomTrack)
         try playTrack()
     }
-    
+
+    /// Loads the next track in recent memory. If there is no next track, picks a random one.
+    func loadNextTrack() throws {
+        // Preserve the current play/pause state.
+        let wasPlaying = playing
+
+        if trackHistoryIndex < trackHistory.count - 1 {
+            trackHistoryIndex += 1
+            try loadTrack(mediaItem: trackHistory[trackHistoryIndex], updateHistory: false)
+            try playTrack()
+        } else {
+            // No new tracks; pick a random new one.
+            try randomizeTrack()
+        }
+
+        if !wasPlaying {
+            try stopTrack()
+        }
+    }
+
+    /// Loads the previous track in recent memory. If there isn't one, throw an error.
+    func loadPreviousTrack() throws {
+        // Preserve the current play/pause state.
+        let wasPlaying = playing
+
+        if trackHistoryIndex > 0 {
+            trackHistoryIndex -= 1
+            try loadTrack(mediaItem: trackHistory[trackHistoryIndex], updateHistory: false)
+            try playTrack()
+        } else {
+            throw MessageError("No previous tracks to play.")
+        }
+
+        if !wasPlaying {
+            try stopTrack()
+        }
+    }
+
+    /// If the playback time is before a certain threshold and there are previous tracks in recent memory, play the previous track. Otherwise, reset playback.
+    func rewind() throws {
+        if playbackTimeSeconds < MusicPlayer.REWIND_THRESHOLD_TIME && trackHistoryIndex > 0 {
+            try loadPreviousTrack()
+        } else {
+            // Preserve the current play state
+            let wasPlaying = playing
+            try stopTrack()
+            if wasPlaying {
+                try playTrack()
+            }
+        }
+    }
+
     /// Reloads all tracks in the current playlist. Used for database migration.
     func reloadAllTracks() throws {
         /// Tracks list to load.
         let tracks: [MPMediaItem] = MediaPlayerUtils.getTracksInPlaylist()
         
         try tracks.forEach { track in
-            try loadTrack(mediaItem: track)
+            try loadTrack(mediaItem: track, updateHistory: false)
         }
     }
     

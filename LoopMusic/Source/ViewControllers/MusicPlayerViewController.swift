@@ -54,6 +54,26 @@ class MusicPlayerViewController: UIViewController, LoopScrubberContainer, UIAdap
         }
     }
     
+    /// If the playback time is before a certain threshold and there are previous tracks in recent memory, play the previous track. Otherwise, reset playback.
+    @IBAction func rewind() {
+        do {
+            try MusicPlayer.player.rewind()
+            updateOnPlay()
+        } catch {
+            showErrorMessage(error: error)
+        }
+    }
+
+    /// Plays the next track, or a random one if there is no next track.
+    @IBAction func nextTrack() {
+        do {
+            try MusicPlayer.player.loadNextTrack()
+            updateOnPlay()
+        } catch {
+            showErrorMessage(error: error)
+        }
+    }
+
     /// Plays a random track from the current playlist.
     @IBAction func randomizeTrack() {
         do {
@@ -71,6 +91,7 @@ class MusicPlayerViewController: UIViewController, LoopScrubberContainer, UIAdap
     
     /// Updates UI elements when starting, pausing, or stopping the current track.
     func updateOnPlay() {
+        loopScrubber?.updateValue() // Make sure the scrubber value is up to date
         if MusicPlayer.player.playing {
             loopScrubber?.playTrack()
         } else if MusicPlayer.player.paused {

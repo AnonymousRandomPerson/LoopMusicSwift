@@ -29,6 +29,7 @@ class MusicSettingsTests: XCTestCase {
         settings.defaultRelativeVolume = 0
         settings.shuffleSetting = ShuffleSetting.none
         settings.fadeDuration = nil
+        settings.shuffleHistoryLength = nil
         settings.shuffleTime = nil
         settings.shuffleRepeats = nil
         settings.shuffleTimeVariance = nil
@@ -188,6 +189,7 @@ class MusicSettingsTests: XCTestCase {
         settingsFile.defaultRelativeVolume = 2
         settingsFile.shuffleSetting = "time"
         settingsFile.fadeDuration = 9
+        settingsFile.shuffleHistoryLength = 20
         settingsFile.shuffleTime = 1
         settingsFile.shuffleTimeVariance = 2
         settingsFile.minShuffleRepeats = 3
@@ -205,6 +207,7 @@ class MusicSettingsTests: XCTestCase {
         XCTAssertEqual(settings.defaultRelativeVolume, 2, accuracy: EPSILON)
         XCTAssertEqual(settings.shuffleSetting, ShuffleSetting.time)
         XCTAssertEqual(settings.fadeDuration!, 9, accuracy: EPSILON)
+        XCTAssertEqual(settings.shuffleHistoryLength!, 20)
         XCTAssertEqual(settings.shuffleTime!, 1, accuracy: EPSILON)
         XCTAssertEqual(settings.shuffleTimeVariance!, 2, accuracy: EPSILON)
         XCTAssertEqual(settings.minShuffleRepeats!, 3, accuracy: EPSILON)
@@ -222,6 +225,7 @@ class MusicSettingsTests: XCTestCase {
         settings.defaultRelativeVolume = 2
         settings.shuffleSetting = ShuffleSetting.time
         settings.fadeDuration = 9
+        settings.shuffleHistoryLength = 20
         settings.shuffleTime = 1
         settings.shuffleTimeVariance = 2
         settings.minShuffleRepeats = 3
@@ -241,6 +245,7 @@ class MusicSettingsTests: XCTestCase {
         XCTAssertEqual(settingsFile.defaultRelativeVolume, 2, accuracy: EPSILON)
         XCTAssertEqual(settingsFile.shuffleSetting, "time")
         XCTAssertEqual(settingsFile.fadeDuration!, 9, accuracy: EPSILON)
+        XCTAssertEqual(settingsFile.shuffleHistoryLength!, 20)
         XCTAssertEqual(settingsFile.shuffleTime!, 1, accuracy: EPSILON)
         XCTAssertEqual(settingsFile.shuffleTimeVariance!, 2, accuracy: EPSILON)
         XCTAssertEqual(settingsFile.minShuffleRepeats!, 3, accuracy: EPSILON)

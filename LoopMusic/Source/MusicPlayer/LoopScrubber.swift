@@ -47,12 +47,15 @@ class LoopScrubber: UISlider {
         self.isEnabled = true
     }
     
+    /// Updates the slider value with the current playback time.
+    func updateValue() {
+        value = Float(MusicPlayer.player.sampleCounter) / Float(MusicPlayer.player.numSamples)
+    }
+
     /// Starts the slider update loop.
     func startTimer() {
         if self.playbackTimer == nil {
-            self.playbackTimer = Timer.scheduledTimer(withTimeInterval: LoopScrubber.self.PLAYBACK_TIMER_INTERVAL, repeats: true) { timer in
-                self.value = Float(MusicPlayer.player.sampleCounter) / Float(MusicPlayer.player.numSamples)
-            }
+            self.playbackTimer = Timer.scheduledTimer(withTimeInterval: LoopScrubber.self.PLAYBACK_TIMER_INTERVAL, repeats: true) { timer in self.updateValue() }
         }
     }
     
