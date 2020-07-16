@@ -603,18 +603,18 @@ class MusicPlayer {
                                     self.fadeMultiplier = max(0, self.fadeMultiplier - MusicPlayer.FADE_DECREMENT_TIME / fadeDuration)
                                     self.updateVolume()
                                     if self.fadeMultiplier <= 0 {
-                                        try self.randomizeTrack()
+                                        try self.loadNextTrack()
                                     }
                                 } catch {
-                                    print("Error shuffling track:", error.localizedDescription)
+                                    print("Error loading next track:", error.localizedDescription)
                                 }
                             }
                             return
                         }
                     }
-                    try self.randomizeTrack()
+                    try self.loadNextTrack()
                 } catch {
-                    print("Error shuffling track:", error.localizedDescription)
+                    print("Error loading next track:", error.localizedDescription)
                 }
             }
         }
