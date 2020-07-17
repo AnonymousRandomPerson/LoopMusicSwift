@@ -230,7 +230,7 @@ class MusicSettings {
         }
         
         if let shuffleVariance: Double = calculateShuffleVariance(repeatLength: repeatLength) {
-            trackShuffleTime += max(0, Double.random(in: -shuffleVariance...shuffleVariance))
+            trackShuffleTime = max(0, trackShuffleTime + Double.random(in: -shuffleVariance...shuffleVariance))
         }
         
         return trackShuffleTime
