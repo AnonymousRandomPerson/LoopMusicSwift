@@ -593,12 +593,13 @@ class MusicPlayer {
             rawStopShuffleTimer()
         }
         if let shuffleTime: Double = shuffleTimeRemaining ?? MusicSettings.settings.calculateShuffleTime(track: currentTrack) {
-            shuffleTimer = Timer.scheduledTimer(withTimeInterval: shuffleTime, repeats: false) { timer in
+            shuffleTimer = Timer.scheduledTimer(withTimeInterval: shuffleTime, repeats: false) { [weak self] _ in
                 do {
                     if let fadeDuration: Double = MusicSettings.settings.fadeDuration {
                         if fadeDuration > 0 {
-                            self.fadeTimer = Timer.scheduledTimer(withTimeInterval: MusicPlayer.FADE_DECREMENT_TIME, repeats: true) { timer in
+                            self?.fadeTimer = Timer.scheduledTimer(withTimeInterval: MusicPlayer.FADE_DECREMENT_TIME, repeats: true) { [weak self] _ in
                                 do {
+                                    guard let self = self else { return }
                                     self.fadeMultiplier = max(0, self.fadeMultiplier - MusicPlayer.FADE_DECREMENT_TIME / fadeDuration)
                                     self.updateVolume()
                                     if self.fadeMultiplier <= 0 {
@@ -611,7 +612,7 @@ class MusicPlayer {
                             return
                         }
                     }
-                    try self.loadNextTrack()
+                    try self?.loadNextTrack()
                 } catch {
                     print("Error loading next track:", error.localizedDescription)
                 }
