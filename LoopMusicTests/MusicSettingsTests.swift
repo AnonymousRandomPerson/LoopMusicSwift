@@ -90,21 +90,16 @@ class MusicSettingsTests: XCTestCase {
     
     /// Tests that calculateShuffleVariance() returns the configured time variance.
     func testCalculateShuffleVarianceWithTimeVariance() {
+        settings.shuffleSetting = ShuffleSetting.time
         settings.shuffleTimeVariance = 1
         XCTAssertEqual(60, settings.calculateShuffleVariance(repeatLength: REPEAT_LENGTH)!, accuracy: EPSILON)
     }
     
     /// Tests that calculateShuffleVariance() returns the configured repeats variance.
     func testCalculateShuffleVarianceWithRepeatsVariance() {
+        settings.shuffleSetting = ShuffleSetting.repeats
         settings.shuffleRepeatsVariance = 2
         XCTAssertEqual(30, settings.calculateShuffleVariance(repeatLength: REPEAT_LENGTH)!, accuracy: EPSILON)
-    }
-    
-    /// Tests that calculateShuffleVariance() prioritizes time variance over repeats.
-    func testCalculateShuffleVarianceWithBothVariance() {
-        settings.shuffleTimeVariance = 5
-        settings.shuffleRepeatsVariance = 2
-        XCTAssertEqual(300, settings.calculateShuffleVariance(repeatLength: REPEAT_LENGTH)!, accuracy: EPSILON)
     }
     
     /// Tests that calculateMinShuffleTime() returns nil if shuffle setting is none.

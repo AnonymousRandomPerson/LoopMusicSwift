@@ -409,8 +409,7 @@ class MusicPlayer {
     /// Starts playing the currently loaded track (or resumes it, if paused).
     func playTrack() throws {
         if !playing {
-            fadeMultiplier = 1
-            updateVolume()
+            resetFadeVolume()
             playing = true
             /// Status code for playing audio.
             let playStatus: OSStatus = playAudio()
@@ -626,6 +625,9 @@ class MusicPlayer {
         shuffleTimer = nil
         fadeTimer?.invalidate()
         fadeTimer = nil
+        if playing {
+            resetFadeVolume()
+        }
     }
     
     /// Stops the timer used to shuffle tracks.
@@ -649,5 +651,11 @@ class MusicPlayer {
     /// - returns: The given samples converted to seconds.
     func convertSamplesToSeconds(_ samples: Int) -> Double {
         return Double(samples) / sampleRate
+    }
+    
+    /// Resets the fade effect.
+    private func resetFadeVolume() {
+        fadeMultiplier = 1
+        updateVolume()
     }
 }

@@ -230,7 +230,7 @@ class MusicSettings {
         }
         
         if let shuffleVariance: Double = calculateShuffleVariance(repeatLength: repeatLength) {
-            trackShuffleTime += Double.random(in: -shuffleVariance...shuffleVariance)
+            trackShuffleTime += max(0, Double.random(in: -shuffleVariance...shuffleVariance))
         }
         
         return trackShuffleTime
@@ -240,10 +240,14 @@ class MusicSettings {
     /// - parameter repeatLength: The length of the track loop.
     /// - returns: Shuffle variance time based on settings.
     func calculateShuffleVariance(repeatLength: Double) -> Double? {
-        if let shuffleTimeVariance: Double = shuffleTimeVariance {
-            return shuffleTimeVariance * 60
-        } else if let shuffleRepeatsVariance: Double = shuffleRepeatsVariance {
-            return shuffleRepeatsVariance * repeatLength
+        if shuffleSetting == ShuffleSetting.time {
+            if let shuffleTimeVariance: Double = shuffleTimeVariance {
+                return shuffleTimeVariance * 60
+            }
+        } else if shuffleSetting == ShuffleSetting.repeats {
+            if let shuffleRepeatsVariance: Double = shuffleRepeatsVariance {
+                return shuffleRepeatsVariance * repeatLength
+            }
         }
         return nil
     }
