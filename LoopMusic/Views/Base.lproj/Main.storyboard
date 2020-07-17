@@ -354,58 +354,131 @@
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="No track selected" textAlignment="center" lineBreakMode="wordWrap" numberOfLines="3" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="3Kj-gi-vbC">
-                                <rect key="frame" x="20" y="21" width="335" height="20.5"/>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" verticalCompressionResistancePriority="1000" text="No track selected" textAlignment="center" lineBreakMode="wordWrap" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="3Kj-gi-vbC">
+                                <rect key="frame" x="20" y="229.5" width="335" height="20.5"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="PFV-4N-Rnj" userLabel="Random Button">
-                                <rect key="frame" x="144" y="187.5" width="87" height="41"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="24"/>
-                                <state key="normal" title="Random"/>
-                                <connections>
-                                    <action selector="randomizeTrack" destination="BYZ-38-t0r" eventType="touchUpInside" id="K9p-bt-MPJ"/>
-                                </connections>
-                            </button>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="sOX-8u-f3x" userLabel="Play Button">
-                                <rect key="frame" x="170" y="126.5" width="35" height="52"/>
+                            <button opaque="NO" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="sOX-8u-f3x" userLabel="Play Button">
+                                <rect key="frame" x="164" y="350" width="46" height="52"/>
                                 <fontDescription key="fontDescription" name="FontAwesome5Free-Solid" family="Font Awesome 5 Free" pointSize="40"/>
                                 <state key="normal" title=""/>
                                 <connections>
                                     <action selector="toggleAudio" destination="BYZ-38-t0r" eventType="touchUpInside" id="4IK-9V-82r"/>
                                 </connections>
                             </button>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="oky-Ed-D5H" userLabel="Playlists Button">
-                                <rect key="frame" x="20" y="617" width="56" height="30"/>
-                                <state key="normal" title="Playlists"/>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" hasAttributedTitle="YES" translatesAutoresizingMaskIntoConstraints="NO" id="oky-Ed-D5H" userLabel="Playlists Button" customClass="BackgroundHighlightedButton" customModule="LoopMusic" customModuleProvider="target">
+                                <rect key="frame" x="225" y="15" width="150" height="62"/>
+                                <color key="backgroundColor" systemColor="systemOrangeColor" red="1" green="0.58431372550000005" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="150" id="aUq-uZ-fhP"/>
+                                    <constraint firstAttribute="height" constant="62" id="mFK-GH-JYz"/>
+                                </constraints>
+                                <color key="tintColor" cocoaTouchSystemColor="darkTextColor"/>
+                                <inset key="contentEdgeInsets" minX="6" minY="6" maxX="6" maxY="6"/>
+                                <state key="normal">
+                                    <attributedString key="attributedTitle">
+                                        <fragment content="Current Playlist">
+                                            <attributes>
+                                                <color key="NSColor" name="textColor" catalog="System" colorSpace="catalog"/>
+                                                <font key="NSFont" metaFont="system" size="15"/>
+                                                <paragraphStyle key="NSParagraphStyle" alignment="center" lineBreakMode="truncatingTail" baseWritingDirection="natural" tighteningFactorForTruncation="0.0"/>
+                                            </attributes>
+                                        </fragment>
+                                    </attributedString>
+                                </state>
+                                <userDefinedRuntimeAttributes>
+                                    <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
+                                        <integer key="value" value="7"/>
+                                    </userDefinedRuntimeAttribute>
+                                    <userDefinedRuntimeAttribute type="boolean" keyPath="clipsToBounds" value="YES"/>
+                                </userDefinedRuntimeAttributes>
                                 <connections>
                                     <segue destination="bsV-Li-3Na" kind="show" id="caM-XC-e0X"/>
                                 </connections>
                             </button>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="POc-xN-ihv">
-                                <rect key="frame" x="20" y="579" width="46" height="30"/>
-                                <state key="normal" title="Tracks"/>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="POc-xN-ihv" customClass="BackgroundHighlightedButton" customModule="LoopMusic" customModuleProvider="target">
+                                <rect key="frame" x="0.0" y="15" width="150" height="62"/>
+                                <color key="backgroundColor" red="0.85265308729356004" green="0.47356734110890408" blue="0.94713468221780817" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="150" id="GDc-Ef-uJY"/>
+                                    <constraint firstAttribute="height" constant="62" id="VPt-cJ-nOD"/>
+                                </constraints>
+                                <color key="tintColor" cocoaTouchSystemColor="darkTextColor"/>
+                                <state key="normal" title="Choose Track">
+                                    <color key="titleColor" cocoaTouchSystemColor="darkTextColor"/>
+                                </state>
+                                <userDefinedRuntimeAttributes>
+                                    <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
+                                        <integer key="value" value="7"/>
+                                    </userDefinedRuntimeAttribute>
+                                    <userDefinedRuntimeAttribute type="boolean" keyPath="clipsToBounds" value="YES"/>
+                                </userDefinedRuntimeAttributes>
                                 <connections>
                                     <segue destination="RV0-ie-7M0" kind="show" id="CmE-O8-RS3"/>
                                 </connections>
                             </button>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="HBq-hh-FHj" userLabel="Settings Button">
-                                <rect key="frame" x="298" y="579" width="57" height="30"/>
-                                <state key="normal" title="Settings"/>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="HBq-hh-FHj" userLabel="Settings Button" customClass="BackgroundHighlightedButton" customModule="LoopMusic" customModuleProvider="target">
+                                <rect key="frame" x="0.0" y="617" width="120" height="50"/>
+                                <color key="backgroundColor" systemColor="systemGray2Color" red="0.68235294120000001" green="0.68235294120000001" blue="0.69803921570000005" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="50" id="YkD-4E-Djt"/>
+                                    <constraint firstAttribute="width" constant="120" id="c7c-fl-mf7"/>
+                                </constraints>
+                                <color key="tintColor" cocoaTouchSystemColor="darkTextColor"/>
+                                <state key="normal" title="Settings">
+                                    <color key="titleColor" cocoaTouchSystemColor="darkTextColor"/>
+                                </state>
+                                <userDefinedRuntimeAttributes>
+                                    <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
+                                        <integer key="value" value="7"/>
+                                    </userDefinedRuntimeAttribute>
+                                    <userDefinedRuntimeAttribute type="boolean" keyPath="clipsToBounds" value="YES"/>
+                                </userDefinedRuntimeAttributes>
                                 <connections>
                                     <segue destination="Ttk-63-pyP" kind="show" id="w5l-7x-Mnm"/>
                                 </connections>
                             </button>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="BWM-Fe-EFr" userLabel="Loop Finder Button">
-                                <rect key="frame" x="273" y="617" width="82" height="30"/>
-                                <state key="normal" title="Loop Finder"/>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="BWM-Fe-EFr" userLabel="Loop Finder Button" customClass="BackgroundHighlightedButton" customModule="LoopMusic" customModuleProvider="target">
+                                <rect key="frame" x="255" y="617" width="120" height="50"/>
+                                <color key="backgroundColor" red="1" green="0.44713184931506844" blue="0.45634631849315055" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="50" id="PuQ-gS-ih2"/>
+                                    <constraint firstAttribute="width" constant="120" id="eRg-nm-ggZ"/>
+                                </constraints>
+                                <color key="tintColor" cocoaTouchSystemColor="darkTextColor"/>
+                                <state key="normal" title="Loop Finder">
+                                    <color key="titleColor" cocoaTouchSystemColor="darkTextColor"/>
+                                </state>
+                                <userDefinedRuntimeAttributes>
+                                    <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
+                                        <integer key="value" value="7"/>
+                                    </userDefinedRuntimeAttribute>
+                                    <userDefinedRuntimeAttribute type="boolean" keyPath="clipsToBounds" value="YES"/>
+                                </userDefinedRuntimeAttributes>
                                 <connections>
                                     <segue destination="jMN-ee-0go" kind="show" id="jHP-1n-TNv"/>
                                 </connections>
                             </button>
-                            <slider opaque="NO" contentMode="scaleToFill" verticalHuggingPriority="251" enabled="NO" contentHorizontalAlignment="center" contentVerticalAlignment="center" minValue="0.0" maxValue="1" translatesAutoresizingMaskIntoConstraints="NO" id="B0F-RG-7s9" customClass="LoopScrubber" customModule="LoopMusic" customModuleProvider="target">
-                                <rect key="frame" x="18" y="76.5" width="339" height="31"/>
+                            <button opaque="NO" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="1sB-3k-rV1" userLabel="Back Button">
+                                <rect key="frame" x="89" y="354" width="40" height="52"/>
+                                <fontDescription key="fontDescription" name="FontAwesome5Free-Solid" family="Font Awesome 5 Free" pointSize="40"/>
+                                <state key="normal" title=""/>
+                                <connections>
+                                    <action selector="rewind" destination="BYZ-38-t0r" eventType="touchUpInside" id="N45-1Z-ccJ"/>
+                                </connections>
+                            </button>
+                            <button opaque="NO" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Vhl-uE-db5" userLabel="Next Button">
+                                <rect key="frame" x="245" y="350" width="40" height="52"/>
+                                <fontDescription key="fontDescription" name="FontAwesome5Free-Solid" family="Font Awesome 5 Free" pointSize="40"/>
+                                <state key="normal" title=""/>
+                                <connections>
+                                    <action selector="nextTrack" destination="BYZ-38-t0r" eventType="touchUpInside" id="C1E-OI-vdg"/>
+                                </connections>
+                            </button>
+                            <slider opaque="NO" contentMode="scaleToFill" verticalHuggingPriority="251" verticalCompressionResistancePriority="1000" enabled="NO" contentHorizontalAlignment="center" contentVerticalAlignment="center" minValue="0.0" maxValue="1" translatesAutoresizingMaskIntoConstraints="NO" id="B0F-RG-7s9" customClass="LoopScrubber" customModule="LoopMusic" customModuleProvider="target">
+                                <rect key="frame" x="18" y="300" width="339" height="31"/>
                                 <color key="backgroundColor" red="0.74898773429999999" green="0.74903941149999997" blue="0.76478832959999998" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <color key="minimumTrackTintColor" red="0.53661210280000005" green="0.54961935679999996" blue="0.58864111870000002" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <color key="maximumTrackTintColor" red="0.83522337680000003" green="0.83534115549999999" blue="0.83518618349999996" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
@@ -418,48 +491,58 @@
                                     <action selector="setPlaybackPosition" destination="BYZ-38-t0r" eventType="valueChanged" id="5N1-7o-uQ9"/>
                                 </connections>
                             </slider>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="1sB-3k-rV1" userLabel="Back Button">
-                                <rect key="frame" x="95" y="126.5" width="40" height="52"/>
-                                <fontDescription key="fontDescription" name="FontAwesome5Free-Solid" family="Font Awesome 5 Free" pointSize="40"/>
-                                <state key="normal" title=""/>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="PFV-4N-Rnj" userLabel="Random Button" customClass="BackgroundHighlightedButton" customModule="LoopMusic" customModuleProvider="target">
+                                <rect key="frame" x="137.5" y="422" width="100" height="45"/>
+                                <color key="backgroundColor" systemColor="systemTealColor" red="0.35294117650000001" green="0.7843137255" blue="0.98039215690000003" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="100" id="4ou-Dq-h2j"/>
+                                    <constraint firstAttribute="height" constant="45" id="Sn7-x0-Wle"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" type="system" pointSize="24"/>
+                                <color key="tintColor" cocoaTouchSystemColor="darkTextColor"/>
+                                <state key="normal" title="Random">
+                                    <color key="titleColor" cocoaTouchSystemColor="darkTextColor"/>
+                                </state>
+                                <userDefinedRuntimeAttributes>
+                                    <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
+                                        <integer key="value" value="6"/>
+                                    </userDefinedRuntimeAttribute>
+                                    <userDefinedRuntimeAttribute type="boolean" keyPath="clipsToBounds" value="YES"/>
+                                </userDefinedRuntimeAttributes>
                                 <connections>
-                                    <action selector="rewind" destination="BYZ-38-t0r" eventType="touchUpInside" id="N45-1Z-ccJ"/>
-                                </connections>
-                            </button>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Vhl-uE-db5" userLabel="Next Button">
-                                <rect key="frame" x="240" y="126.5" width="40" height="52"/>
-                                <fontDescription key="fontDescription" name="FontAwesome5Free-Solid" family="Font Awesome 5 Free" pointSize="40"/>
-                                <state key="normal" title=""/>
-                                <connections>
-                                    <action selector="nextTrack" destination="BYZ-38-t0r" eventType="touchUpInside" id="C1E-OI-vdg"/>
+                                    <action selector="randomizeTrack" destination="BYZ-38-t0r" eventType="touchUpInside" id="K9p-bt-MPJ"/>
                                 </connections>
                             </button>
                         </subviews>
                         <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <constraints>
+                            <constraint firstItem="6Tk-OE-BBY" firstAttribute="bottom" relation="greaterThanOrEqual" secondItem="PFV-4N-Rnj" secondAttribute="bottom" constant="15" id="1Vn-TK-iy4"/>
                             <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" secondItem="B0F-RG-7s9" secondAttribute="trailing" constant="20" id="5we-fx-Rba"/>
-                            <constraint firstItem="6Tk-OE-BBY" firstAttribute="bottom" secondItem="BWM-Fe-EFr" secondAttribute="bottom" constant="20" id="B1o-Au-i4p"/>
-                            <constraint firstItem="PFV-4N-Rnj" firstAttribute="top" secondItem="sOX-8u-f3x" secondAttribute="bottom" constant="9" id="BSw-ce-Vd1"/>
-                            <constraint firstItem="6Tk-OE-BBY" firstAttribute="bottom" secondItem="oky-Ed-D5H" secondAttribute="bottom" constant="20" id="F63-Wu-dU7"/>
+                            <constraint firstItem="6Tk-OE-BBY" firstAttribute="bottom" secondItem="BWM-Fe-EFr" secondAttribute="bottom" id="B1o-Au-i4p"/>
+                            <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" secondItem="oky-Ed-D5H" secondAttribute="trailing" id="CjX-bU-195"/>
                             <constraint firstItem="B0F-RG-7s9" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" constant="20" id="GLs-YH-Le3"/>
-                            <constraint firstItem="POc-xN-ihv" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" constant="20" id="GRU-Gh-5dX"/>
+                            <constraint firstItem="POc-xN-ihv" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" id="GRU-Gh-5dX"/>
                             <constraint firstItem="sOX-8u-f3x" firstAttribute="leading" secondItem="1sB-3k-rV1" secondAttribute="trailing" constant="35" id="HKy-1c-eRS"/>
+                            <constraint firstItem="6Tk-OE-BBY" firstAttribute="bottom" secondItem="HBq-hh-FHj" secondAttribute="bottom" id="Jrb-7V-8uS"/>
                             <constraint firstItem="3Kj-gi-vbC" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" constant="20" id="L3o-OY-1wm"/>
+                            <constraint firstItem="B0F-RG-7s9" firstAttribute="top" relation="greaterThanOrEqual" secondItem="POc-xN-ihv" secondAttribute="bottom" priority="750" constant="96.5" id="Lpx-9F-2Ae"/>
                             <constraint firstItem="B0F-RG-7s9" firstAttribute="centerX" secondItem="6Tk-OE-BBY" secondAttribute="centerX" id="M8V-4D-85R"/>
-                            <constraint firstItem="BWM-Fe-EFr" firstAttribute="top" secondItem="HBq-hh-FHj" secondAttribute="bottom" constant="8" id="RbZ-n5-4ar"/>
-                            <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" secondItem="HBq-hh-FHj" secondAttribute="trailing" constant="20" id="Ry2-Jz-6B2"/>
-                            <constraint firstItem="oky-Ed-D5H" firstAttribute="top" secondItem="POc-xN-ihv" secondAttribute="bottom" constant="8" id="SGr-ll-MBL"/>
+                            <constraint firstItem="HBq-hh-FHj" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" id="N9b-Vf-obT"/>
                             <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" secondItem="3Kj-gi-vbC" secondAttribute="trailing" constant="20" id="UPu-sC-BOT"/>
-                            <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" secondItem="BWM-Fe-EFr" secondAttribute="trailing" constant="20" id="ZfV-CW-cN0"/>
+                            <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" secondItem="BWM-Fe-EFr" secondAttribute="trailing" id="ZfV-CW-cN0"/>
+                            <constraint firstItem="PFV-4N-Rnj" firstAttribute="top" secondItem="sOX-8u-f3x" secondAttribute="bottom" constant="20" id="aO7-Qq-P55"/>
                             <constraint firstItem="Vhl-uE-db5" firstAttribute="leading" secondItem="sOX-8u-f3x" secondAttribute="trailing" constant="35" id="aVA-Tr-jw1"/>
                             <constraint firstItem="sOX-8u-f3x" firstAttribute="top" secondItem="B0F-RG-7s9" secondAttribute="bottom" constant="20" id="cqi-hT-4P4"/>
-                            <constraint firstItem="oky-Ed-D5H" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" constant="20" id="dBy-SY-M15"/>
                             <constraint firstItem="sOX-8u-f3x" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="gFZ-5h-bMU"/>
-                            <constraint firstItem="3Kj-gi-vbC" firstAttribute="top" secondItem="6Tk-OE-BBY" secondAttribute="top" constant="21" id="mQC-zN-Fwk"/>
+                            <constraint firstItem="6Tk-OE-BBY" firstAttribute="bottom" secondItem="PFV-4N-Rnj" secondAttribute="bottom" priority="250" constant="200" id="gKo-FT-OKo"/>
+                            <constraint firstItem="POc-xN-ihv" firstAttribute="top" secondItem="6Tk-OE-BBY" secondAttribute="top" constant="15" id="lo0-bM-cvx"/>
+                            <constraint firstItem="B0F-RG-7s9" firstAttribute="top" relation="greaterThanOrEqual" secondItem="3Kj-gi-vbC" secondAttribute="bottom" constant="30" id="mAh-Zs-O96"/>
+                            <constraint firstItem="oky-Ed-D5H" firstAttribute="top" secondItem="6Tk-OE-BBY" secondAttribute="top" constant="15" id="nta-uQ-O7J"/>
+                            <constraint firstItem="B0F-RG-7s9" firstAttribute="top" secondItem="3Kj-gi-vbC" secondAttribute="centerY" priority="750" constant="60.5" id="nuJ-BZ-a1b"/>
                             <constraint firstItem="sOX-8u-f3x" firstAttribute="centerY" secondItem="1sB-3k-rV1" secondAttribute="centerY" id="phO-Td-Iit"/>
                             <constraint firstItem="PFV-4N-Rnj" firstAttribute="centerX" secondItem="6Tk-OE-BBY" secondAttribute="centerX" id="sIl-OK-ATk"/>
                             <constraint firstItem="Vhl-uE-db5" firstAttribute="centerY" secondItem="sOX-8u-f3x" secondAttribute="centerY" id="sqi-bx-3Ld"/>
-                            <constraint firstItem="B0F-RG-7s9" firstAttribute="top" secondItem="3Kj-gi-vbC" secondAttribute="top" constant="55.670000000000002" id="uJG-ZF-ghi"/>
+                            <constraint firstItem="3Kj-gi-vbC" firstAttribute="top" relation="greaterThanOrEqual" secondItem="POc-xN-ihv" secondAttribute="bottom" constant="15" id="xUF-ZF-LhP"/>
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
                     </view>
@@ -468,6 +551,8 @@
                         <outlet property="loopFinderButton" destination="BWM-Fe-EFr" id="m4D-sc-8bY"/>
                         <outlet property="loopScrubber" destination="B0F-RG-7s9" id="pvw-GA-yf3"/>
                         <outlet property="playButton" destination="sOX-8u-f3x" id="bnV-BZ-pwz"/>
+                        <outlet property="playlistsButton" destination="oky-Ed-D5H" id="rDQ-do-aMn"/>
+                        <outlet property="settingsButton" destination="HBq-hh-FHj" id="dpO-vX-pVQ"/>
                         <outlet property="trackLabel" destination="3Kj-gi-vbC" id="hks-x8-wQ7"/>
                         <outlet property="tracksButton" destination="POc-xN-ihv" id="Xcy-KV-Ds9"/>
                     </connections>
@@ -915,7 +1000,7 @@
             <objects>
                 <tableViewController id="Nfk-h3-LQE" userLabel="Loop Finder Settings" customClass="LoopFinderSettingsViewController" customModule="LoopMusic" customModuleProvider="target" sceneMemberID="viewController">
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" delaysContentTouches="NO" dataMode="static" style="grouped" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="18" sectionFooterHeight="18" id="f4Q-lX-m5H">
-                        <rect key="frame" x="0.0" y="0.0" width="375" height="647"/>
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="630"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" systemColor="systemGray5Color" red="0.8980392157" green="0.8980392157" blue="0.91764705879999997" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <view key="tableHeaderView" contentMode="scaleToFill" id="NdJ-Hw-BUZ">
@@ -1566,7 +1651,7 @@
             <objects>
                 <tableViewController id="dCP-e0-Vfx" userLabel="Loop Finder Initial Estimate Settings" customClass="LoopFinderInitialEstimateSettingsViewController" customModule="LoopMusic" customModuleProvider="target" sceneMemberID="viewController">
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" delaysContentTouches="NO" dataMode="static" style="grouped" separatorStyle="default" allowsSelection="NO" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="18" sectionFooterHeight="18" id="eCs-nC-fw4">
-                        <rect key="frame" x="0.0" y="0.0" width="375" height="647"/>
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="630"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" systemColor="systemGray5Color" red="0.8980392157" green="0.8980392157" blue="0.91764705879999997" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <view key="tableHeaderView" contentMode="scaleToFill" id="Yzf-HJ-ewh">
@@ -1872,7 +1957,7 @@
             <objects>
                 <tableViewController id="r2h-Y4-zMs" userLabel="Loop Finder Internal Settings" customClass="LoopFinderInternalSettingsViewController" customModule="LoopMusic" customModuleProvider="target" sceneMemberID="viewController">
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" delaysContentTouches="NO" dataMode="static" style="grouped" separatorStyle="default" allowsSelection="NO" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="18" sectionFooterHeight="18" id="7vy-by-AeE">
-                        <rect key="frame" x="0.0" y="0.0" width="375" height="647"/>
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="630"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" systemColor="systemGray5Color" red="0.8980392157" green="0.8980392157" blue="0.91764705879999997" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <view key="tableHeaderView" contentMode="scaleToFill" id="uAt-ec-c4r">
@@ -2226,7 +2311,7 @@
             <objects>
                 <tableViewController id="a0q-ZT-cm4" userLabel="Loop Finder Performance Settings" customClass="LoopFinderPerformanceSettingsViewController" customModule="LoopMusic" customModuleProvider="target" sceneMemberID="viewController">
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" delaysContentTouches="NO" dataMode="static" style="grouped" separatorStyle="default" allowsSelection="NO" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="18" sectionFooterHeight="18" id="fDK-HM-6DQ">
-                        <rect key="frame" x="0.0" y="0.0" width="375" height="647"/>
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="630"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" systemColor="systemGray5Color" red="0.8980392157" green="0.8980392157" blue="0.91764705879999997" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <view key="tableHeaderView" contentMode="scaleToFill" id="LHU-RJ-jNe">
@@ -2435,7 +2520,7 @@
             <objects>
                 <tableViewController id="FxN-SK-PjD" userLabel="Loop Finder Output Settings" customClass="LoopFinderOutputSettingsViewController" customModule="LoopMusic" customModuleProvider="target" sceneMemberID="viewController">
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" delaysContentTouches="NO" dataMode="static" style="grouped" separatorStyle="default" allowsSelection="NO" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="18" sectionFooterHeight="18" id="hdK-I7-Vhs">
-                        <rect key="frame" x="0.0" y="0.0" width="375" height="647"/>
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="630"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" systemColor="systemGray5Color" red="0.8980392157" green="0.8980392157" blue="0.91764705879999997" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <view key="tableHeaderView" contentMode="scaleToFill" id="X1t-Um-ID0">
@@ -2649,7 +2734,7 @@
             <objects>
                 <tableViewController id="oAb-0a-eCe" userLabel="Loop Finder Testing Settings" customClass="LoopFinderTestingSettingsViewController" customModule="LoopMusic" customModuleProvider="target" sceneMemberID="viewController">
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" delaysContentTouches="NO" dataMode="static" style="grouped" separatorStyle="default" allowsSelection="NO" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="18" sectionFooterHeight="18" id="pEA-Hr-P6A">
-                        <rect key="frame" x="0.0" y="0.0" width="375" height="647"/>
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="630"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" systemColor="systemGray5Color" red="0.8980392157" green="0.8980392157" blue="0.91764705879999997" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <view key="tableHeaderView" contentMode="scaleToFill" id="qAh-hV-mJr">
@@ -3160,6 +3245,6 @@
         </scene>
     </scenes>
     <inferredMetricsTieBreakers>
-        <segue reference="c7M-Oo-dlt"/>
+        <segue reference="rgi-Zg-u1z"/>
     </inferredMetricsTieBreakers>
 </document>

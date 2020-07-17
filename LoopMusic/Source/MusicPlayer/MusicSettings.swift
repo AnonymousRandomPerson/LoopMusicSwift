@@ -13,7 +13,11 @@ class MusicSettings {
     var settingsFileName: String = SETTINGS_FILE
     
     /// Playlist being used to choose tracks.
-    var currentPlaylist: MPMediaPlaylist = MediaPlayerUtils.ALL_TRACKS_PLAYLIST
+    var currentPlaylist: MPMediaPlaylist = MediaPlayerUtils.ALL_TRACKS_PLAYLIST {
+        didSet {
+            NotificationCenter.default.post(name: .changePlaylist, object: nil)
+        }
+    }
     
     /// If true, music will start playing immediately when the app starts.
     var playOnInit: Bool = false
