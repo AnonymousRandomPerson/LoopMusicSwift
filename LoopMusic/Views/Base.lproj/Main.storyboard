@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="16097" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="BYZ-38-t0r">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="16097.2" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="BYZ-38-t0r">
     <device id="retina4_7" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
@@ -361,7 +361,7 @@
                                 <nil key="highlightedColor"/>
                             </label>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="PFV-4N-Rnj" userLabel="Random Button">
-                                <rect key="frame" x="144" y="188" width="87" height="41"/>
+                                <rect key="frame" x="144" y="187.5" width="87" height="41"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="24"/>
                                 <state key="normal" title="Random"/>
                                 <connections>
@@ -369,7 +369,7 @@
                                 </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="sOX-8u-f3x" userLabel="Play Button">
-                                <rect key="frame" x="170" y="127" width="35" height="52"/>
+                                <rect key="frame" x="170" y="126.5" width="35" height="52"/>
                                 <fontDescription key="fontDescription" name="FontAwesome5Free-Solid" family="Font Awesome 5 Free" pointSize="40"/>
                                 <state key="normal" title=""/>
                                 <connections>
@@ -405,7 +405,7 @@
                                 </connections>
                             </button>
                             <slider opaque="NO" contentMode="scaleToFill" verticalHuggingPriority="251" enabled="NO" contentHorizontalAlignment="center" contentVerticalAlignment="center" minValue="0.0" maxValue="1" translatesAutoresizingMaskIntoConstraints="NO" id="B0F-RG-7s9" customClass="LoopScrubber" customModule="LoopMusic" customModuleProvider="target">
-                                <rect key="frame" x="18" y="77" width="339" height="31"/>
+                                <rect key="frame" x="18" y="76.5" width="339" height="31"/>
                                 <color key="backgroundColor" red="0.74898773429999999" green="0.74903941149999997" blue="0.76478832959999998" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <color key="minimumTrackTintColor" red="0.53661210280000005" green="0.54961935679999996" blue="0.58864111870000002" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <color key="maximumTrackTintColor" red="0.83522337680000003" green="0.83534115549999999" blue="0.83518618349999996" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
@@ -419,7 +419,7 @@
                                 </connections>
                             </slider>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="1sB-3k-rV1" userLabel="Back Button">
-                                <rect key="frame" x="95" y="127" width="40" height="52"/>
+                                <rect key="frame" x="95" y="126.5" width="40" height="52"/>
                                 <fontDescription key="fontDescription" name="FontAwesome5Free-Solid" family="Font Awesome 5 Free" pointSize="40"/>
                                 <state key="normal" title=""/>
                                 <connections>
@@ -427,7 +427,7 @@
                                 </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Vhl-uE-db5" userLabel="Next Button">
-                                <rect key="frame" x="240" y="127" width="40" height="52"/>
+                                <rect key="frame" x="240" y="126.5" width="40" height="52"/>
                                 <fontDescription key="fontDescription" name="FontAwesome5Free-Solid" family="Font Awesome 5 Free" pointSize="40"/>
                                 <state key="normal" title=""/>
                                 <connections>
@@ -459,7 +459,7 @@
                             <constraint firstItem="sOX-8u-f3x" firstAttribute="centerY" secondItem="1sB-3k-rV1" secondAttribute="centerY" id="phO-Td-Iit"/>
                             <constraint firstItem="PFV-4N-Rnj" firstAttribute="centerX" secondItem="6Tk-OE-BBY" secondAttribute="centerX" id="sIl-OK-ATk"/>
                             <constraint firstItem="Vhl-uE-db5" firstAttribute="centerY" secondItem="sOX-8u-f3x" secondAttribute="centerY" id="sqi-bx-3Ld"/>
-                            <constraint firstItem="B0F-RG-7s9" firstAttribute="top" secondItem="3Kj-gi-vbC" secondAttribute="bottom" constant="35.666666666666671" id="uJG-ZF-ghi"/>
+                            <constraint firstItem="B0F-RG-7s9" firstAttribute="top" secondItem="3Kj-gi-vbC" secondAttribute="top" constant="55.670000000000002" id="uJG-ZF-ghi"/>
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
                     </view>
