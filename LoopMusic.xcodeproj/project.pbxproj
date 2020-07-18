@@ -77,7 +77,7 @@
 		39F1799A22DBCD4800D3CDFF /* AudioEngine.c in Sources */ = {isa = PBXBuildFile; fileRef = 39F1799922DBCD4800D3CDFF /* AudioEngine.c */; };
 		92252D1524C025F80033A854 /* fa-solid-900.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 92252D1424C025F80033A854 /* fa-solid-900.ttf */; };
 		92561C1124BFC5B200AA807E /* IntOptionalSettingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 92561C1024BFC5B200AA807E /* IntOptionalSettingView.swift */; };
-		926988D524C223D300E4816C /* BackgroundHighlightedButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 926988D424C223D300E4816C /* BackgroundHighlightedButton.swift */; };
+		926988D524C223D300E4816C /* ColorBackedButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 926988D424C223D300E4816C /* ColorBackedButton.swift */; };
 		926988D724C248CB00E4816C /* UIButtonBottomFix.swift in Sources */ = {isa = PBXBuildFile; fileRef = 926988D624C248CB00E4816C /* UIButtonBottomFix.swift */; };
 		926A2CAC24BFD0A90069D2BC /* NonnegativeIntOptionalSettingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 926A2CAB24BFD0A90069D2BC /* NonnegativeIntOptionalSettingView.swift */; };
 /* End PBXBuildFile section */
@@ -186,7 +186,7 @@
 		39F1799922DBCD4800D3CDFF /* AudioEngine.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = AudioEngine.c; sourceTree = "<group>"; };
 		92252D1424C025F80033A854 /* fa-solid-900.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "fa-solid-900.ttf"; sourceTree = "<group>"; };
 		92561C1024BFC5B200AA807E /* IntOptionalSettingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IntOptionalSettingView.swift; sourceTree = "<group>"; };
-		926988D424C223D300E4816C /* BackgroundHighlightedButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BackgroundHighlightedButton.swift; sourceTree = "<group>"; };
+		926988D424C223D300E4816C /* ColorBackedButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ColorBackedButton.swift; sourceTree = "<group>"; };
 		926988D624C248CB00E4816C /* UIButtonBottomFix.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIButtonBottomFix.swift; sourceTree = "<group>"; };
 		926A2CAB24BFD0A90069D2BC /* NonnegativeIntOptionalSettingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NonnegativeIntOptionalSettingView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -433,7 +433,7 @@
 		926988D324C2238D00E4816C /* UIElements */ = {
 			isa = PBXGroup;
 			children = (
-				926988D424C223D300E4816C /* BackgroundHighlightedButton.swift */,
+				926988D424C223D300E4816C /* ColorBackedButton.swift */,
 				926988D624C248CB00E4816C /* UIButtonBottomFix.swift */,
 			);
 			path = UIElements;
@@ -582,7 +582,7 @@
 				3973B5E324BA91FB00883011 /* LoopFinderAuto+fadeDetection.m in Sources */,
 				39A6B5B424835452001A2B0B /* LoopFinderOutputSettingsViewController.swift in Sources */,
 				3973B5F624BAB04100883011 /* NumberUtils.swift in Sources */,
-				926988D524C223D300E4816C /* BackgroundHighlightedButton.swift in Sources */,
+				926988D524C223D300E4816C /* ColorBackedButton.swift in Sources */,
 				3973B5CF24BA3C8200883011 /* LoopDuration.swift in Sources */,
 				39B098CB2468DD6600526910 /* BaseListViewController.swift in Sources */,
 				39201CC5249335180079F314 /* LoopFinderViewController.swift in Sources */,
