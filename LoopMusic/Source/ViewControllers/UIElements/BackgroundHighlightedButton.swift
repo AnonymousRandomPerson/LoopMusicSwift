@@ -1,7 +1,7 @@
 import UIKit
 
 /// UIButton whose background color lightens when highlighted.
-class BackgroundHighlightedButton: UIButton {
+class BackgroundHighlightedButton: UIButtonBottomFix {
     /// The ratio with which to mix white with the normal background color when highlighted.
     var lightening: Double = 0.25 {
         /// Clamp between 0 and 1.

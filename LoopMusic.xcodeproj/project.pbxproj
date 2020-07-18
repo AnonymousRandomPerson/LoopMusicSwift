@@ -78,6 +78,7 @@
 		92252D1524C025F80033A854 /* fa-solid-900.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 92252D1424C025F80033A854 /* fa-solid-900.ttf */; };
 		92561C1124BFC5B200AA807E /* IntOptionalSettingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 92561C1024BFC5B200AA807E /* IntOptionalSettingView.swift */; };
 		926988D524C223D300E4816C /* BackgroundHighlightedButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 926988D424C223D300E4816C /* BackgroundHighlightedButton.swift */; };
+		926988D724C248CB00E4816C /* UIButtonBottomFix.swift in Sources */ = {isa = PBXBuildFile; fileRef = 926988D624C248CB00E4816C /* UIButtonBottomFix.swift */; };
 		926A2CAC24BFD0A90069D2BC /* NonnegativeIntOptionalSettingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 926A2CAB24BFD0A90069D2BC /* NonnegativeIntOptionalSettingView.swift */; };
 /* End PBXBuildFile section */
 
@@ -186,6 +187,7 @@
 		92252D1424C025F80033A854 /* fa-solid-900.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "fa-solid-900.ttf"; sourceTree = "<group>"; };
 		92561C1024BFC5B200AA807E /* IntOptionalSettingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IntOptionalSettingView.swift; sourceTree = "<group>"; };
 		926988D424C223D300E4816C /* BackgroundHighlightedButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BackgroundHighlightedButton.swift; sourceTree = "<group>"; };
+		926988D624C248CB00E4816C /* UIButtonBottomFix.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIButtonBottomFix.swift; sourceTree = "<group>"; };
 		926A2CAB24BFD0A90069D2BC /* NonnegativeIntOptionalSettingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NonnegativeIntOptionalSettingView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -432,6 +434,7 @@
 			isa = PBXGroup;
 			children = (
 				926988D424C223D300E4816C /* BackgroundHighlightedButton.swift */,
+				926988D624C248CB00E4816C /* UIButtonBottomFix.swift */,
 			);
 			path = UIElements;
 			sourceTree = "<group>";
@@ -634,6 +637,7 @@
 				39812B732478D1F3002AFBCA /* ShuffleSettingView.swift in Sources */,
 				39C4C89B246CF43900994D1C /* ShuffleSettingsViewController.swift in Sources */,
 				3973B5D524BA5FAF00883011 /* LoopFinder.swift in Sources */,
+				926988D724C248CB00E4816C /* UIButtonBottomFix.swift in Sources */,
 				39CE78BB24B96FE1004130BC /* LoopDurationViewController.swift in Sources */,
 				3973B5D324BA3F4B00883011 /* LoopEndpoints.swift in Sources */,
 			);
