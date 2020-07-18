@@ -14,7 +14,6 @@ class UIButtonBottomFix: UIButton {
     
     /// Force the button to unhighlight whenever the app becomes inactive. This usually prevents the button from getting stuck highlighted when completing a swipe up gesture to open the Control Center.
     private func registerResignActiveObserver() {
-        // Force the button to unhighlight whenever the app becomes inactive. Thi
         NotificationCenter.default.addObserver(self, selector: #selector(forceUnhighlighted), name: UIApplication.willResignActiveNotification, object: nil)
     }
 
