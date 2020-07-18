@@ -38,7 +38,7 @@ class UIButtonBottomFix: UIButton {
 
     public override func point(inside point: CGPoint, with event: UIEvent?) -> Bool {
         let inside = super.point(inside: point, with: event)
-        // Force the highlight state to match the touch+inside state if the app. But only if:
+        // Force the highlight state to match the touch+inside state. But only if:
         // 1. The app is active. This prevents the case where the button is touched after a willResignActiveNotification but before it actually goes off screen.
         // 2. A segue isn't currently happening. This prevents the case where you can press the button during a segue animation, and the button gets stuck highlighted without the button's event actually triggering.
         if UIApplication.shared.applicationState == .active && event?.type == .touches && inside != isHighlighted && !controllerIsTransitioning {
