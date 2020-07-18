@@ -6,15 +6,22 @@ class MusicPlayerViewController: UIViewController, LoopScrubberContainer, UIAdap
     
     /// Notification for updating the track name and scrubber when the current track changes.
     static let NOTIFICATION_CHANGE_TRACK: NSNotification.Name = NSNotification.Name("changeTrack")
+
+    /// Notification for updating the playlist button when the current playlist changes.
+    static let NOTIFICATION_CHANGE_PLAYLIST: NSNotification.Name = NSNotification.Name("changePlaylist")
     
     /// Button for playing or stopping music playback.
     @IBOutlet weak var playButton: UIButton!
     /// Button for choosing a track to play.
-    @IBOutlet weak var tracksButton: UIButton!
+    @IBOutlet weak var tracksButton: BackgroundHighlightedButton!
+    /// Button for choosing a playlist.
+    @IBOutlet weak var playlistsButton: BackgroundHighlightedButton!
     /// Displays the current track name.
     @IBOutlet weak var trackLabel: UILabel!
+    /// Button for opening settings.
+    @IBOutlet weak var settingsButton: BackgroundHighlightedButton!
     /// Button for navigating to the loop finder.
-    @IBOutlet weak var loopFinderButton: UIButton!
+    @IBOutlet weak var loopFinderButton: BackgroundHighlightedButton!
     
     /// Slider used for playback scrubbing.
     @IBOutlet weak var loopScrubber: LoopScrubber!
@@ -23,9 +30,17 @@ class MusicPlayerViewController: UIViewController, LoopScrubberContainer, UIAdap
         super.viewDidLoad()
         
         NotificationCenter.default.addObserver(self, selector: #selector(updateTrackChange), name: .changeTrack, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(updatePlaylistChange), name: .changePlaylist, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(interruptAudio(notification:)),
                                                name: AVAudioSession.interruptionNotification, object: nil)
         
+        playlistsButton.titleLabel?.numberOfLines = 3
+        // Round only some corners of the buttons. Note: only works in iOS 11+
+        tracksButton.layer.maskedCorners = [.layerMaxXMinYCorner, .layerMaxXMaxYCorner]
+        playlistsButton.layer.maskedCorners = [.layerMinXMinYCorner, .layerMinXMaxYCorner]
+        settingsButton.layer.maskedCorners = [.layerMaxXMinYCorner]
+        loopFinderButton.layer.maskedCorners = [.layerMinXMinYCorner]
+
         do {
             try MusicPlayer.player.initialize()
             try MusicSettings.settings.loadSettingsFile()
@@ -144,6 +159,21 @@ class MusicPlayerViewController: UIViewController, LoopScrubberContainer, UIAdap
     @objc func updateTrackChange() {
         trackLabel?.text = MusicPlayer.player.currentTrack.name
         loopScrubber?.updateLoopBox()
+    }
+
+    /// Updates the playlist label according to the current playlist.
+    @objc func updatePlaylistChange() {
+        if let attributedTitle = playlistsButton?.attributedTitle(for: .normal) {
+            let header = "Current Playlist:\n"
+            let playlistName = MusicSettings.settings.currentPlaylist.name ?? ""
+            let mutableAttributedTitle = NSMutableAttributedString(attributedString: attributedTitle)
+            mutableAttributedTitle.replaceCharacters(in: NSRange(location: 0, length: mutableAttributedTitle.length), with: header + playlistName)
+            // Make the playlist name bold.
+            let font = mutableAttributedTitle.attributes(at: 0, effectiveRange: nil)[.font] as! UIFont
+            mutableAttributedTitle.addAttribute(.font, value: UIFont(descriptor: font.fontDescriptor.withSymbolicTraits(.traitBold)!, size: font.pointSize), range: NSRange(location: header.count, length: playlistName.count))
+            playlistsButton.setAttributedTitle(mutableAttributedTitle, for: .normal)
+        }
+        playlistsButton.layoutIfNeeded()    // Change immediately without animation.
     }
 
     /// Handles audio interruptions from events like phone calls or alarms.
