@@ -47,4 +47,7 @@ int64_t getLoopStart(void);
 /// Gets the audio sample to end the loop at.
 int64_t getLoopEnd(void);
 
+/// Gets whether loop times are used to loop playback.
+bool getLoopPlayback(void);
+
 #endif

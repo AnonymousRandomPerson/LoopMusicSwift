@@ -7,7 +7,7 @@ class NumberUtils {
         /// Number format object to format the number with.
         let numberFormat = NumberFormatter()
         numberFormat.minimumFractionDigits = 0
-        numberFormat.maximumFractionDigits = 4
+        numberFormat.maximumFractionDigits = 5
         return numberFormat.string(from: NSNumber(value: number))!
     }
 }

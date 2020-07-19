@@ -5,10 +5,18 @@ class LoopFinder {
     
     let loopFinderAuto: LoopFinderAuto = LoopFinderAuto()
     
+    /// Whether or not to use an initial start estimate when looking for loop points.
+    var useInitialStartEstimate: Bool = false
+    /// Whether or not to use an initial end estimate when looking for loop points.
+    var useInitialEndEstimate: Bool = false
+
     /// Finds loop points for the current track.
     func findLoopPoints() -> [LoopDuration] {
         /// Loop finder instance for automatically finding a loop.
         MusicSettings.settings.customizeLoopFinder(loopFinder: loopFinderAuto)
+        /// Feed initial estimates into the loop finder if configured.
+        loopFinderAuto.t1Estimate = useInitialStartEstimate ? Float(MusicPlayer.player.loopStartSeconds) : -1
+        loopFinderAuto.t2Estimate = useInitialEndEstimate ? Float(MusicPlayer.player.loopEndSeconds) : -1
         /// Audio data for the currently playing track.
         var audioData: AudioData = MusicPlayer.player.audioData
         

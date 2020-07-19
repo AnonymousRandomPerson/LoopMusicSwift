@@ -170,7 +170,7 @@ class MusicPlayerViewController: UIViewController, LoopScrubberContainer, UIAdap
             mutableAttributedTitle.replaceCharacters(in: NSRange(location: 0, length: mutableAttributedTitle.length), with: header + playlistName)
             // Make the playlist name bold.
             let font = mutableAttributedTitle.attributes(at: 0, effectiveRange: nil)[.font] as! UIFont
-            mutableAttributedTitle.addAttribute(.font, value: UIFont(descriptor: font.fontDescriptor.withSymbolicTraits(.traitBold)!, size: font.pointSize), range: NSRange(location: header.count, length: playlistName.count))
+            mutableAttributedTitle.addAttribute(.font, value: FontUtils.boldFont(font), range: NSRange(location: header.count, length: playlistName.count))
             playlistsButton.setAttributedTitle(mutableAttributedTitle, for: .normal)
         }
         playlistsButton.layoutIfNeeded()    // Change immediately without animation.

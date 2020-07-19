@@ -148,6 +148,16 @@ class MusicPlayer {
         }
     }
     
+    /// Whether loop times are used to loop playback.
+    var loopPlayback: Bool {
+        get {
+            return Bool(getLoopPlayback())
+        }
+        set {
+            setLoopPlayback(newValue)
+        }
+    }
+
     var volumeMultiplier: Double {
         get {
             return currentTrack.volumeMultiplier
@@ -455,12 +465,6 @@ class MusicPlayer {
     /// Updates the volume multiplier within the audio engine.
     func updateVolume() {
         setVolumeMultiplier(currentTrack.volumeMultiplier * MusicSettings.settings.masterVolume * fadeMultiplier)
-    }
-    
-    /// Sets whether loop times are used to loop playback.
-    /// - parameter loopPlayback: True if loop times are used to loop playback.
-    func updateLoopPlayback(loopPlayback: Bool) {
-        setLoopPlayback(loopPlayback)
     }
     
     /// Saves the currently configured volume multiplier to the database.

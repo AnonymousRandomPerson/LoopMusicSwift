@@ -3,6 +3,9 @@ import UIKit
 /// View controller for the loop finder.
 class LoopFinderViewController: UIViewController, LoopScrubberContainer, UITextFieldDelegate, Unloadable, UIAdaptivePresentationControllerDelegate {
     
+    /// Displays the current track name.
+    @IBOutlet weak var trackLabel: UILabel!
+
     /// Text field used to edit the loop start.
     @IBOutlet weak var loopStartField: UITextField!
     
@@ -11,9 +14,14 @@ class LoopFinderViewController: UIViewController, LoopScrubberContainer, UITextF
     
     /// Slider used for playback scrubbing.
     @IBOutlet weak var loopScrubber: LoopScrubber!
-    
-    /// Switch for initial estimate.
-    @IBOutlet weak var initialEstimateSwitch: UISwitch!
+
+    /// Button for toggling loop playback mode.
+    @IBOutlet weak var loopPlaybackButton: UIButton!
+
+    /// Button for toggling the use of an initial start estimate.
+    @IBOutlet weak var initialStartEstimateButton: UIButton!
+    /// Button for toggling the use of an initial end estimate.
+    @IBOutlet weak var initialEndEstimateButton: UIButton!
     
     /// The loop start value upon first entering this screen.
     private var originalLoopStart: Double = 0
@@ -38,16 +46,21 @@ class LoopFinderViewController: UIViewController, LoopScrubberContainer, UITextF
         loopScrubber?.playTrack()
         displayLoopTimes()
         
+        trackLabel?.text = MusicPlayer.player.currentTrack.name
+
+        initialStartEstimateButton.titleLabel?.textAlignment = .center
+        initialEndEstimateButton.titleLabel?.textAlignment = .center
+
         originalLoopStart = MusicPlayer.player.loopStartSeconds
         originalLoopEnd = MusicPlayer.player.loopEndSeconds
-        
-        initialEstimateSwitch.isOn = MusicSettings.settings.initialEstimate
         
         let tap: UITapGestureRecognizer = UITapGestureRecognizer(
             target: self,
             action: #selector(LoopFinderViewController.dismissKeyboard))
         tap.cancelsTouchesInView = false
         view.addGestureRecognizer(tap)
+
+        updateToggleElements()
     }
     
     /// Sets the loop start time when the loop start text field is edited.
@@ -111,16 +124,22 @@ class LoopFinderViewController: UIViewController, LoopScrubberContainer, UITextF
         loopScrubber.setPlaybackPosition()
     }
     
-    /// Changes the initial estimate setting when the switch is flipped.
-    @IBAction func setInitialEstimate() {
-        MusicSettings.settings.initialEstimate = initialEstimateSwitch.isOn
-        settingChanged = true
+    /// Toggles whether an initial start estimate is enabled.
+    @IBAction func toggleInitialStartEstimate() {
+        loopFinder.useInitialStartEstimate = !loopFinder.useInitialStartEstimate
+        updateToggleElements()
+    }
+
+    /// Toggles whether an initial end estimate is enabled.
+    @IBAction func toggleInitialEndEstimate() {
+        loopFinder.useInitialEndEstimate = !loopFinder.useInitialEndEstimate
+        updateToggleElements()
     }
     
     /// Toggles whether loop playback is enabled.
-    /// - parameter uiSwitch: Switch controlling loop playback.
-    @IBAction func toggleLoopPlayback(uiSwitch: UISwitch) {
-        MusicPlayer.player.updateLoopPlayback(loopPlayback: uiSwitch.isOn)
+    @IBAction func toggleLoopPlayback() {
+        MusicPlayer.player.loopPlayback = !MusicPlayer.player.loopPlayback
+        updateToggleElements()
     }
     
     /// Finds loop points for the current track automatically.
@@ -149,6 +168,46 @@ class LoopFinderViewController: UIViewController, LoopScrubberContainer, UITextF
         updateLoopTimes()
     }
     
+    /// Updates UI elements that can be toggled.
+    func updateToggleElements() {
+        loopPlaybackButton.setTitleColor(MusicPlayer.player.loopPlayback ? .systemBlue : .systemGray, for: .normal)
+
+        var systemGray3: UIColor!
+        if #available(iOS 13.0, *) {
+            systemGray3 = UIColor.systemGray3
+        } else {
+            systemGray3 = UIColor(hue: 240/359, saturation: 0.02, brightness: 0.8, alpha: 1)
+        }
+
+        if loopFinder.useInitialStartEstimate {
+            initialStartEstimateButton.backgroundColor = .systemBlue
+            initialStartEstimateButton.setTitleColor(.white, for: .normal)
+            if let font = initialStartEstimateButton.titleLabel?.font {
+                initialStartEstimateButton.titleLabel?.font = FontUtils.boldFont(font)
+            }
+        } else {
+            initialStartEstimateButton.backgroundColor = systemGray3
+            initialStartEstimateButton.setTitleColor(.darkText, for: .normal)
+            if let font = initialStartEstimateButton.titleLabel?.font {
+                initialStartEstimateButton.titleLabel?.font = FontUtils.unboldFont(font)
+            }
+        }
+
+        if loopFinder.useInitialEndEstimate {
+            initialEndEstimateButton.backgroundColor = .systemBlue
+            initialEndEstimateButton.setTitleColor(.white, for: .normal)
+            if let font = initialEndEstimateButton.titleLabel?.font {
+                initialEndEstimateButton.titleLabel?.font = FontUtils.boldFont(font)
+            }
+        } else {
+            initialEndEstimateButton.backgroundColor = systemGray3
+            initialEndEstimateButton.setTitleColor(.darkText, for: .normal)
+            if let font = initialEndEstimateButton.titleLabel?.font {
+                initialEndEstimateButton.titleLabel?.font = FontUtils.unboldFont(font)
+            }
+        }
+    }
+
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if let destination: LoopDurationViewController = segue.destination as? LoopDurationViewController {
             loopDurationView = destination
@@ -166,7 +225,7 @@ class LoopFinderViewController: UIViewController, LoopScrubberContainer, UITextF
         loopFinder.destroy()
         loopScrubber.unload()
         if destination is MusicPlayerViewController {
-            MusicPlayer.player.updateLoopPlayback(loopPlayback: true)
+            MusicPlayer.player.loopPlayback = true
             
             if loopTimeChanged {
                 do {
