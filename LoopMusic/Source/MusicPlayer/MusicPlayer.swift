@@ -86,7 +86,7 @@ class MusicPlayer {
             return convertSamplesToSeconds(sampleCounter)
         }
         set {
-            sampleCounter = Int(round(newValue * sampleRate))
+            sampleCounter = convertSecondsToSamples(newValue)
         }
     }
 
@@ -459,7 +459,7 @@ class MusicPlayer {
     
     /// Updates the loop start/end within the audio engine.
     private func updateLoopPoints() {
-        setLoopPoints((Int64) (currentTrack.loopStart * sampleRate), (Int64) (currentTrack.loopEnd * sampleRate))
+        setLoopPoints((Int64) (convertSecondsToSamples(currentTrack.loopStart)), (Int64) (convertSecondsToSamples(currentTrack.loopEnd)))
     }
     
     /// Updates the volume multiplier within the audio engine.
@@ -658,6 +658,13 @@ class MusicPlayer {
         return Double(samples) / sampleRate
     }
     
+    /// Converts a seconds value into a sample number using the current sample rate.
+    /// - parameter seconds: The seconds value to convert.
+    /// - returns: The given seconds converted to samples.
+    func convertSecondsToSamples(_ seconds: Double) -> Int {
+        return Int(round(seconds * sampleRate))
+    }
+
     /// Resets the fade effect.
     private func resetFadeVolume() {
         fadeMultiplier = 1
