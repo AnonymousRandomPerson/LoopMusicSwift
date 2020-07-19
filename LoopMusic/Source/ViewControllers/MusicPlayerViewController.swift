@@ -49,6 +49,8 @@ class MusicPlayerViewController: UIViewController, LoopScrubberContainer, UIAdap
            showErrorMessage(error: error)
         }
         
+        updatePlaylistChange()  // Needed if starting from "All Tracks"
+
         if (MusicSettings.settings.playOnInit) {
             randomizeTrack()
         }
