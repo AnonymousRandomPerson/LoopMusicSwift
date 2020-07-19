@@ -91,7 +91,7 @@ typedef enum AudioType { INT32, INT16, FLOAT } AudioType;
 // Maximum the framerate will be reduced by.
 @property(nonatomic) NSInteger framerateReductionLimit;
 
-/// FFT setup object for vDSP.
+/// FFT setup object for vDSP. Note: this is a struct pointer (type alias for OpaqueFFTSetup *)
 @property(nonatomic) FFTSetup fftSetup;
 /// N used for the current FFT setup object.
 @property(nonatomic) unsigned long nSetup;
