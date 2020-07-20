@@ -12,14 +12,12 @@ class BaseLoopFinderContainerViewController<Item>: UIViewController {
     var currentItem: Item!
     /// Index of the currently selected item.
     var currentItemIndex: Int = 0
-    /// Original item.
-    var originalItem: Item!
+    /// Flag for whether or not to include the original item at the front of the items array.
+    var itemsArrayStartsWithOriginal: Bool {
+        return false
+    }
     /// Flag for viewing manually entered values.
     var manualMode: Bool = false
-    /// The minimum allowable item index.
-    var minItemIndex: Int {
-        return 0
-    }
     
     /// Button to choose the previous item
     @IBOutlet weak var prevButton: UIButton!
@@ -28,23 +26,26 @@ class BaseLoopFinderContainerViewController<Item>: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        currentItemIndex = minItemIndex
         updateRaw()
-        originalItem = currentItem
+        if itemsArrayStartsWithOriginal {
+            items = [currentItem]
+        }
     }
     
     /// Scrolls to the previous item.
     @IBAction func choosePrevItem() {
-        if currentItemIndex > minItemIndex {
-            currentItemIndex -= 1
-            updateAutomatic()
-        }
+        chooseItem(at: currentItemIndex - 1)
     }
     
     /// Scrolls to the next item.
     @IBAction func chooseNextItem() {
-        if currentItemIndex < items.count - 1 {
-            currentItemIndex += 1
+        chooseItem(at: currentItemIndex + 1)
+    }
+
+    /// Scrolls to an item at a specific index
+    func chooseItem(at index: Int) {
+        if index >= 0 && index < items.count {
+            currentItemIndex = index
             updateAutomatic()
         }
     }
@@ -68,20 +69,8 @@ class BaseLoopFinderContainerViewController<Item>: UIViewController {
     
     /// Updates the item when chosen from the loop finding algorithm results.
     func updateAutomatic() {
-        // Special case: revert to original values.
-        if currentItemIndex < 0 {
-            updateRevert()
-            return
-        }
         manualMode = false
         updateWithItem(item: items[currentItemIndex])
-    }
-
-    /// Updates the current item by reverting to the original values.
-    func updateRevert() {
-        manualMode = false
-        currentItemIndex = minItemIndex
-        updateWithItem(item: originalItem)
     }
 
     /// Does the necessary updates when setting a given item.
@@ -102,15 +91,15 @@ class BaseLoopFinderContainerViewController<Item>: UIViewController {
     
     /// Enables the next/previous buttons based on scroll position and mode.
     func enableScrollButtons() {
-        prevButton.isEnabled = !manualMode && currentItemIndex > minItemIndex
+        prevButton.isEnabled = !manualMode && currentItemIndex > 0
         nextButton.isEnabled = !manualMode && currentItemIndex < items.count - 1
     }
     
     /// Changes to a new set of items.
     /// - parameter newItems: The new set of items to use.
     func useNewItems(newItems: [Item]) {
-        items = newItems
-        currentItemIndex = 0
+        currentItemIndex = itemsArrayStartsWithOriginal ? 1 : 0
+        items = items[..<currentItemIndex] + newItems
         updateAutomatic()
     }
 }

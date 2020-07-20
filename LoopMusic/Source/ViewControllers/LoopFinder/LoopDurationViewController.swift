@@ -9,9 +9,9 @@ class LoopDurationViewController: BaseLoopFinderContainerViewController<LoopDura
     @IBOutlet weak var rankLabel: UILabel!
     /// Label displaying the current duration's confidence.
     @IBOutlet weak var confidenceLabel: UILabel!
-    /// The minimum allowable item index. -1 for the original loop.
-    override var minItemIndex: Int {
-        return -1
+    /// Flag for whether or not to include the original item at the front of the items array.
+    override var itemsArrayStartsWithOriginal: Bool {
+        return true
     }
     
     override func chooseItem() {

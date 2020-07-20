@@ -104,7 +104,7 @@ class LoopFinderViewController: UIViewController, LoopScrubberContainer, UITextF
     /// Reverts the loop points to their values when first entering this screen.
     @IBAction func revertLoopPoints() {
         AlertUtils.showConfirmMessage(message: "Revert loop times to their original values?", viewController: self, confirmAction: { _ in
-            self.loopDurationView.updateRevert()    // This cascades to loopEndpointsView.
+            self.loopDurationView.chooseItem(at: 0)    // This cascades to loopEndpointsView.
         })
     }
     
