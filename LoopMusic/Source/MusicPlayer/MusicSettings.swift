@@ -51,8 +51,6 @@ class MusicSettings {
     /// For repeats shuffle, the maximum amount of time (minutes) for a track, regardless of the shuffle repeats.
     var maxShuffleTime: Double?
     
-    /// True if the loop finder will use the current loop times as an initial estimate for finding better times.
-    var initialEstimate: Bool = false
     /// How far the loop finder will deviate from the start time estimate (seconds).
     var startTimeEstimateRadius: Double = 0
     /// How far the loop finder will deviate from the end time estimate (seconds).
@@ -101,6 +99,8 @@ class MusicSettings {
             
             if let playlistName = settingsFile.currentPlaylist {
                 currentPlaylist = MediaPlayerUtils.getPlaylist(playlistName: playlistName)
+            } else {
+                currentPlaylist = MediaPlayerUtils.ALL_TRACKS_PLAYLIST
             }
             playOnInit = settingsFile.playOnInit
             masterVolume = settingsFile.masterVolume
@@ -116,7 +116,6 @@ class MusicSettings {
             shuffleRepeatsVariance = settingsFile.shuffleRepeatsVariance
             minShuffleTime = settingsFile.minShuffleTime
             maxShuffleTime = settingsFile.maxShuffleTime
-            initialEstimate = settingsFile.initialEstimate
             startTimeEstimateRadius = settingsFile.startTimeEstimateRadius
             endTimeEstimateRadius = settingsFile.endTimeEstimateRadius
             loopDurationEstimateRadius = settingsFile.loopDurationEstimateRadius
@@ -169,7 +168,6 @@ class MusicSettings {
             settingsFile.shuffleRepeatsVariance = shuffleRepeatsVariance
             settingsFile.minShuffleTime = minShuffleTime
             settingsFile.maxShuffleTime = maxShuffleTime
-            settingsFile.initialEstimate = initialEstimate
             settingsFile.startTimeEstimateRadius = startTimeEstimateRadius
             settingsFile.endTimeEstimateRadius = endTimeEstimateRadius
             settingsFile.loopDurationEstimateRadius = loopDurationEstimateRadius
@@ -314,7 +312,31 @@ class MusicSettings {
     
     /// Sets settings in the loop finder.
     /// - parameter loopFinder: Loop finder instance to customize.
-    func customizeLoopFinder(loopFinder: LoopFinderAuto) {
+    /// - returns: Flag for whether any settings were changed.
+    func customizeLoopFinder(loopFinder: LoopFinderAuto) -> Bool {
+        // Record old values for comparison.
+        let old_t1Radius = loopFinder.t1Radius
+        let old_t2Radius = loopFinder.t2Radius
+        let old_tauRadius = loopFinder.tauRadius
+        let old_t1Penalty = loopFinder.t1Penalty
+        let old_t2Penalty = loopFinder.t2Penalty
+        let old_tauPenalty = loopFinder.tauPenalty
+        let old_minLoopLength = loopFinder.minLoopLength
+        let old_minTimeDiff = loopFinder.minTimeDiff
+        let old_leftIgnore = loopFinder.leftIgnore
+        let old_rightIgnore = loopFinder.rightIgnore
+        let old_useFadeDetection = loopFinder.useFadeDetection
+        let old_sampleDiffTol = loopFinder.sampleDiffTol
+        let old_fftLength = loopFinder.fftLength
+        let old_overlapPercent = loopFinder.overlapPercent
+        let old_useMonoAudio = loopFinder.useMonoAudio
+        let old_framerateReductionFactor = loopFinder.framerateReductionFactor
+        let old_framerateReductionLimit = loopFinder.framerateReductionLimit
+        let old_lengthLimit = loopFinder.lengthLimit
+        let old_nBestDurations = loopFinder.nBestDurations
+        let old_nBestPairs = loopFinder.nBestPairs
+
+        // Assign the new values.
         loopFinder.t1Radius = Float(startTimeEstimateRadius)
         loopFinder.t2Radius = Float(endTimeEstimateRadius)
         loopFinder.tauRadius = Float(loopDurationEstimateRadius)
@@ -335,10 +357,30 @@ class MusicSettings {
         loopFinder.setLengthLimitFloat(Float(trackLengthLimit))
         loopFinder.nBestDurations = durationValues
         loopFinder.nBestPairs = endpointPairs
-        
-        if initialEstimate {
-            loopFinder.t1Estimate = Float(MusicPlayer.player.loopStartSeconds)
-            loopFinder.t2Estimate = Float(MusicPlayer.player.loopEndSeconds)
-        }
+
+        // Check for differences.
+        if loopFinder.t1Radius != old_t1Radius { return true }
+        if loopFinder.t2Radius != old_t2Radius { return true }
+        if loopFinder.tauRadius != old_tauRadius { return true }
+        if loopFinder.t1Penalty != old_t1Penalty { return true }
+        if loopFinder.t2Penalty != old_t2Penalty { return true }
+        if loopFinder.tauPenalty != old_tauPenalty { return true }
+        if loopFinder.minLoopLength != old_minLoopLength { return true }
+        if loopFinder.minTimeDiff != old_minTimeDiff { return true }
+        if loopFinder.leftIgnore != old_leftIgnore { return true }
+        if loopFinder.rightIgnore != old_rightIgnore { return true }
+        if loopFinder.useFadeDetection != old_useFadeDetection { return true }
+        if loopFinder.sampleDiffTol != old_sampleDiffTol { return true }
+        if loopFinder.fftLength != old_fftLength { return true }
+        if loopFinder.overlapPercent != old_overlapPercent { return true }
+        if loopFinder.useMonoAudio != old_useMonoAudio { return true }
+        if loopFinder.framerateReductionFactor != old_framerateReductionFactor { return true }
+        if loopFinder.framerateReductionLimit != old_framerateReductionLimit { return true }
+        if loopFinder.lengthLimit != old_lengthLimit { return true }
+        if loopFinder.nBestDurations != old_nBestDurations { return true }
+        if loopFinder.nBestPairs != old_nBestPairs { return true }
+
+        // No change.
+        return false
     }
 }

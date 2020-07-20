@@ -208,6 +208,10 @@ int64_t getLoopEnd(void) {
     return loopEnd / origAudioDesc.mChannelsPerFrame;
 }
 
+bool getLoopPlayback(void) {
+    return loopPlayback;
+}
+
 /// Checks if two audio stream descriptions are equal. Returns false if either description is null.
 bool areAudioDescsEqual(AudioStreamBasicDescription desc1, AudioStreamBasicDescription desc2) {
     return desc1.mBitsPerChannel == desc2.mBitsPerChannel &&

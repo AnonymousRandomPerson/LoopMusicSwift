@@ -300,7 +300,8 @@
 }
 - (void)performFFTDestroy
 {
-    vDSP_destroy_fftsetup(self->fftSetup);
+    vDSP_destroy_fftsetup(self->fftSetup); // This does nothing if passed a null pointer.
+    self->fftSetup = NULL;  // Nullify dangling pointer.
     self->nSetup = 0;
     NSLog(@"Done destroying FFT.");
 }

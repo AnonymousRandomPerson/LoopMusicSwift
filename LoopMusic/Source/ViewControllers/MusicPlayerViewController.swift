@@ -13,15 +13,15 @@ class MusicPlayerViewController: UIViewController, LoopScrubberContainer, UIAdap
     /// Button for playing or stopping music playback.
     @IBOutlet weak var playButton: UIButton!
     /// Button for choosing a track to play.
-    @IBOutlet weak var tracksButton: BackgroundHighlightedButton!
+    @IBOutlet weak var tracksButton: ColorBackedButton!
     /// Button for choosing a playlist.
-    @IBOutlet weak var playlistsButton: BackgroundHighlightedButton!
+    @IBOutlet weak var playlistsButton: ColorBackedButton!
     /// Displays the current track name.
     @IBOutlet weak var trackLabel: UILabel!
     /// Button for opening settings.
-    @IBOutlet weak var settingsButton: BackgroundHighlightedButton!
+    @IBOutlet weak var settingsButton: ColorBackedButton!
     /// Button for navigating to the loop finder.
-    @IBOutlet weak var loopFinderButton: BackgroundHighlightedButton!
+    @IBOutlet weak var loopFinderButton: ColorBackedButton!
     
     /// Slider used for playback scrubbing.
     @IBOutlet weak var loopScrubber: LoopScrubber!
@@ -48,7 +48,7 @@ class MusicPlayerViewController: UIViewController, LoopScrubberContainer, UIAdap
         } catch {
            showErrorMessage(error: error)
         }
-        
+
         if (MusicSettings.settings.playOnInit) {
             randomizeTrack()
         }
@@ -170,7 +170,7 @@ class MusicPlayerViewController: UIViewController, LoopScrubberContainer, UIAdap
             mutableAttributedTitle.replaceCharacters(in: NSRange(location: 0, length: mutableAttributedTitle.length), with: header + playlistName)
             // Make the playlist name bold.
             let font = mutableAttributedTitle.attributes(at: 0, effectiveRange: nil)[.font] as! UIFont
-            mutableAttributedTitle.addAttribute(.font, value: UIFont(descriptor: font.fontDescriptor.withSymbolicTraits(.traitBold)!, size: font.pointSize), range: NSRange(location: header.count, length: playlistName.count))
+            mutableAttributedTitle.addAttribute(.font, value: FontUtils.boldFont(font), range: NSRange(location: header.count, length: playlistName.count))
             playlistsButton.setAttributedTitle(mutableAttributedTitle, for: .normal)
         }
         playlistsButton.layoutIfNeeded()    // Change immediately without animation.

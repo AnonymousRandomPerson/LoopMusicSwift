@@ -5,10 +5,36 @@ class LoopFinder {
     
     let loopFinderAuto: LoopFinderAuto = LoopFinderAuto()
     
+    /// Whether or not to use an initial start estimate when looking for loop points.
+    var useInitialStartEstimate: Bool = false
+    /// Whether or not to use an initial end estimate when looking for loop points.
+    var useInitialEndEstimate: Bool = false
+
+    /// Cached loop results.
+    var loopDurationsCache: [LoopDuration]?
+    /// Cached initial start estimate.
+    var t1EstimateCache: Float?
+    /// Cached initial end estimate.
+    var t2EstimateCache: Float?
+
     /// Finds loop points for the current track.
     func findLoopPoints() -> [LoopDuration] {
         /// Loop finder instance for automatically finding a loop.
-        MusicSettings.settings.customizeLoopFinder(loopFinder: loopFinderAuto)
+        let settingsChanged = MusicSettings.settings.customizeLoopFinder(loopFinder: loopFinderAuto)
+        /// Feed initial estimates into the loop finder if configured.
+        loopFinderAuto.t1Estimate = useInitialStartEstimate ? Float(MusicPlayer.player.loopStartSeconds) : -1
+        loopFinderAuto.t2Estimate = useInitialEndEstimate ? Float(MusicPlayer.player.loopEndSeconds) : -1
+
+        // If there's an old result cached and no config has changed, just return the cache.
+        if let oldLoopDurations = loopDurationsCache, let oldT1Estimate = t1EstimateCache, let oldT2Estimate = t2EstimateCache {
+            if loopFinderAuto.t1Estimate == oldT1Estimate && loopFinderAuto.t2Estimate == oldT2Estimate && !settingsChanged {
+                return oldLoopDurations
+            }
+        }
+        // Cache initial estimate config for comparing with subsequent runs.
+        t1EstimateCache = loopFinderAuto.t1Estimate
+        t2EstimateCache = loopFinderAuto.t2Estimate
+
         /// Audio data for the currently playing track.
         var audioData: AudioData = MusicPlayer.player.audioData
         
@@ -41,6 +67,9 @@ class LoopFinder {
             loopDurations.append(LoopDuration(rank: i + 1, confidence: (confidences[i] as! Double), duration: baseDurations[i] as! Int, endpoints: loopEndpoints))
         }
         
+        // Cache results.
+        loopDurationsCache = loopDurations
+
         return loopDurations
     }
     

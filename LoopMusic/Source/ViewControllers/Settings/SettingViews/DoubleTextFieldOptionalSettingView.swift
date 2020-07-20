@@ -5,9 +5,6 @@ class DoubleTextFieldOptionalSettingView: BaseSettingViewGeneric<Double?, UIText
     
     override func displaySetting() {
         if let number = setting.pointee {
-            let format = NumberFormatter()
-            format.minimumFractionDigits = 0
-            format.maximumFractionDigits = 4
             settingModifier.text = NumberUtils.formatNumber(number)
         }
     }

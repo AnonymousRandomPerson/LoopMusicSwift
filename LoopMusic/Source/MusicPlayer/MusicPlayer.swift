@@ -86,7 +86,7 @@ class MusicPlayer {
             return convertSamplesToSeconds(sampleCounter)
         }
         set {
-            sampleCounter = Int(round(newValue * sampleRate))
+            sampleCounter = convertSecondsToSamples(newValue)
         }
     }
 
@@ -148,6 +148,16 @@ class MusicPlayer {
         }
     }
     
+    /// Whether loop times are used to loop playback.
+    var loopPlayback: Bool {
+        get {
+            return Bool(getLoopPlayback())
+        }
+        set {
+            setLoopPlayback(newValue)
+        }
+    }
+
     var volumeMultiplier: Double {
         get {
             return currentTrack.volumeMultiplier
@@ -449,18 +459,12 @@ class MusicPlayer {
     
     /// Updates the loop start/end within the audio engine.
     private func updateLoopPoints() {
-        setLoopPoints((Int64) (currentTrack.loopStart * sampleRate), (Int64) (currentTrack.loopEnd * sampleRate))
+        setLoopPoints((Int64) (convertSecondsToSamples(currentTrack.loopStart)), (Int64) (convertSecondsToSamples(currentTrack.loopEnd)))
     }
     
     /// Updates the volume multiplier within the audio engine.
     func updateVolume() {
         setVolumeMultiplier(currentTrack.volumeMultiplier * MusicSettings.settings.masterVolume * fadeMultiplier)
-    }
-    
-    /// Sets whether loop times are used to loop playback.
-    /// - parameter loopPlayback: True if loop times are used to loop playback.
-    func updateLoopPlayback(loopPlayback: Bool) {
-        setLoopPlayback(loopPlayback)
     }
     
     /// Saves the currently configured volume multiplier to the database.
@@ -654,6 +658,13 @@ class MusicPlayer {
         return Double(samples) / sampleRate
     }
     
+    /// Converts a seconds value into a sample number using the current sample rate.
+    /// - parameter seconds: The seconds value to convert.
+    /// - returns: The given seconds converted to samples.
+    func convertSecondsToSamples(_ seconds: Double) -> Int {
+        return Int(round(seconds * sampleRate))
+    }
+
     /// Resets the fade effect.
     private func resetFadeVolume() {
         fadeMultiplier = 1

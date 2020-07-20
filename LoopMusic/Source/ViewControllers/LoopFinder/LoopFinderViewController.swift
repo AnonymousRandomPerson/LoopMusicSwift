@@ -3,6 +3,9 @@ import UIKit
 /// View controller for the loop finder.
 class LoopFinderViewController: UIViewController, LoopScrubberContainer, UITextFieldDelegate, Unloadable, UIAdaptivePresentationControllerDelegate {
     
+    /// Displays the current track name.
+    @IBOutlet weak var trackLabel: UILabel!
+
     /// Text field used to edit the loop start.
     @IBOutlet weak var loopStartField: UITextField!
     
@@ -11,14 +14,14 @@ class LoopFinderViewController: UIViewController, LoopScrubberContainer, UITextF
     
     /// Slider used for playback scrubbing.
     @IBOutlet weak var loopScrubber: LoopScrubber!
-    
-    /// Switch for initial estimate.
-    @IBOutlet weak var initialEstimateSwitch: UISwitch!
-    
-    /// The loop start value upon first entering this screen.
-    private var originalLoopStart: Double = 0
-    /// The loop end value upon first entering this screen.
-    private var originalLoopEnd: Double = 0
+
+    /// Button for toggling loop playback mode.
+    @IBOutlet weak var loopPlaybackButton: UIButton!
+
+    /// Button for toggling the use of an initial start estimate.
+    @IBOutlet weak var initialStartEstimateButton: UIButton!
+    /// Button for toggling the use of an initial end estimate.
+    @IBOutlet weak var initialEndEstimateButton: UIButton!
     
     /// True if a loop time is changed and should be saved.
     private var loopTimeChanged = false
@@ -38,16 +41,18 @@ class LoopFinderViewController: UIViewController, LoopScrubberContainer, UITextF
         loopScrubber?.playTrack()
         displayLoopTimes()
         
-        originalLoopStart = MusicPlayer.player.loopStartSeconds
-        originalLoopEnd = MusicPlayer.player.loopEndSeconds
-        
-        initialEstimateSwitch.isOn = MusicSettings.settings.initialEstimate
+        trackLabel?.text = MusicPlayer.player.currentTrack.name
+
+        initialStartEstimateButton.titleLabel?.textAlignment = .center
+        initialEndEstimateButton.titleLabel?.textAlignment = .center
         
         let tap: UITapGestureRecognizer = UITapGestureRecognizer(
             target: self,
             action: #selector(LoopFinderViewController.dismissKeyboard))
         tap.cancelsTouchesInView = false
         view.addGestureRecognizer(tap)
+
+        updateToggleElements()
     }
     
     /// Sets the loop start time when the loop start text field is edited.
@@ -59,9 +64,12 @@ class LoopFinderViewController: UIViewController, LoopScrubberContainer, UITextF
         } else {
             loopStartSeconds = 0
         }
-        loopStartField.text = NumberUtils.formatNumber(loopStartSeconds)
-        MusicPlayer.player.loopStartSeconds = loopStartSeconds
-        updateManualLoopTimes()
+        // Only do an update if the actual sample value will change
+        if MusicPlayer.player.convertSecondsToSamples(loopStartSeconds) != MusicPlayer.player.loopStart {
+            loopStartField.text = NumberUtils.formatNumber(loopStartSeconds)
+            MusicPlayer.player.loopStartSeconds = loopStartSeconds
+            updateManualLoopTimes()
+        }
     }
     
     /// Sets the loop end time when the loop end text field is edited.
@@ -73,9 +81,12 @@ class LoopFinderViewController: UIViewController, LoopScrubberContainer, UITextF
         } else {
             loopEndSeconds = MusicPlayer.player.durationSeconds
         }
-        loopEndField.text = NumberUtils.formatNumber(loopEndSeconds)
-        MusicPlayer.player.loopEndSeconds = loopEndSeconds
-        updateManualLoopTimes()
+        // Only do an update if the actual sample value will change
+        if MusicPlayer.player.convertSecondsToSamples(loopEndSeconds) != MusicPlayer.player.loopEnd {
+            loopEndField.text = NumberUtils.formatNumber(loopEndSeconds)
+            MusicPlayer.player.loopEndSeconds = loopEndSeconds
+            updateManualLoopTimes()
+        }
     }
     
     /// Sets the loop start time to the current playback time.
@@ -93,9 +104,7 @@ class LoopFinderViewController: UIViewController, LoopScrubberContainer, UITextF
     /// Reverts the loop points to their values when first entering this screen.
     @IBAction func revertLoopPoints() {
         AlertUtils.showConfirmMessage(message: "Revert loop times to their original values?", viewController: self, confirmAction: { _ in
-            MusicPlayer.player.loopStartSeconds = self.originalLoopStart
-            MusicPlayer.player.loopEndSeconds = self.originalLoopEnd
-            self.updateManualLoopTimes()
+            self.loopDurationView.chooseItem(at: 0)    // This cascades to loopEndpointsView.
         })
     }
     
@@ -111,16 +120,22 @@ class LoopFinderViewController: UIViewController, LoopScrubberContainer, UITextF
         loopScrubber.setPlaybackPosition()
     }
     
-    /// Changes the initial estimate setting when the switch is flipped.
-    @IBAction func setInitialEstimate() {
-        MusicSettings.settings.initialEstimate = initialEstimateSwitch.isOn
-        settingChanged = true
+    /// Toggles whether an initial start estimate is enabled.
+    @IBAction func toggleInitialStartEstimate() {
+        loopFinder.useInitialStartEstimate = !loopFinder.useInitialStartEstimate
+        updateToggleElements()
+    }
+
+    /// Toggles whether an initial end estimate is enabled.
+    @IBAction func toggleInitialEndEstimate() {
+        loopFinder.useInitialEndEstimate = !loopFinder.useInitialEndEstimate
+        updateToggleElements()
     }
     
     /// Toggles whether loop playback is enabled.
-    /// - parameter uiSwitch: Switch controlling loop playback.
-    @IBAction func toggleLoopPlayback(uiSwitch: UISwitch) {
-        MusicPlayer.player.updateLoopPlayback(loopPlayback: uiSwitch.isOn)
+    @IBAction func toggleLoopPlayback() {
+        MusicPlayer.player.loopPlayback = !MusicPlayer.player.loopPlayback
+        updateToggleElements()
     }
     
     /// Finds loop points for the current track automatically.
@@ -149,6 +164,46 @@ class LoopFinderViewController: UIViewController, LoopScrubberContainer, UITextF
         updateLoopTimes()
     }
     
+    /// Updates UI elements that can be toggled.
+    func updateToggleElements() {
+        loopPlaybackButton.setTitleColor(MusicPlayer.player.loopPlayback ? .systemBlue : .systemGray, for: .normal)
+
+        var systemGray3: UIColor!
+        if #available(iOS 13.0, *) {
+            systemGray3 = UIColor.systemGray3
+        } else {
+            systemGray3 = UIColor(hue: 240/359, saturation: 0.02, brightness: 0.8, alpha: 1)
+        }
+
+        if loopFinder.useInitialStartEstimate {
+            initialStartEstimateButton.backgroundColor = .systemBlue
+            initialStartEstimateButton.setTitleColor(.white, for: .normal)
+            if let font = initialStartEstimateButton.titleLabel?.font {
+                initialStartEstimateButton.titleLabel?.font = FontUtils.boldFont(font)
+            }
+        } else {
+            initialStartEstimateButton.backgroundColor = systemGray3
+            initialStartEstimateButton.setTitleColor(.darkText, for: .normal)
+            if let font = initialStartEstimateButton.titleLabel?.font {
+                initialStartEstimateButton.titleLabel?.font = FontUtils.unboldFont(font)
+            }
+        }
+
+        if loopFinder.useInitialEndEstimate {
+            initialEndEstimateButton.backgroundColor = .systemBlue
+            initialEndEstimateButton.setTitleColor(.white, for: .normal)
+            if let font = initialEndEstimateButton.titleLabel?.font {
+                initialEndEstimateButton.titleLabel?.font = FontUtils.boldFont(font)
+            }
+        } else {
+            initialEndEstimateButton.backgroundColor = systemGray3
+            initialEndEstimateButton.setTitleColor(.darkText, for: .normal)
+            if let font = initialEndEstimateButton.titleLabel?.font {
+                initialEndEstimateButton.titleLabel?.font = FontUtils.unboldFont(font)
+            }
+        }
+    }
+
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if let destination: LoopDurationViewController = segue.destination as? LoopDurationViewController {
             loopDurationView = destination
@@ -166,7 +221,7 @@ class LoopFinderViewController: UIViewController, LoopScrubberContainer, UITextF
         loopFinder.destroy()
         loopScrubber.unload()
         if destination is MusicPlayerViewController {
-            MusicPlayer.player.updateLoopPlayback(loopPlayback: true)
+            MusicPlayer.player.loopPlayback = true
             
             if loopTimeChanged {
                 do {
@@ -238,7 +293,7 @@ class LoopFinderViewController: UIViewController, LoopScrubberContainer, UITextF
         loopTimeChanged = true
     }
     
-    /// Updates the current loop duration times, without using loop finding algorithm results.
+    /// Updates the current loop times by manual entry, without using loop finding algorithm results.
     private func updateManualLoopTimes() {
         updateLoopTimes()
         loopDurationView.updateManual()
