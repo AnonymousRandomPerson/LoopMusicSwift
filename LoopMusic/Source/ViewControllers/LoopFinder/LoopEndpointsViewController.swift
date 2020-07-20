@@ -18,6 +18,7 @@ class LoopEndpointsViewController: BaseLoopFinderContainerViewController<LoopEnd
     
     /// Displays the current loop duration on the view labels.
     override func displayItem() {
-        rankLabel.text = String(format: "Rank: %@", currentItem.rank == nil ? "---" : String(format: "%i.%i", durationRank ?? 0, currentItem.rank!))
+        let defaultRank = manualMode ? "Manual Loop" : "Original Loop"
+        rankLabel.text = String(format: "Rank: %@", currentItem.rank == nil ? defaultRank : String(format: "%i.%i", durationRank ?? 0, currentItem.rank!))
     }
 }

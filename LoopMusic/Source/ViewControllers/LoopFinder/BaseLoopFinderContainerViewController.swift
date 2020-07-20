@@ -12,6 +12,14 @@ class BaseLoopFinderContainerViewController<Item>: UIViewController {
     var currentItem: Item!
     /// Index of the currently selected item.
     var currentItemIndex: Int = 0
+    /// Original item.
+    var originalItem: Item!
+    /// Flag for viewing manually entered values.
+    var manualMode: Bool = false
+    /// The minimum allowable item index.
+    var minItemIndex: Int {
+        return 0
+    }
     
     /// Button to choose the previous item
     @IBOutlet weak var prevButton: UIButton!
@@ -20,14 +28,14 @@ class BaseLoopFinderContainerViewController<Item>: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        updateManual()
-        items = [currentItem]
-        enableScrollButtons()
+        currentItemIndex = minItemIndex
+        updateRaw()
+        originalItem = currentItem
     }
     
     /// Scrolls to the previous item.
     @IBAction func choosePrevItem() {
-        if currentItemIndex > 0 {
+        if currentItemIndex > minItemIndex {
             currentItemIndex -= 1
             updateAutomatic()
         }
@@ -41,19 +49,44 @@ class BaseLoopFinderContainerViewController<Item>: UIViewController {
         }
     }
     
-    /// Updates the current item manually, without using loop finding algorithm results.
-    func updateManual() {
+    /// Updates the current item by whatever's in the music player.
+    private func updateRaw() {
         resetCurrentItem()
+        enableScrollButtons()
         displayItem()
     }
     
+    /// Updates the current item by manual entry, without using loop finding algorithm results.
+    func updateManual() {
+        manualMode = true
+        updateRaw()
+    }
+
     /// Resets the current item to the values currently in the music player.
     func resetCurrentItem() {
     }
     
     /// Updates the item when chosen from the loop finding algorithm results.
     func updateAutomatic() {
-        currentItem = items[currentItemIndex]
+        // Special case: revert to original values.
+        if currentItemIndex < 0 {
+            updateRevert()
+            return
+        }
+        manualMode = false
+        updateWithItem(item: items[currentItemIndex])
+    }
+
+    /// Updates the current item by reverting to the original values.
+    func updateRevert() {
+        manualMode = false
+        currentItemIndex = minItemIndex
+        updateWithItem(item: originalItem)
+    }
+
+    /// Does the necessary updates when setting a given item.
+    private func updateWithItem(item: Item) {
+        currentItem = item
         enableScrollButtons()
         displayItem()
         chooseItem()
@@ -67,10 +100,10 @@ class BaseLoopFinderContainerViewController<Item>: UIViewController {
     func displayItem() {
     }
     
-    /// Enables the next/previous buttons based on scroll position.
+    /// Enables the next/previous buttons based on scroll position and mode.
     func enableScrollButtons() {
-        prevButton.isEnabled = currentItemIndex > 0
-        nextButton.isEnabled = currentItemIndex < items.count - 1
+        prevButton.isEnabled = !manualMode && currentItemIndex > minItemIndex
+        nextButton.isEnabled = !manualMode && currentItemIndex < items.count - 1
     }
     
     /// Changes to a new set of items.

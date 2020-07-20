@@ -23,11 +23,6 @@ class LoopFinderViewController: UIViewController, LoopScrubberContainer, UITextF
     /// Button for toggling the use of an initial end estimate.
     @IBOutlet weak var initialEndEstimateButton: UIButton!
     
-    /// The loop start value upon first entering this screen.
-    private var originalLoopStart: Double = 0
-    /// The loop end value upon first entering this screen.
-    private var originalLoopEnd: Double = 0
-    
     /// True if a loop time is changed and should be saved.
     private var loopTimeChanged = false
     /// True if a setting changes and should be saved to the settings file.
@@ -50,9 +45,6 @@ class LoopFinderViewController: UIViewController, LoopScrubberContainer, UITextF
 
         initialStartEstimateButton.titleLabel?.textAlignment = .center
         initialEndEstimateButton.titleLabel?.textAlignment = .center
-
-        originalLoopStart = MusicPlayer.player.loopStartSeconds
-        originalLoopEnd = MusicPlayer.player.loopEndSeconds
         
         let tap: UITapGestureRecognizer = UITapGestureRecognizer(
             target: self,
@@ -72,9 +64,12 @@ class LoopFinderViewController: UIViewController, LoopScrubberContainer, UITextF
         } else {
             loopStartSeconds = 0
         }
-        loopStartField.text = NumberUtils.formatNumber(loopStartSeconds)
-        MusicPlayer.player.loopStartSeconds = loopStartSeconds
-        updateManualLoopTimes()
+        // Only do an update if the actual sample value will change
+        if MusicPlayer.player.convertSecondsToSamples(loopStartSeconds) != MusicPlayer.player.loopStart {
+            loopStartField.text = NumberUtils.formatNumber(loopStartSeconds)
+            MusicPlayer.player.loopStartSeconds = loopStartSeconds
+            updateManualLoopTimes()
+        }
     }
     
     /// Sets the loop end time when the loop end text field is edited.
@@ -86,9 +81,12 @@ class LoopFinderViewController: UIViewController, LoopScrubberContainer, UITextF
         } else {
             loopEndSeconds = MusicPlayer.player.durationSeconds
         }
-        loopEndField.text = NumberUtils.formatNumber(loopEndSeconds)
-        MusicPlayer.player.loopEndSeconds = loopEndSeconds
-        updateManualLoopTimes()
+        // Only do an update if the actual sample value will change
+        if MusicPlayer.player.convertSecondsToSamples(loopEndSeconds) != MusicPlayer.player.loopEnd {
+            loopEndField.text = NumberUtils.formatNumber(loopEndSeconds)
+            MusicPlayer.player.loopEndSeconds = loopEndSeconds
+            updateManualLoopTimes()
+        }
     }
     
     /// Sets the loop start time to the current playback time.
@@ -106,9 +104,7 @@ class LoopFinderViewController: UIViewController, LoopScrubberContainer, UITextF
     /// Reverts the loop points to their values when first entering this screen.
     @IBAction func revertLoopPoints() {
         AlertUtils.showConfirmMessage(message: "Revert loop times to their original values?", viewController: self, confirmAction: { _ in
-            MusicPlayer.player.loopStartSeconds = self.originalLoopStart
-            MusicPlayer.player.loopEndSeconds = self.originalLoopEnd
-            self.updateManualLoopTimes()
+            self.loopDurationView.updateRevert()    // This cascades to loopEndpointsView.
         })
     }
     
@@ -297,7 +293,7 @@ class LoopFinderViewController: UIViewController, LoopScrubberContainer, UITextF
         loopTimeChanged = true
     }
     
-    /// Updates the current loop duration times, without using loop finding algorithm results.
+    /// Updates the current loop times by manual entry, without using loop finding algorithm results.
     private func updateManualLoopTimes() {
         updateLoopTimes()
         loopDurationView.updateManual()

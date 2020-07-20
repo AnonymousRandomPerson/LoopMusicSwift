@@ -2918,7 +2918,7 @@
                         <viewControllerLayoutGuide type="bottom" id="crF-1z-CyK"/>
                     </layoutGuides>
                     <view key="view" contentMode="scaleToFill" id="ieM-eA-Uca">
-                        <rect key="frame" x="0.0" y="0.0" width="237" height="50"/>
+                        <rect key="frame" x="0.0" y="0.0" width="242" height="50"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <button opaque="NO" tag="1" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="fill" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="rQx-Ap-0V6" customClass="ColorBackedButton" customModule="LoopMusic" customModuleProvider="target">
@@ -2934,7 +2934,7 @@
                                 </connections>
                             </button>
                             <button opaque="NO" tag="2" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="fill" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="yre-YN-Vl4" customClass="ColorBackedButton" customModule="LoopMusic" customModuleProvider="target">
-                                <rect key="frame" x="187" y="0.0" width="50" height="50"/>
+                                <rect key="frame" x="192" y="0.0" width="50" height="50"/>
                                 <color key="backgroundColor" red="0.83676900799999998" green="0.83676900799999998" blue="0.83676900799999998" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <constraints>
                                     <constraint firstAttribute="width" constant="50" id="sIp-Yb-wv3"/>
@@ -3172,7 +3172,7 @@
                                 </connections>
                             </containerView>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="↳" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumScaleFactor="0.60000002384185791" translatesAutoresizingMaskIntoConstraints="NO" id="2mL-Bt-VEb">
-                                <rect key="frame" x="53.5" y="510" width="43" height="60"/>
+                                <rect key="frame" x="48" y="510" width="43.5" height="60"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="60" id="ebm-ja-5Mc"/>
                                 </constraints>
@@ -3181,16 +3181,17 @@
                                 <nil key="highlightedColor"/>
                             </label>
                             <containerView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="7Zp-bn-WZL" userLabel="Loop Endpoint View">
-                                <rect key="frame" x="100.5" y="530" width="237" height="50"/>
+                                <rect key="frame" x="95.5" y="530" width="242" height="50"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="50" id="Hlz-Kg-4aT"/>
+                                    <constraint firstAttribute="width" constant="242" id="IDw-Sv-9zV"/>
                                 </constraints>
                                 <connections>
                                     <segue destination="jlN-fo-atF" kind="embed" identifier="" id="xqx-HI-Lnm"/>
                                 </connections>
                             </containerView>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="Loop Endpoints" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="TMf-iW-L6n">
-                                <rect key="frame" x="145" y="503" width="132" height="21"/>
+                                <rect key="frame" x="150" y="503" width="132" height="21"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
@@ -3251,7 +3252,6 @@
                             <constraint firstItem="DGV-cc-4Kt" firstAttribute="trailing" secondItem="jzB-oB-4gZ" secondAttribute="trailing" constant="15" id="CcS-85-h64"/>
                             <constraint firstItem="KHn-FB-RFT" firstAttribute="centerY" secondItem="5fN-bo-4xc" secondAttribute="centerY" id="Eon-A4-2GR"/>
                             <constraint firstItem="KHn-FB-RFT" firstAttribute="leading" secondItem="DGV-cc-4Kt" secondAttribute="leading" constant="13" id="F0T-06-R03"/>
-                            <constraint firstItem="2mL-Bt-VEb" firstAttribute="leading" secondItem="OA7-i6-czO" secondAttribute="leading" constant="16" id="FYh-2l-eGL"/>
                             <constraint firstItem="RMX-fs-PNF" firstAttribute="top" secondItem="MCk-Qc-vIw" secondAttribute="bottom" constant="20" id="Fpn-iz-i6P"/>
                             <constraint firstItem="rw5-rc-sr6" firstAttribute="leading" secondItem="5Pn-Zn-oB6" secondAttribute="trailing" constant="10" id="HeZ-jp-rEt"/>
                             <constraint firstAttribute="trailing" secondItem="rw5-rc-sr6" secondAttribute="trailing" id="Hp1-3P-lAD"/>
