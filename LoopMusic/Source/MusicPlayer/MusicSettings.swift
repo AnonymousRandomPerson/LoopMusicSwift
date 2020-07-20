@@ -99,6 +99,8 @@ class MusicSettings {
             
             if let playlistName = settingsFile.currentPlaylist {
                 currentPlaylist = MediaPlayerUtils.getPlaylist(playlistName: playlistName)
+            } else {
+                currentPlaylist = MediaPlayerUtils.ALL_TRACKS_PLAYLIST
             }
             playOnInit = settingsFile.playOnInit
             masterVolume = settingsFile.masterVolume
