@@ -222,8 +222,8 @@
 			isa = PBXGroup;
 			children = (
 				39CE78B924B96F7F004130BC /* LoopFinder */,
-				926988D324C2238D00E4816C /* UIElements */,
 				395D897E24738ABC00B9FD1C /* Settings */,
+				926988D324C2238D00E4816C /* UIElements */,
 				39B098CA2468DD6600526910 /* BaseListViewController.swift */,
 				390BDAA022AA0CE600E01411 /* MusicPlayerViewController.swift */,
 				39EC8AE1245A6E0F00D5240D /* PlaylistListViewController.swift */,
@@ -382,8 +382,8 @@
 				39EB89B5247A25D8002E0901 /* DoubleTextFieldOptionalSettingView.swift */,
 				3973B5F324BAB00F00883011 /* DoubleTextFieldSettingView.swift */,
 				92561C1024BFC5B200AA807E /* IntOptionalSettingView.swift */,
-				926A2CAB24BFD0A90069D2BC /* NonnegativeIntOptionalSettingView.swift */,
 				3973B5F124BAABF300883011 /* IntSettingView.swift */,
+				926A2CAB24BFD0A90069D2BC /* NonnegativeIntOptionalSettingView.swift */,
 				39812B722478D1F3002AFBCA /* ShuffleSettingView.swift */,
 			);
 			path = SettingViews;
