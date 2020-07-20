@@ -237,12 +237,12 @@
 			children = (
 				39A8D8FD24626DC600652E70 /* AlertUtils.swift */,
 				390A6C3B246118D300234882 /* FileUtils.swift */,
+				9252279B24C419DC00E25C15 /* FontUtils.swift */,
 				3928C38624553D560007A4FE /* MediaPlayerUtils.swift */,
 				39191C2D22E6BCDB00C09D67 /* MessageError.swift */,
 				39B5B31E23B97A1C0091D2E1 /* Notifications.swift */,
 				3973B5F524BAB04100883011 /* NumberUtils.swift */,
 				39DFF47F24B80135003D8E7B /* Unloadable.swift */,
-				9252279B24C419DC00E25C15 /* FontUtils.swift */,
 			);
 			path = Utils;
 			sourceTree = "<group>";
