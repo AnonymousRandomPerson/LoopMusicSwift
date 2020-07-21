@@ -12,7 +12,7 @@ float powToDB(float power)
     return 10 * log10(power / DB_REFERENCE_POWER);
 }
 
-float calcAvgPow(AudioDataFloat *audioFloat)
+float calcAvgPow(const AudioDataFloat *audioFloat)
 {
     vDSP_Stride stride = 1;
     
@@ -23,7 +23,7 @@ float calcAvgPow(AudioDataFloat *audioFloat)
     return (channel0meansquare + channel1meansquare) / 2;
 }
 
-float calcAvgVolume(AudioDataFloat *audioFloat)
+float calcAvgVolume(const AudioDataFloat *audioFloat)
 {
     return powToDB(calcAvgPow(audioFloat));
 }

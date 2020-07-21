@@ -48,14 +48,14 @@ float powToDB(float power);
  * @param audioFloat The input audio track.
  * @return The average power level of the track.
 */
-float calcAvgPow(AudioDataFloat *audioFloat);
+float calcAvgPow(const AudioDataFloat *audioFloat);
 
 /*!
  * Computes the average volume in decibels of an audio track.
  * @param audioFloat The input audio track.
  * @return The average volume of the track in decibels.
 */
-float calcAvgVolume(AudioDataFloat *audioFloat);
+float calcAvgVolume(const AudioDataFloat *audioFloat);
 
 /*!
  * Converts audio data to a 32-bit floating point format between -1 and 1.
