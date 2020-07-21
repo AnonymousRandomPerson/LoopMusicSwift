@@ -52,10 +52,17 @@ float calcAvgPow(const AudioDataFloat *audioFloat);
 
 /*!
  * Computes the average volume in decibels of an audio track.
- * @param audioFloat The input audio track.
+ * @param audioFloat The input audio track in floating-point format.
  * @return The average volume of the track in decibels.
 */
 float calcAvgVolume(const AudioDataFloat *audioFloat);
+
+/*!
+ * Computes the average volume in decibels of an audio track.
+ * @param audio The input audio track in buffer format.
+ * @return The average volume of the track in decibels when put represented in floating-point format (normalized between -1 and 1).
+*/
+float calcAvgVolumeFromBufferFormat(const AudioData *audio);
 
 /*!
  * Converts audio data to a 32-bit floating point format between -1 and 1.

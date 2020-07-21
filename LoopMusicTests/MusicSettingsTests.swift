@@ -27,6 +27,7 @@ class MusicSettingsTests: XCTestCase {
         settings.playOnInit = false
         settings.masterVolume = 0
         settings.defaultRelativeVolume = 0
+        settings.volumeNormalizationLevel = nil
         settings.shuffleSetting = ShuffleSetting.none
         settings.fadeDuration = nil
         settings.shuffleHistoryLength = nil
@@ -182,6 +183,7 @@ class MusicSettingsTests: XCTestCase {
         settingsFile.playOnInit = true
         settingsFile.masterVolume = 1
         settingsFile.defaultRelativeVolume = 2
+        settingsFile.volumeNormalizationLevel = 100
         settingsFile.shuffleSetting = "time"
         settingsFile.fadeDuration = 9
         settingsFile.shuffleHistoryLength = 20
@@ -200,6 +202,7 @@ class MusicSettingsTests: XCTestCase {
         XCTAssertTrue(settings.playOnInit)
         XCTAssertEqual(settings.masterVolume, 1, accuracy: EPSILON)
         XCTAssertEqual(settings.defaultRelativeVolume, 2, accuracy: EPSILON)
+        XCTAssertEqual(settings.volumeNormalizationLevel!, 100, accuracy: EPSILON)
         XCTAssertEqual(settings.shuffleSetting, ShuffleSetting.time)
         XCTAssertEqual(settings.fadeDuration!, 9, accuracy: EPSILON)
         XCTAssertEqual(settings.shuffleHistoryLength!, 20)
@@ -218,6 +221,7 @@ class MusicSettingsTests: XCTestCase {
         settings.playOnInit = true
         settings.masterVolume = 1
         settings.defaultRelativeVolume = 2
+        settings.volumeNormalizationLevel = 100
         settings.shuffleSetting = ShuffleSetting.time
         settings.fadeDuration = 9
         settings.shuffleHistoryLength = 20
@@ -238,6 +242,7 @@ class MusicSettingsTests: XCTestCase {
         XCTAssertTrue(settingsFile.playOnInit)
         XCTAssertEqual(settingsFile.masterVolume, 1, accuracy: EPSILON)
         XCTAssertEqual(settingsFile.defaultRelativeVolume, 2, accuracy: EPSILON)
+        XCTAssertEqual(settingsFile.volumeNormalizationLevel!, 100, accuracy: EPSILON)
         XCTAssertEqual(settingsFile.shuffleSetting, "time")
         XCTAssertEqual(settingsFile.fadeDuration!, 9, accuracy: EPSILON)
         XCTAssertEqual(settingsFile.shuffleHistoryLength!, 20)

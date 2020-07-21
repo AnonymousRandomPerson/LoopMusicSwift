@@ -28,6 +28,25 @@ float calcAvgVolume(const AudioDataFloat *audioFloat)
     return powToDB(calcAvgPow(audioFloat));
 }
 
+float calcAvgVolumeFromBufferFormat(const AudioData *audio)
+{
+    // Convert audio to 32-bit floating point audio, with no framerate reduction
+    AudioDataFloat *floatAudio = malloc(sizeof(AudioDataFloat));
+    floatAudio->numFrames = audio->numSamples;
+    floatAudio->channel0 = malloc(floatAudio->numFrames * sizeof(float));  // Integer division will floor.
+    floatAudio->channel1 = malloc(floatAudio->numFrames * sizeof(float));
+    audioFormatToFloatFormat(audio, floatAudio, 1);
+
+    // Compute the average volume of in floating-point format
+    float avgVol = calcAvgVolume(floatAudio);
+
+    free(floatAudio->channel0);
+    free(floatAudio->channel1);
+    free(floatAudio);
+
+    return avgVol;
+}
+
 void audio16bitToAudioFloat(SInt16 *data16bit, vDSP_Stride stride, float *dataFloat, vDSP_Length n)
 {
     float maxAmp = 1 << 15;
