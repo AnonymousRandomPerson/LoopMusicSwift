@@ -154,8 +154,8 @@ void freeDiffSpectrogramInfo(DiffSpectrogramInfo *info)
     float *aDB = malloc(n * sizeof(float));
     float *bDB = malloc(n * sizeof(float));
     
-    vDSP_vdbcon(a, stride, &self->powRef, aDB, stride, n, 0);    // 0 flag for power.
-    vDSP_vdbcon(b, stride, &self->powRef, bDB, stride, n, 0);
+    vDSP_vdbcon(a, stride, &DB_REFERENCE_POWER, aDB, stride, n, 0);    // 0 flag for power.
+    vDSP_vdbcon(b, stride, &DB_REFERENCE_POWER, bDB, stride, n, 0);
     // Raises the average decibel level to be whatever was specified as the dBLevel.
     float dbOffset = self->dBLevel - self->avgVol;
     vDSP_vsadd(aDB, stride, &dbOffset, aDB, stride, n);
