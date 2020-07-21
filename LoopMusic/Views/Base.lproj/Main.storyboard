@@ -2386,7 +2386,7 @@
                                 </cells>
                             </tableViewSection>
                             <tableViewSection headerTitle="Downsampling &amp; Truncation" id="jMG-ZB-Fpc">
-                                <string key="footerTitle">Controls how audio data is downsampled if too long. Frame rate reduction is given priority, unless the limit is reached, in which case the audio data is truncated to the length limit. The length limit is proportional to the frame rate reduction limit.</string>
+                                <string key="footerTitle">Controls how audio data is downsampled if too long. Frame rate reduction is given priority, unless the limit is reached, in which case the audio data is truncated to the length limit. The length limit is a raw sample count.</string>
                                 <cells>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" id="6PU-Bs-o7w">
                                         <rect key="frame" x="0.0" y="352.5" width="375" height="43.5"/>
@@ -2407,7 +2407,7 @@
                                                         <constraint firstAttribute="width" constant="90" id="FbV-5E-Eba"/>
                                                     </constraints>
                                                     <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                                                    <textInputTraits key="textInputTraits" keyboardType="decimalPad" returnKeyType="done" enablesReturnKeyAutomatically="YES"/>
+                                                    <textInputTraits key="textInputTraits" keyboardType="numberPad" returnKeyType="done" enablesReturnKeyAutomatically="YES"/>
                                                     <connections>
                                                         <action selector="settingChangedWithSender:" destination="a0q-ZT-cm4" eventType="editingDidEnd" id="nry-FM-azI"/>
                                                     </connections>
@@ -2443,7 +2443,7 @@
                                                         <constraint firstAttribute="width" constant="90" id="GyS-Y8-1NX"/>
                                                     </constraints>
                                                     <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                                                    <textInputTraits key="textInputTraits" keyboardType="decimalPad" returnKeyType="done" enablesReturnKeyAutomatically="YES"/>
+                                                    <textInputTraits key="textInputTraits" keyboardType="numberPad" returnKeyType="done" enablesReturnKeyAutomatically="YES"/>
                                                     <connections>
                                                         <action selector="settingChangedWithSender:" destination="a0q-ZT-cm4" eventType="editingDidEnd" id="Gvv-S7-rs7"/>
                                                     </connections>
