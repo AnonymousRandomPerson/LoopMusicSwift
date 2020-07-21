@@ -2,9 +2,12 @@
 
 const float DB_REFERENCE_POWER = 1e-12;
 
-// Internal helper
+// Internal helpers
 long max(long a, long b) {
     return a > b ? a : b;
+}
+long min(long a, long b) {
+    return a < b ? a : b;
 }
 
 float powToDB(float power)
@@ -28,14 +31,14 @@ float calcAvgVolume(const AudioDataFloat *audioFloat)
     return powToDB(calcAvgPow(audioFloat));
 }
 
-float calcAvgVolumeFromBufferFormat(const AudioData *audio)
+float calcAvgVolumeFromBufferFormat(const AudioData *audio, long framerateReductionLimit, long lengthLimit)
 {
-    // Convert audio to 32-bit floating point audio, with no framerate reduction
+    // Convert audio to 32-bit floating point audio, reducing framerate and truncating if necessary.
     AudioDataFloat *floatAudio = malloc(sizeof(AudioDataFloat));
-    floatAudio->numFrames = audio->numSamples;
+    floatAudio->numFrames = calcFrameLimit(audio->numSamples, framerateReductionLimit, lengthLimit);
     floatAudio->channel0 = malloc(floatAudio->numFrames * sizeof(float));  // Integer division will floor.
     floatAudio->channel1 = malloc(floatAudio->numFrames * sizeof(float));
-    audioFormatToFloatFormat(audio, floatAudio, 1);
+    audioFormatToFloatFormat(audio, floatAudio, calcFramerateReductionFactor(1, floatAudio->numFrames, framerateReductionLimit, lengthLimit));
 
     // Compute the average volume of in floating-point format
     float avgVol = calcAvgVolume(floatAudio);
@@ -45,6 +48,25 @@ float calcAvgVolumeFromBufferFormat(const AudioData *audio)
     free(floatAudio);
 
     return avgVol;
+}
+
+long calcFrameLimit(long numFrames, long framerateReductionLimit, long lengthLimit)
+{
+    // Integer truncation is important here, so we can't just use min.
+    if (numFrames/framerateReductionLimit > lengthLimit)
+    {
+        return lengthLimit * framerateReductionLimit;
+    }
+    return numFrames;
+}
+
+long calcFramerateReductionFactor(long framerateReductionFactor, long numFrames, long framerateReductionLimit, long lengthLimit)
+{
+    // Integer truncation is important here, so we can't just use min.
+    if (numFrames/framerateReductionFactor > lengthLimit) {
+        return min(framerateReductionLimit, ceilf((float)numFrames / lengthLimit));
+    }
+    return framerateReductionFactor;
 }
 
 void audio16bitToAudioFloat(SInt16 *data16bit, vDSP_Stride stride, float *dataFloat, vDSP_Length n)

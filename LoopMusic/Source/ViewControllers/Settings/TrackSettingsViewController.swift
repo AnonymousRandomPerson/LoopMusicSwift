@@ -24,7 +24,9 @@ class TrackSettingsViewController: BaseSettingsSectionViewController {
     @IBAction func normalizeVolume() {
         // Compute the track's intrinsic average volume.
         var audioData = MusicPlayer.player.audioData
-        let intrinsicVolume = Double(calcAvgVolumeFromBufferFormat(&audioData))
+        let framerateReductionLimit: Int = Int(round(MusicSettings.settings.frameRateReductionLimit))
+        let lengthLimit: Int = Int(MusicSettings.settings.trackLengthLimit)
+        let intrinsicVolume = Double(calcAvgVolumeFromBufferFormat(&audioData, framerateReductionLimit, lengthLimit))
 
         if let text = volumeNormalizationLevelField.text, let normalizationLevel = Double(text) {
             // Try to shift the average volume to the desired level by setting the relative volume multiplier.

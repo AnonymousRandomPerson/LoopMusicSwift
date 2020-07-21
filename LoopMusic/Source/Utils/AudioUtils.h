@@ -60,9 +60,30 @@ float calcAvgVolume(const AudioDataFloat *audioFloat);
 /*!
  * Computes the average volume in decibels of an audio track.
  * @param audio The input audio track in buffer format.
+ * @param framerateReductionLimit The highest allowable framerate reduction factor before resorting to truncation.
+ * @param lengthLimit The highest allowable number of frames.
  * @return The average volume of the track in decibels when put represented in floating-point format (normalized between -1 and 1).
 */
-float calcAvgVolumeFromBufferFormat(const AudioData *audio);
+float calcAvgVolumeFromBufferFormat(const AudioData *audio, long framerateReductionLimit, long lengthLimit);
+
+/*!
+ * Calculates the absolute limit on frames based on specified parameters.
+ * @param numFrames The original number of frames.
+ * @param framerateReductionLimit The highest allowable framerate reduction factor before resorting to truncation.
+ * @param lengthLimit The highest allowable number of frames.
+ * @return The limit on number of frames (before framerate reduction).
+*/
+long calcFrameLimit(long numFrames, long framerateReductionLimit, long lengthLimit);
+
+/*!
+ * Calculates the optimal framerate reduction factor based on specified parameters.
+ * @param framerateReductionFactor The specified framerate reduction factor. Will be respected if it obeys the length limit; otherwise it will be changed.
+ * @param numFrames The original number of frames.
+ * @param framerateReductionLimit The highest allowable framerate reduction factor before resorting to truncation.
+ * @param lengthLimit The highest allowable number of frames.
+ * @return The optimal framerate reduction factor.
+*/
+long calcFramerateReductionFactor(long framerateReductionFactor, long numFrames, long framerateReductionLimit, long lengthLimit);
 
 /*!
  * Converts audio data to a 32-bit floating point format between -1 and 1.

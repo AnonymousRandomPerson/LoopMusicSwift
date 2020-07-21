@@ -323,17 +323,9 @@
     }
     
     // Truncate the audio signal if absolutely necessary
-    if (floatAudio->numFrames/framerateReductionLimit > lengthLimit)
-    {
-        floatAudio->numFrames = lengthLimit * framerateReductionLimit;
-        NSLog(@"Audio track is too long. Truncating signal.");
-    }
+    floatAudio->numFrames = calcFrameLimit(floatAudio->numFrames, framerateReductionLimit, lengthLimit);
     // Reduce the framerate if necessary to improve performance. If the current reduction factor isn't enough, make it so it is.
-    if (floatAudio->numFrames/self.framerateReductionFactor > lengthLimit)
-    {
-        self.framerateReductionFactor = MIN(framerateReductionLimit, ceilf((float)floatAudio->numFrames / lengthLimit));
-        NSLog(@"Audio track is too long. Reducing framerate by a factor of %i for analysis.", self.framerateReductionFactor);
-    }
+    self.framerateReductionFactor = calcFramerateReductionFactor(self.framerateReductionFactor, floatAudio->numFrames, framerateReductionLimit, lengthLimit);
     self.effectiveFramerate = (float)framerate / self.framerateReductionFactor;
     
     // Convert audio to 32-bit floating point audio, with the necessary framerate reduction (also modifies floatAudio->numFrames)
