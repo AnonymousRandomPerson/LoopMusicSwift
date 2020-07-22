@@ -40,7 +40,7 @@ float calcAvgVolumeFromBufferFormat(const AudioData *audio, long framerateReduct
     floatAudio->channel1 = malloc(floatAudio->numFrames * sizeof(float));
     audioFormatToFloatFormat(audio, floatAudio, calcFramerateReductionFactor(1, floatAudio->numFrames, framerateReductionLimit, lengthLimit));
 
-    // Compute the average volume of in floating-point format
+    // Compute the average volume of the audio in floating-point format.
     float avgVol = calcAvgVolume(floatAudio);
 
     free(floatAudio->channel0);
