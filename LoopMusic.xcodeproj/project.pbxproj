@@ -81,6 +81,7 @@
 		926988D524C223D300E4816C /* ColorBackedButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 926988D424C223D300E4816C /* ColorBackedButton.swift */; };
 		926988D724C248CB00E4816C /* UIButtonBottomFix.swift in Sources */ = {isa = PBXBuildFile; fileRef = 926988D624C248CB00E4816C /* UIButtonBottomFix.swift */; };
 		926A2CAC24BFD0A90069D2BC /* NonnegativeIntOptionalSettingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 926A2CAB24BFD0A90069D2BC /* NonnegativeIntOptionalSettingView.swift */; };
+		92A0B04324C687590017FFEF /* AudioUtils.c in Sources */ = {isa = PBXBuildFile; fileRef = 92A0B04224C687590017FFEF /* AudioUtils.c */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -143,9 +144,7 @@
 		3973B5DF24BA91FB00883011 /* LoopFinderAuto.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LoopFinderAuto.m; sourceTree = "<group>"; };
 		3973B5E024BA91FB00883011 /* LoopFinderAuto+spectra.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "LoopFinderAuto+spectra.m"; sourceTree = "<group>"; };
 		3973B5E124BA91FB00883011 /* LoopFinderAuto+analysis.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "LoopFinderAuto+analysis.h"; sourceTree = "<group>"; };
-		3973B5EA24BA925400883011 /* AudioDataFloat.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AudioDataFloat.h; sourceTree = "<group>"; };
 		3973B5EC24BA95DF00883011 /* AudioType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AudioType.swift; sourceTree = "<group>"; };
-		3973B5F024BA98FA00883011 /* AudioData.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AudioData.h; sourceTree = "<group>"; };
 		3973B5F124BAABF300883011 /* IntSettingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IntSettingView.swift; sourceTree = "<group>"; };
 		3973B5F324BAB00F00883011 /* DoubleTextFieldSettingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DoubleTextFieldSettingView.swift; sourceTree = "<group>"; };
 		3973B5F524BAB04100883011 /* NumberUtils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NumberUtils.swift; sourceTree = "<group>"; };
@@ -191,6 +190,8 @@
 		926988D424C223D300E4816C /* ColorBackedButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ColorBackedButton.swift; sourceTree = "<group>"; };
 		926988D624C248CB00E4816C /* UIButtonBottomFix.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIButtonBottomFix.swift; sourceTree = "<group>"; };
 		926A2CAB24BFD0A90069D2BC /* NonnegativeIntOptionalSettingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NonnegativeIntOptionalSettingView.swift; sourceTree = "<group>"; };
+		92A0B04124C687590017FFEF /* AudioUtils.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AudioUtils.h; sourceTree = "<group>"; };
+		92A0B04224C687590017FFEF /* AudioUtils.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = AudioUtils.c; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -236,6 +237,8 @@
 			isa = PBXGroup;
 			children = (
 				39A8D8FD24626DC600652E70 /* AlertUtils.swift */,
+				92A0B04224C687590017FFEF /* AudioUtils.c */,
+				92A0B04124C687590017FFEF /* AudioUtils.h */,
 				390A6C3B246118D300234882 /* FileUtils.swift */,
 				9252279B24C419DC00E25C15 /* FontUtils.swift */,
 				3928C38624553D560007A4FE /* MediaPlayerUtils.swift */,
@@ -392,8 +395,6 @@
 		3973B5CD24BA3C6B00883011 /* LoopFinder */ = {
 			isa = PBXGroup;
 			children = (
-				3973B5F024BA98FA00883011 /* AudioData.h */,
-				3973B5EA24BA925400883011 /* AudioDataFloat.h */,
 				3973B5CE24BA3C8200883011 /* LoopDuration.swift */,
 				3973B5D224BA3F4B00883011 /* LoopEndpoints.swift */,
 				3973B5D424BA5FAF00883011 /* LoopFinder.swift */,
@@ -630,6 +631,7 @@
 				390A6C3C246118D300234882 /* FileUtils.swift in Sources */,
 				3973B5E224BA91FB00883011 /* LoopFinderAuto+differencing.m in Sources */,
 				39A6B5B02483541E001A2B0B /* LoopFinderInternalSettingsViewController.swift in Sources */,
+				92A0B04324C687590017FFEF /* AudioUtils.c in Sources */,
 				3973B5F224BAABF300883011 /* IntSettingView.swift in Sources */,
 				3973B5E624BA91FB00883011 /* LoopFinderAuto.m in Sources */,
 				39C03A69235BFB34004BD0DA /* MusicData.swift in Sources */,

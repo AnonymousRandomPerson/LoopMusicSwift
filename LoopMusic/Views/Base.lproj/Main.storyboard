@@ -2386,7 +2386,7 @@
                                 </cells>
                             </tableViewSection>
                             <tableViewSection headerTitle="Downsampling &amp; Truncation" id="jMG-ZB-Fpc">
-                                <string key="footerTitle">Controls how audio data is downsampled if too long. Frame rate reduction is given priority, unless the limit is reached, in which case the audio data is truncated to the length limit. The length limit is proportional to the frame rate reduction limit.</string>
+                                <string key="footerTitle">Controls how audio data is downsampled if too long. Frame rate reduction is given priority, unless the limit is reached, in which case the audio data is truncated to the length limit. The length limit is a raw sample count.</string>
                                 <cells>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" id="6PU-Bs-o7w">
                                         <rect key="frame" x="0.0" y="352.5" width="375" height="43.5"/>
@@ -2407,7 +2407,7 @@
                                                         <constraint firstAttribute="width" constant="90" id="FbV-5E-Eba"/>
                                                     </constraints>
                                                     <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                                                    <textInputTraits key="textInputTraits" keyboardType="decimalPad" returnKeyType="done" enablesReturnKeyAutomatically="YES"/>
+                                                    <textInputTraits key="textInputTraits" keyboardType="numberPad" returnKeyType="done" enablesReturnKeyAutomatically="YES"/>
                                                     <connections>
                                                         <action selector="settingChangedWithSender:" destination="a0q-ZT-cm4" eventType="editingDidEnd" id="nry-FM-azI"/>
                                                     </connections>
@@ -2443,7 +2443,7 @@
                                                         <constraint firstAttribute="width" constant="90" id="GyS-Y8-1NX"/>
                                                     </constraints>
                                                     <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                                                    <textInputTraits key="textInputTraits" keyboardType="decimalPad" returnKeyType="done" enablesReturnKeyAutomatically="YES"/>
+                                                    <textInputTraits key="textInputTraits" keyboardType="numberPad" returnKeyType="done" enablesReturnKeyAutomatically="YES"/>
                                                     <connections>
                                                         <action selector="settingChangedWithSender:" destination="a0q-ZT-cm4" eventType="editingDidEnd" id="Gvv-S7-rs7"/>
                                                     </connections>
@@ -2680,6 +2680,72 @@
                                     </tableViewCell>
                                 </cells>
                             </tableViewSection>
+                            <tableViewSection id="BUu-ai-VQr">
+                                <string key="footerTitle">Try normalizing the relative volume so that the track has a specified average volume in decibels, assuming it's played at max global volume (both this app's master volume setting and the system volume itself). If no normalization level is specified, it will be set to match the track's average volume under the current relative volume setting.</string>
+                                <cells>
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" id="OnR-3W-O8B">
+                                        <rect key="frame" x="0.0" y="153.5" width="375" height="43.5"/>
+                                        <autoresizingMask key="autoresizingMask"/>
+                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="OnR-3W-O8B" id="YtS-jX-MLW">
+                                            <rect key="frame" x="0.0" y="0.0" width="375" height="43.5"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                            <subviews>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Normalize to" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="Fco-g6-u51">
+                                                    <rect key="frame" x="16" y="11" width="97" height="21.5"/>
+                                                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                                    <nil key="textColor"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
+                                                <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" textAlignment="center" minimumFontSize="17" clearButtonMode="whileEditing" translatesAutoresizingMaskIntoConstraints="NO" id="bZC-6c-dgT">
+                                                    <rect key="frame" x="119" y="5" width="99" height="34"/>
+                                                    <constraints>
+                                                        <constraint firstAttribute="width" relation="lessThanOrEqual" constant="110" id="20l-yQ-Seg"/>
+                                                    </constraints>
+                                                    <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                                    <textInputTraits key="textInputTraits" keyboardType="decimalPad" returnKeyType="done" enablesReturnKeyAutomatically="YES"/>
+                                                    <connections>
+                                                        <action selector="settingChangedWithSender:" destination="0u0-Gw-XJ3" eventType="editingDidEnd" id="vbf-ck-lrR"/>
+                                                    </connections>
+                                                </textField>
+                                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="NSr-Zr-k9Z">
+                                                    <rect key="frame" x="295" y="0.0" width="80" height="44"/>
+                                                    <color key="backgroundColor" systemColor="systemIndigoColor" red="0.34509803919999998" green="0.33725490200000002" blue="0.83921568629999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                                    <constraints>
+                                                        <constraint firstAttribute="width" priority="250" constant="80" id="ODH-Gj-NoF"/>
+                                                        <constraint firstAttribute="width" relation="lessThanOrEqual" priority="750" constant="150" id="aEg-3S-pyV"/>
+                                                    </constraints>
+                                                    <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                    <state key="normal" title="Go!">
+                                                        <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                    </state>
+                                                    <connections>
+                                                        <action selector="normalizeVolume" destination="0u0-Gw-XJ3" eventType="touchUpInside" id="mdP-5j-n0Q"/>
+                                                    </connections>
+                                                </button>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="dB" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="z6X-Wt-zl4">
+                                                    <rect key="frame" x="224" y="11.5" width="21" height="21"/>
+                                                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                                    <nil key="textColor"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
+                                            </subviews>
+                                            <constraints>
+                                                <constraint firstItem="NSr-Zr-k9Z" firstAttribute="top" secondItem="YtS-jX-MLW" secondAttribute="top" id="1Bs-I4-Aof"/>
+                                                <constraint firstItem="z6X-Wt-zl4" firstAttribute="centerY" secondItem="Fco-g6-u51" secondAttribute="centerY" id="QTT-wm-35s"/>
+                                                <constraint firstItem="Fco-g6-u51" firstAttribute="leading" secondItem="YtS-jX-MLW" secondAttribute="leading" constant="16" id="QsI-yT-iTK"/>
+                                                <constraint firstAttribute="bottom" secondItem="NSr-Zr-k9Z" secondAttribute="bottom" id="S5T-q8-8i5"/>
+                                                <constraint firstItem="z6X-Wt-zl4" firstAttribute="leading" secondItem="bZC-6c-dgT" secondAttribute="trailing" constant="6" id="SjK-wP-zy7"/>
+                                                <constraint firstItem="bZC-6c-dgT" firstAttribute="leading" secondItem="Fco-g6-u51" secondAttribute="trailing" constant="6" id="WyZ-bs-3wy"/>
+                                                <constraint firstItem="bZC-6c-dgT" firstAttribute="centerY" secondItem="Fco-g6-u51" secondAttribute="centerY" id="Zd2-N6-3E0"/>
+                                                <constraint firstAttribute="bottom" secondItem="Fco-g6-u51" secondAttribute="bottom" constant="11.5" id="ere-72-S73"/>
+                                                <constraint firstItem="Fco-g6-u51" firstAttribute="top" secondItem="YtS-jX-MLW" secondAttribute="top" constant="11" id="ki8-ll-x57"/>
+                                                <constraint firstAttribute="trailing" secondItem="NSr-Zr-k9Z" secondAttribute="trailing" id="pEP-t5-CnM"/>
+                                                <constraint firstItem="NSr-Zr-k9Z" firstAttribute="leading" secondItem="z6X-Wt-zl4" secondAttribute="trailing" constant="50" id="yJl-YH-XTr"/>
+                                            </constraints>
+                                        </tableViewCellContentView>
+                                    </tableViewCell>
+                                </cells>
+                            </tableViewSection>
                         </sections>
                         <connections>
                             <outlet property="dataSource" destination="0u0-Gw-XJ3" id="YUm-w6-Q0R"/>
@@ -2688,6 +2754,7 @@
                     </tableView>
                     <connections>
                         <outlet property="relativeVolumeSlider" destination="sxf-3g-6Bh" id="QP2-vg-OzF"/>
+                        <outlet property="volumeNormalizationLevelField" destination="bZC-6c-dgT" id="Jzd-VQ-q9a"/>
                     </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="EKE-1W-OQv" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>

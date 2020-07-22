@@ -25,6 +25,8 @@ class MusicSettings {
     var masterVolume: Double = 1
     /// Default relative volume for newly added tracks.
     var defaultRelativeVolume: Double = MusicTrack.DEFAULT_VOLUME_MULTIPLIER
+    /// Volume in decibels for automatic relative volume normalization.
+    var volumeNormalizationLevel: Double?
     
     /// Setting for the time between shuffling tracks.
     var shuffleSetting: ShuffleSetting = ShuffleSetting.none
@@ -105,6 +107,7 @@ class MusicSettings {
             playOnInit = settingsFile.playOnInit
             masterVolume = settingsFile.masterVolume
             defaultRelativeVolume = settingsFile.defaultRelativeVolume
+            volumeNormalizationLevel = settingsFile.volumeNormalizationLevel
             shuffleSetting = ShuffleSetting(rawValue: settingsFile.shuffleSetting ?? "") ?? ShuffleSetting.none
             fadeDuration = settingsFile.fadeDuration
             shuffleHistoryLength = settingsFile.shuffleHistoryLength
@@ -157,6 +160,7 @@ class MusicSettings {
             settingsFile.playOnInit = playOnInit
             settingsFile.masterVolume = masterVolume
             settingsFile.defaultRelativeVolume = defaultRelativeVolume
+            settingsFile.volumeNormalizationLevel = volumeNormalizationLevel
             settingsFile.shuffleSetting = shuffleSetting.rawValue
             settingsFile.shuffleTime = shuffleTime
             settingsFile.fadeDuration = fadeDuration

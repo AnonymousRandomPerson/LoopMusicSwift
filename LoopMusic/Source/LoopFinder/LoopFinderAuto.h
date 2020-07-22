@@ -1,11 +1,8 @@
 #import <Foundation/Foundation.h>
-#import "AudioData.h"
-#import "AudioDataFloat.h"
+#import "../Utils/AudioUtils.h"
 #import <Accelerate/Accelerate.h>
 
 typedef enum loopModeValue { loopModeAuto, loopModeT1T2, loopModeT1Only, loopModeT2Only } loopModeValue;
-
-typedef enum AudioType { INT32, INT16, FLOAT } AudioType;
 
 /// Automatic loop finder for audio files.
 @interface LoopFinderAuto : NSObject
@@ -20,8 +17,6 @@ typedef enum AudioType { INT32, INT16, FLOAT } AudioType;
     float avgVol;
     /// After shifting the audio volume such that avgVol is equal to this value, comparisons between spectra will only factor in frequency bins where both bins have a volume greater than 0 dB.
     float dBLevel;
-    /// Reference power level used in decibel calculation.
-    float powRef;
     
     /// Regularization for noise level in noise-normalized cross-correlation calculation.
     float noiseRegularization;
@@ -184,13 +179,6 @@ typedef enum AudioType { INT32, INT16, FLOAT } AudioType;
  * @return The next highest power of 2 greater than or equal to the reference number.
  */
 - (UInt32)nextPow2:(UInt32)num;
-
-/*!
- * Converts a power value to a decibel level.
- * @param power The input power for which to calculate a decibel level.
- * @return The power level in decibels.
- */
-- (float)powToDB:(float)power;
 
 /*!
  * Finds and ranks possible loop points given some audio data.
