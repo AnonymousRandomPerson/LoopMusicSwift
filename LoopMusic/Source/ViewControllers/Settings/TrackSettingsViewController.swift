@@ -28,7 +28,7 @@ class TrackSettingsViewController: BaseSettingsSectionViewController {
         let lengthLimit: Int = Int(MusicSettings.settings.trackLengthLimit)
         let intrinsicVolume = Double(calcAvgVolumeFromBufferFormat(&audioData, framerateReductionLimit, lengthLimit))
 
-        if let text = volumeNormalizationLevelField.text, let normalizationLevel = Double(text) {
+        if let normalizationLevel = MusicSettings.settings.volumeNormalizationLevel {
             // Try to shift the average volume to the desired level by setting the relative volume multiplier.
             // The shift must be nonpositive since we can't raise the volume higher than the intrinsic volume.
             let dbShift = min(0, normalizationLevel - intrinsicVolume)
