@@ -77,6 +77,8 @@
 		39F1799A22DBCD4800D3CDFF /* AudioEngine.c in Sources */ = {isa = PBXBuildFile; fileRef = 39F1799922DBCD4800D3CDFF /* AudioEngine.c */; };
 		92252D1524C025F80033A854 /* fa-solid-900.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 92252D1424C025F80033A854 /* fa-solid-900.ttf */; };
 		9252279C24C419DC00E25C15 /* FontUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9252279B24C419DC00E25C15 /* FontUtils.swift */; };
+		9252AC9D24C9FFDE00310CF1 /* DataCleaner.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9252AC9C24C9FFDE00310CF1 /* DataCleaner.swift */; };
+		9252AC9F24CA040E00310CF1 /* DataImporter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9252AC9E24CA040E00310CF1 /* DataImporter.swift */; };
 		92561C1124BFC5B200AA807E /* IntOptionalSettingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 92561C1024BFC5B200AA807E /* IntOptionalSettingView.swift */; };
 		926988D524C223D300E4816C /* ColorBackedButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 926988D424C223D300E4816C /* ColorBackedButton.swift */; };
 		926988D724C248CB00E4816C /* UIButtonBottomFix.swift in Sources */ = {isa = PBXBuildFile; fileRef = 926988D624C248CB00E4816C /* UIButtonBottomFix.swift */; };
@@ -186,6 +188,8 @@
 		39F1799922DBCD4800D3CDFF /* AudioEngine.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = AudioEngine.c; sourceTree = "<group>"; };
 		92252D1424C025F80033A854 /* fa-solid-900.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "fa-solid-900.ttf"; sourceTree = "<group>"; };
 		9252279B24C419DC00E25C15 /* FontUtils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FontUtils.swift; sourceTree = "<group>"; };
+		9252AC9C24C9FFDE00310CF1 /* DataCleaner.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataCleaner.swift; sourceTree = "<group>"; };
+		9252AC9E24CA040E00310CF1 /* DataImporter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataImporter.swift; sourceTree = "<group>"; };
 		92561C1024BFC5B200AA807E /* IntOptionalSettingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IntOptionalSettingView.swift; sourceTree = "<group>"; };
 		926988D424C223D300E4816C /* ColorBackedButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ColorBackedButton.swift; sourceTree = "<group>"; };
 		926988D624C248CB00E4816C /* UIButtonBottomFix.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIButtonBottomFix.swift; sourceTree = "<group>"; };
@@ -253,6 +257,8 @@
 		390A6C3F2461191C00234882 /* Utils */ = {
 			isa = PBXGroup;
 			children = (
+				9252AC9C24C9FFDE00310CF1 /* DataCleaner.swift */,
+				9252AC9E24CA040E00310CF1 /* DataImporter.swift */,
 				39E2CC3823AF12A4001FE0BF /* DataMigrator.swift */,
 				39BF34C7245FB9D50063AEF1 /* TestMPMediaItem.swift */,
 				398666C124514527008AC748 /* TestUtils.swift */,
@@ -655,8 +661,10 @@
 			files = (
 				398666BE24514030008AC748 /* MusicSettingsTests.swift in Sources */,
 				39E2CC3923AF12A4001FE0BF /* DataMigrator.swift in Sources */,
+				9252AC9F24CA040E00310CF1 /* DataImporter.swift in Sources */,
 				398666C224514527008AC748 /* TestUtils.swift in Sources */,
 				39BF34C8245FB9D50063AEF1 /* TestMPMediaItem.swift in Sources */,
+				9252AC9D24C9FFDE00310CF1 /* DataCleaner.swift in Sources */,
 				39D198E32376669B00680EE3 /* MusicDataTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
