@@ -2,7 +2,7 @@
 #import "AudioEngine.h"
 
 /// The number of buffers used in rotation during audio playback.
-#define NUM_BUFFERS 3
+#define NUM_BUFFERS 4
 /// The size of each buffer used in audio playback.
 #define BUFFER_SIZE 16384
 
