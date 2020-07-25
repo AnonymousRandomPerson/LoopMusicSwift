@@ -5,6 +5,13 @@ class LoopScrubber: UISlider {
 
     /// The amount of time (seconds) between each slider position update.
     static let PLAYBACK_TIMER_INTERVAL: Double = 0.2
+    /// The amount of time (seconds) between each slider position update if the loop point is near.
+    static let PLAYBACK_TIMER_INTERVAL_FAST: Double = 1e-3
+    /// The timer will switch to fast mode when the loop point is within this amount of time, as a multiple of the normal timer interval.
+    static let INTERVAL_THRESHOLD: Double = 1.5
+
+    /// Whether or not the timer is in fast mode.
+    private var fastMode: Bool = false
     
     /// Timer used to update the slider position as audio playback progresses.
     private var playbackTimer: Timer?
@@ -55,7 +62,25 @@ class LoopScrubber: UISlider {
     /// Starts the slider update loop.
     func startTimer() {
         if self.playbackTimer == nil {
-            self.playbackTimer = Timer.scheduledTimer(withTimeInterval: LoopScrubber.self.PLAYBACK_TIMER_INTERVAL, repeats: true) { [weak self] _ in self?.updateValue() }
+            if fastMode {
+                self.playbackTimer = Timer.scheduledTimer(withTimeInterval: LoopScrubber.self.PLAYBACK_TIMER_INTERVAL_FAST, repeats: true) { [weak self] _ in
+                    self?.updateValue()
+                    if !MusicPlayer.player.loopPlayback || MusicPlayer.player.loopEndSeconds - MusicPlayer.player.playbackTimeSeconds > LoopScrubber.INTERVAL_THRESHOLD*LoopScrubber.PLAYBACK_TIMER_INTERVAL {
+                        self?.fastMode = false
+                        self?.unload()
+                        self?.startTimer()
+                    }
+                }
+            } else {
+                self.playbackTimer = Timer.scheduledTimer(withTimeInterval: LoopScrubber.self.PLAYBACK_TIMER_INTERVAL, repeats: true) { [weak self] _ in
+                    self?.updateValue()
+                    if MusicPlayer.player.loopPlayback && MusicPlayer.player.loopEndSeconds - MusicPlayer.player.playbackTimeSeconds <= LoopScrubber.INTERVAL_THRESHOLD*LoopScrubber.PLAYBACK_TIMER_INTERVAL {
+                        self?.fastMode = true
+                        self?.unload()
+                        self?.startTimer()
+                    }
+                }
+            }
         }
     }
     
