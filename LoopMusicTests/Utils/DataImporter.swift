@@ -16,7 +16,7 @@ class DataImporter: XCTestCase {
 
     /// To run, place the new database in the LoopMusicTests/Utils folder and rename it to "TracksNew.db". Add the file with target membership in LoopMusicTests. Then add "test" in front of this function's name and run it.
     /// WARNING: This will replace the contents of the Tracks table in the app's database with the new data.
-    func testimportDb() throws {
+    func importDb() throws {
         try data.closeConnection()
         /// New database URL.
         let dbUrl: URL = Bundle(for: DataMigrator.self).url(forResource: "TracksNew", withExtension: "db")!
