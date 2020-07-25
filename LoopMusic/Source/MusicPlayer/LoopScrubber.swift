@@ -59,13 +59,18 @@ class LoopScrubber: UISlider {
         value = Float(MusicPlayer.player.sampleCounter) / Float(MusicPlayer.player.numSamples)
     }
 
+    /// Checks whether playback is within the fast-mode threshold.
+    private func withinFastModeThreshold() -> Bool {
+        return MusicPlayer.player.loopPlayback && MusicPlayer.player.loopEndSeconds - MusicPlayer.player.playbackTimeSeconds <= LoopScrubber.INTERVAL_THRESHOLD*LoopScrubber.PLAYBACK_TIMER_INTERVAL
+    }
+
     /// Starts the slider update loop.
     func startTimer() {
         if self.playbackTimer == nil {
             if fastMode {
                 self.playbackTimer = Timer.scheduledTimer(withTimeInterval: LoopScrubber.self.PLAYBACK_TIMER_INTERVAL_FAST, repeats: true) { [weak self] _ in
                     self?.updateValue()
-                    if !MusicPlayer.player.loopPlayback || MusicPlayer.player.loopEndSeconds - MusicPlayer.player.playbackTimeSeconds > LoopScrubber.INTERVAL_THRESHOLD*LoopScrubber.PLAYBACK_TIMER_INTERVAL {
+                    if let inThreshold = self?.withinFastModeThreshold(), !inThreshold {
                         self?.fastMode = false
                         self?.unload()
                         self?.startTimer()
@@ -74,7 +79,7 @@ class LoopScrubber: UISlider {
             } else {
                 self.playbackTimer = Timer.scheduledTimer(withTimeInterval: LoopScrubber.self.PLAYBACK_TIMER_INTERVAL, repeats: true) { [weak self] _ in
                     self?.updateValue()
-                    if MusicPlayer.player.loopPlayback && MusicPlayer.player.loopEndSeconds - MusicPlayer.player.playbackTimeSeconds <= LoopScrubber.INTERVAL_THRESHOLD*LoopScrubber.PLAYBACK_TIMER_INTERVAL {
+                    if let inThreshold = self?.withinFastModeThreshold(), inThreshold {
                         self?.fastMode = true
                         self?.unload()
                         self?.startTimer()
