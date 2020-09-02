@@ -29,6 +29,8 @@ class MusicPlayer {
     private(set) var playing: Bool = false
     /// True if the player is paused.
     private(set) var paused: Bool = false
+    /// True if the player is paused because of an interrupt.
+    private(set) var interrupted: Bool = false;
 
     /// Timer used to shuffle tracks after playing for a while.
     private var shuffleTimer: Timer?
@@ -421,6 +423,8 @@ class MusicPlayer {
         if !playing {
             resetFadeVolume()
             playing = true
+            paused = false;
+            interrupted = false;
             /// Status code for playing audio.
             let playStatus: OSStatus = playAudio()
             if playStatus != 0 {
@@ -431,10 +435,12 @@ class MusicPlayer {
     }
     
     /// Pauses playback of the currently loaded track.
-    func pauseTrack() throws {
+    /// - parameter interrupted: True if the pause comes from an interrupt.
+    func pauseTrack(interrupted: Bool) throws {
         if playing {
             playing = false
             paused = true
+            self.interrupted = interrupted
             pauseShuffleTimer()
             /// Status code for pausing audio.
             let pauseStatus: OSStatus = pauseAudio()
@@ -448,6 +454,8 @@ class MusicPlayer {
     func stopTrack() throws {
         if playing || paused {
             playing = false
+            paused = false
+            interrupted = false
             stopShuffleTimer()
             /// Status code for stopping audio.
             let stopStatus: OSStatus = stopAudio()

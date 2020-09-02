@@ -59,7 +59,7 @@ class MusicPlayerViewController: UIViewController, LoopScrubberContainer, UIAdap
     @IBAction func toggleAudio() {
         do {
             if MusicPlayer.player.playing {
-                try MusicPlayer.player.pauseTrack()
+                try MusicPlayer.player.pauseTrack(interrupted: false)
             } else {
                 try MusicPlayer.player.playTrack()
             }
@@ -188,18 +188,21 @@ class MusicPlayerViewController: UIViewController, LoopScrubberContainer, UIAdap
         switch notificationType {
         case .began:
             do {
-                try MusicPlayer.player.pauseTrack()
+                try MusicPlayer.player.pauseTrack(interrupted: true)
             } catch {
                showErrorMessage(error: error)
             }
         case .ended:
-            do {
-                try MusicPlayer.player.playTrack()
-            } catch {
-               showErrorMessage(error: error)
+            if MusicPlayer.player.interrupted {
+                do {
+                    try MusicPlayer.player.playTrack()
+                } catch {
+                   showErrorMessage(error: error)
+                }
             }
         default: ()
         }
+        updateOnPlay()
     }
     
     /// Starts playing the chosen track.
