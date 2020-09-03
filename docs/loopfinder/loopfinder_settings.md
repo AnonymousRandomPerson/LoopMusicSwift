@@ -1,0 +1,3 @@
+# Loop Finder Settings
+
+TODO
