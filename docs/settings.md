@@ -31,17 +31,17 @@
 ### Time Shuffle Settings
 
 - *Shuffle Time*: The base amount of time in minutes for which a single song will play before shuffling. This is only a base value; it can be modified further depending on other Time Shuffle Settings.
-- *Shuffle Time Variance*: The maximum proportion of the base shuffle time that can be added or subtracted when calculating the actual shuffle time. More precisely, if *Shuffle Time* is set to *T* and *Shuffle Time Variance* is set to **p**, then the actual shuffle time will be a random value (drawn uniformly) between **(1-p)T** and **(1+p)T**.
+- *Shuffle Time Variance*: The maximum proportion of the base shuffle time that can be added or subtracted when calculating the actual shuffle time. More precisely, if *Shuffle Time* is set to **T** and *Shuffle Time Variance* is set to **p**, then the actual shuffle time will be a random value (drawn uniformly) between **(1-p) × T** and **(1+p) × T**.
 - *Minimum Shuffle Repeats*: If this value is set, then the base *Shuffle Time* must run for at least this many repeats in a given song. If the *Shuffle Time* is too short, then the specified repeat duration will replace the configured *Shuffle Time* in the *Shuffle Time Variance* calculation.
 - *Maximum Shuffle Repeats*: If this value is set, then the base *Shuffle Time* cannot run longer than this many repeats in a given song. If the *Shuffle Time* is too long, then the specified repeat duration will replace the configured *Shuffle Time* in the *Shuffle Time Variance* calculation.
 
 ### Repeats Shuffle Settings
 
 - *Shuffle Repeats*: The base number of repeats for which a single song will play before shuffling. This is only a base value; it can be modified further depending on other Repeats Shuffle Settings.
-- *Shuffle Repeats Variance*: The maximum proportion of the base shuffle repeats that can be added or subtracted when calculating the actual shuffle repeats. More precisely, if *Shuffle Repeats* is set to *R* and *Shuffle Repeats Variance* is set to **p**, then the actual shuffle repeats will be a random value (drawn uniformly) between **(1-p)R** and **(1+p)R**.
+- *Shuffle Repeats Variance*: The maximum proportion of the base shuffle repeats that can be added or subtracted when calculating the actual shuffle repeats. More precisely, if *Shuffle Repeats* is set to **R** and *Shuffle Repeats Variance* is set to **p**, then the actual shuffle repeats will be a random value (drawn uniformly) between **(1-p) × R** and **(1+p) × R**.
 - *Minimum Shuffle Time*: If this value is set, then the base *Shuffle Repeats* must run for at least this many minutes in a given song. If the number of *Shuffle Repeats* is too short, then the number of repeats corresponding to the *Minimum Shuffle Time* will replace the configured *Shuffle Repeats* in the *Shuffle Repeats Variance* calculation.
 - *Maximum Shuffle Time*: If this value is set, then the base *Shuffle Repeats* cannot run longer than this many minutes in a given song. If the number of *Shuffle Repeats* is too long, then the number of repeats corresponding to the *Maximum Shuffle Time* will replace the configured *Shuffle Repeats* in the *Shuffle Repeats Variance* calculation.
 
 ## Loop Finder Settings
 
-See the [Loop Finder Settings page](loopfinder/loopfinder_settings.md).
+See the [Loop Finder Settings](loopfinder/loopfinder_settings.md) page.

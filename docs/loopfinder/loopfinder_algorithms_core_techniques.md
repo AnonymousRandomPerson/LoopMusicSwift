@@ -8,11 +8,11 @@ This page details the core techniques (and decision decisions, where applicable)
     <img src="../../media/sliding-comparisons.gif" title="Visualization of sliding waveform comparison using the normalized cross-MSE." alt="Normalized cross-MSE visualization">
 </p>
 
-These techniques involve "sliding" one waveform across another (by varying the temporal offset). At each possible offset (or the "lag"), a comparison metric (a number) is computed that summarizes how similar the overlapping audio regions are for the given offset. If comparing an audio waveform to *itself* using these techniques, the offset between the two copies corresponds to the loop duration. Given the comparison metrics for all offsets, the Loop Finder can identify the most promising loop durations by looking for offsets where the waveform is very similar to itself (because the repeated sections "line up").
+These techniques involve "sliding" one waveform across another (by varying the temporal offset). At each possible offset (the *lag*), a comparison metric (a number) is computed that summarizes how similar the overlapping audio regions are for the given offset. If comparing an audio waveform to *itself* using these techniques, the offset between the two copies corresponds to the loop duration. Given the comparison metrics for all offsets, the Loop Finder can identify the most promising loop durations by looking for offsets where the waveform is very similar to itself (because the repeated sections "line up").
 
 ### Cross-Correlation
 
-[*Cross-correlation*](https://en.wikipedia.org/wiki/Cross-correlation), also called a sliding dot product, is a well known signal processing technique that involves taking the dot product between two overlapping signals as they're slid across each other. The output cross-correlation function gives a single number (the dot product) for every lag value. If the cross-correlation is high for a given lag value, that indicates that the signals line up well with each other when offset by that lag value. The term *autocorrelation* refers to the cross-correlation of a signal with itself, which is a useful technique for identifying repetition within a single waveform.
+[*Cross-correlation*](https://en.wikipedia.org/wiki/Cross-correlation), also called the sliding dot product, is a well known signal processing technique that involves taking the dot product between two overlapping signals as they're slid across each other. The output cross-correlation function gives a single number (the dot product) for every lag value. If the cross-correlation is high for a given lag value, that indicates that the signals line up well with each other when offset by that lag value. The term *autocorrelation* refers to the cross-correlation of a signal with itself, which is a useful technique for identifying repetition within a single waveform.
 
 Cross-correlations can be implemented efficiently through [fast Fourier transforms (FFTs)](https://en.wikipedia.org/wiki/Fast_Fourier_transform) with a time complexity of **O[N × log(N)]** in the larger of the two signal lengths **N**.
 
@@ -24,7 +24,7 @@ What I call a "cross-sum-of-square-errors" or *cross-SSE* (referred to in the co
 
 #### Motivation
 
-Because cross-correlation involves taking dot products, it tends to focus on correlation between the big fluctuations, while de-emphasizing correlations between smaller fluctuations. This is because a large peak times another large peak gives a large contribution to the cross-correlation, while a small peak times a small peak gives a lesser contribution, even if the two small peaks show a similar degree of similarity to the two large peaks. This is desirable in common signal processing contexts, such as analyzing seismic activity or market fluctuations, because the "signal" of interest is generally the places where fluctuations are big, while smaller fluctuations are typically "background noise" that should be ignored.
+Because cross-correlation involves taking dot products, it tends to focus on correlation between big fluctuations, while de-emphasizing correlations between smaller fluctuations. This is because a large peak times another large peak gives a large contribution to the cross-correlation, while a small peak times a small peak gives a lesser contribution, even if the two small peaks show a similar degree of similarity to the two large peaks. This is desirable in common signal processing contexts, such as analyzing seismic activity or market fluctuations, because the "signal" of interest is generally the places where fluctuations are big, while smaller fluctuations are typically "background noise" that should be ignored.
 
 However, in the context of searching for self-similarity in music tracks, where the volume can vary significantly throughout the piece, *all* parts of the waveform (loud or soft) are equally important. De-emphasizing the softer parts of a track like in cross-correlation would be to misrepresent the overall structure of the waveform, thereby throwing out a lot of vital information that is important when trying to identify lag values with high precision. Hence, cross-SSE is a better technique than cross-correlation in this case. By adding square differences rather than products, big peaks and small peaks are treated more equally. Small peaks lining up (or not) will have just as strong of an effect as big peaks lining up (or not), provided the absolute differences between the compared peaks are the same. As a particularly extreme example, perfectly aligned peaks will have different cross-correlations depending on how big they are, but the cross-SSE will always be zero.
 
@@ -51,7 +51,7 @@ While the cross-SSE/MSE is less biased towards large fluctuations compared to cr
     <img src="../../media/spectral-analysis.gif" title="Visualization of spectral analysis using the spectrum MSE." alt="Spectrum MSE visualization">
 </p>
 
-These techniques involve analyzing the [spectral density](https://en.wikipedia.org/wiki/Spectral_density) functions, which provide a robust way to inspect the harmonic content of a chunk of audio while largely ignoring phase information in the raw waveform. This is important because the phase of the waveform can be noisy in some audio files (either due to discretization or other sources of noise), which can cause problems for direct waveform comparison techniques (which are highly sensitive to phase). The Loop Finder primarily uses this for identifying loop regions (the part of the song that actually gets repeated) after a loop duration has already been identified.
+These techniques involve analyzing [spectral density](https://en.wikipedia.org/wiki/Spectral_density) functions, which provide a robust way to inspect the harmonic content of a chunk of audio while largely ignoring phase information in the raw waveform. This is important because the phase of the waveform can be noisy in some audio files (either due to discretization or other sources of noise), which can cause problems for direct waveform comparison techniques (which are highly sensitive to phase). The Loop Finder primarily uses this for identifying loop regions (the part of the song that actually gets repeated) after a loop duration has already been identified.
 
 ### Spectrograms
 
@@ -63,7 +63,7 @@ In typical applications, a fade-in and fade-out is applied to each chunk of audi
 
 #### Smoothing
 
-Since spectral densities of real audio can be messy, the Loop Finder performs some smoothing on spectra before using them for analysis. The smoothing technique is simple rectangular smoothing, which just means that each value in the spectrum is replaced by the average across all its neighboring values within a configurable radius (which default to 2).
+Since spectral densities of real audio can be messy, the Loop Finder performs some smoothing on spectra before using them for analysis. The smoothing technique is simple rectangular smoothing, which just means that each value in the spectrum is replaced by the average across all its neighboring values within a radius of 2.
 
 ### Spectrum MSE
 
