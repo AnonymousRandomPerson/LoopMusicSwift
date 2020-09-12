@@ -26,12 +26,12 @@ See the [Loop Finder Algorithms](loopfinder_algorithms.md) page for more details
     - If initial estimates are provided to the Loop Finder, this setting is used slightly differently. Additionally, this setting is used internally in a variety of other contexts. See the [Loop Finder Algorithms](loopfinder_algorithms.md) page for more details.
 - *Duration Separation*: The minimum amount of time in seconds by which all loop durations must differ from each other.
     - This setting is also used in a few other contexts. See the [Loop Finder Algorithms](loopfinder_algorithms.md) page for more details.
-    - This setting is useful for ensuring that all loop duration returned by the Loop Finder are qualitatively different, which increases the chance that at least one of them will be correct.
-    - If the Loop Finder is finding loop durations that are slightly off from the correct value (differ by less than the value of this setting), reducing this setting could help stop the Loop Finder from suppressing the correct loop duration in favor of the slightly off loop duration.
+    - This setting is useful for ensuring that all loop durations returned by the Loop Finder are qualitatively different, which increases the chance that at least one of them will be correct.
+    - If the Loop Finder is finding loop durations that are slightly off from the correct value (off by less than the value of this setting), reducing this setting could help stop the Loop Finder from suppressing the correct loop duration in favor of the slightly off loop duration.
 - *Start Ignore*: The amount of time in seconds at the start of the audio track to throw out before searching for loops.
-    - This is useful for removing intros from an audio track, which could be detrimental to the Loop Finder.
+    - This is useful for removing intros from an audio track, which can be detrimental to the Loop Finder.
 - *End Ignore*: The amount of time in seconds at the end of the audio track to throw out before searching for loops.
-    - This is useful for removing fades and outros from an audio track, which could be detrimental to the Loop Finder.
+    - This is useful for removing fades and outros from an audio track, which can be detrimental to the Loop Finder.
 - *Fade Detection*: Whether or not the Loop Finder should try to detect and remove fade-out sections at the end of the audio track as a preprocessing step.
     - Note that since fade detection is not yet implemented, this setting currently has no effect.
 
@@ -39,6 +39,7 @@ See the [Loop Finder Algorithms](loopfinder_algorithms.md) page for more details
 
 - *Endpoint Difference Tolerance*: The maximum allowable absolute difference between the start and end samples of a loop.
     - Decreasing this value could lead to more seamless loops, but decreasing it too much could cause the Loop Finder to return no results.
+    - This setting is with respect to a floating-point audio representation with waveform values normalized between -1 and 1.
 
 ### Spectrogram Settings
 
@@ -50,17 +51,17 @@ See the [Loop Finder Algorithms](loopfinder_algorithms.md) page for more details
 
 ## Performance Settings
 
-- *Use Mono Audio*: If this setting is enabled, mono audio will be used instead of stereo data for all parts of analysis except for [sample differencing](loopfinder_algorithms_core_techniques.md#sample-differencing) (used for selecting loop endpoint pairs, see the [Loop Finder Algorithms](loopfinder_algorithms.md) page).
+- *Use Mono Audio*: If this setting is enabled, mono audio will be used instead of stereo data for all parts of analysis except for sample differencing (used for selecting loop endpoint pairs, see the [Loop Finder Algorithms](loopfinder_algorithms.md) page).
     - This will make the Loop Finder about twice as fast.
     - While the quality of results is usually not affected, you can try disabling this setting if you want to maximize accuracy.
 - *Frame Rate Reduction*: If set to **x**, the Loop Finder will reduce the frame rate of audio by a factor of **x** before doing analysis.
     - This will make the Loop Finder about **x** times as fast. If you want the Loop Finder to run faster, you can try increasing this setting.
-    - The quality of results is usually not affected for low values of **x**, but empirically, values of 7 or higher can sometimes cause instability in the algorithm. If you are having problems with accuracy, you can try reducing this setting (but be aware that if the audio track longer than the track length limit, the Loop Finder may use a frame rate reduction factor above the configured value).
+    - The quality of results is usually not affected for low values of **x**, but empirically, values of 7 or higher can sometimes cause instability in the algorithm. If you are having problems with accuracy, you can try reducing this setting (but be aware that if the audio track is longer than the track length limit, the Loop Finder may use a frame rate reduction factor above the configured value).
 - *Frame Rate Reduction Limit*: The maximum allowable frame rate reduction factor.
-    - For tracks that exceed the track length limit, the Loop Finder will attempt to reduce the frame rate until the track is short enough, but it will never exceed the *Frame Rate Reduction Limit* and will instead resort to truncation once the frame rate reduction limit is reached.
+    - For tracks that exceed the track length limit, the Loop Finder will attempt to reduce the frame rate until the track is short enough, but it will never exceed the *Frame Rate Reduction Limit* and will instead resort to truncation once the limit is reached.
 - *Track Length Limit*: The maximum number of raw samples that the Loop Finder will analyze.
-    - If a track's sample count exceeds this value, the Loop Finder will force sample count under the limit by reducing the framerate (up to the *Frame Rate Reduction Limit*), and then truncating as a last resort.
-    - The default value is **2<sup>21</sup>**. Together with the default *Frame Rate Reduction Limit* of 10, this limits the length of a typical 44.1 kHz audio track to about 8 minutes.
+    - If a track's sample count exceeds this value, the Loop Finder will force the sample count under the limit by reducing the framerate (up to the *Frame Rate Reduction Limit*), and then truncating as a last resort.
+    - The default value is 2<sup>21</sup>. Together with the default *Frame Rate Reduction Limit* of 10, this limits the length of a typical 44.1 kHz audio track to about 8 minutes.
 
 ## Output Settings
 

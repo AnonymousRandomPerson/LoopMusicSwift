@@ -30,13 +30,13 @@ Since little information is given about the loop, the Loop Finder proceeds in a 
 4. [For each loop duration value, identify the best loop endpoints.](#loop-endpoint-selection)
 5. [Rank the loop duration values from most promising to least promising.](#loop-duration-ranking)
 
-Each of these steps is summarized in more detail in the subsections that follow.
+Each of these steps is described in more detail in the subsections that follow.
 
 ### Loop Duration Estimation
 
 Initial estimates for loop duration are located using a [normalized auto-MSE](loopfinder_algorithms_core_techniques.md#normalized-cross-mse).
 
-1. As an additional preprocessing step, remove configurable amounts of time from the start and end of the waveform ([*Start Ignore*](loopfinder_settings.md#duration-search-restrictions) and [*End Ignore*](loopfinder_settings.md#duration-search-restrictions), respectively). This can improve the auto-MSE by reducing unique sections of audio in intros and outros.
+1. As an additional preprocessing step, remove configurable amounts of time from the start and end of the waveform ([*Start Ignore*](loopfinder_settings.md#duration-search-restrictions) and [*End Ignore*](loopfinder_settings.md#duration-search-restrictions), respectively). This can improve the auto-MSE by cutting out unique sections of audio in intros and outros.
 2. Compute the normalized auto-MSE of the truncated waveform.
 3. Select candidate loop durations one at a time, up to a number specified by [*Duration Values*](loopfinder_settings.md#output-settings). Perform selection by locating the lag value for which the auto-MSE is minimized, while requiring each new candidate to be:
     1. Longer than the [*Minimum Duration*](loopfinder_settings.md#duration-search-restrictions).
@@ -49,7 +49,7 @@ The most likely loop region for a given loop duration is inferred using a combin
 1. Compute [spectrograms](loopfinder_algorithms_core_techniques.md#spectrograms) for the audio and its lagged counterpart, using the configured [*FFT Length*](loopfinder_settings.md#spectrogram-settings) and [*Overlap Percentage*](loopfinder_settings.md#spectrogram-settings).
 2. Compute the [spectrum MSE](loopfinder_algorithms_core_techniques.md#spectrum-mse) for each pair of corresponding windows within the spectrograms.
 3. Calculate an initial cutoff value (explained shortly) as follows:
-    1. Calculate the median of the **n** smallest spectrum MSE values across windows, where **n** is the number of windows needed to span a region as long as the minimum loop duration.
+    1. Calculate the median of the **n** smallest spectrum MSE values across windows, where **n** is the number of windows needed to span a region as long as the *Minimum Duration*.
     2. Take twice the difference between the calculated median and the minimum spectrum MSE value, and add this to minimum spectrum MSE value to get the cutoff.
 4. Find the first and last windows with spectrum MSEs not exceeding the cutoff. Use the corresponding times as initial estimates for the loop region bounds.
 5. If no windows meet the cutoff, or if the resulting loop region is shorter than the *Minimum Duration*, repeat the following steps to gradually raise the cutoff until an acceptable loop region is found:
@@ -84,15 +84,15 @@ Once the loop region is known, the initial estimates of loop duration can be ref
 
 Once both the loop duration and the loop region have been identified, loop endpoints can be found by comparing the raw audio waveform at different points. The below steps are repeated for each loop duration candidate.
 
-1. Identify the spectrogram window the smallest spectrum MSE.
+1. Identify the spectrogram window with the smallest spectrum MSE.
 2. For each point in the window, compare it with the corresponding point in the lagged window by taking the absolute difference between the two samples (the *sample difference*).
-3. Create the *initial endpoint pair list* by searching through the sample differences and favoring those with the smallest sample differences. Only add up to a maximum number of pairs specified by the [*Endpoint Pairs*](loopfinder_settings.md#output-settings) setting.
+3. Create the *initial endpoint pair list* by searching through the sample differences and favoring the smallest ones. Only add up to a maximum number of pairs specified by the [*Endpoint Pairs*](loopfinder_settings.md#output-settings) setting.
 4. Remove any endpoint pairs whose sample difference exceeds the [*Endpoint Difference Tolerance*](loopfinder_settings.md#endpoint-search-restrictions).
 5. If the filtered endpoint pair list has the maximum number of *Endpoint Pairs*, endpoint selection is complete. Otherwise, continue to the next step.
 6. Attempt to add more endpoint pairs to the initial list by perturbing the loop duration by a small amount:
     1. Iterate through lag values by "spiraling away" from the original value. I.e., if the original lag (as a sample count) is **x** samples, iterate through **x+1**, **x-1**, **x+2**, **x-2**, and so on. Make sure that the lag value doesn't fall below the *Minimum Duration* and doesn't exceed the total length of the audio track.
     2. For each modified lag value **x+dx**, try shifting the non-lagged window by **-dx**, and also try shifting the lagged window by **dx**. For both of these possibilities, add endpoint pairs to the list with the same procedure that was used to create the initial list.
-    3. Continue spiraling away from the original lag until one of the following conditions are met:
+    3. Continue spiraling away from the original lag until one of the following conditions is met:
         1. The magnitude of **dx** exceeds half of the *Duration Separation* setting.
         2. No satisfactory endpoint pairs were found under the modified lag value.
         2. There are no more valid lag values to try.
@@ -107,7 +107,7 @@ Once all the loop durations and their corresponding loop endpoints have been det
 
 Before ranking, some quantities need to be computed.
 
-1. For each loop duration, compute the *biased mean spectrum MSE*, **µ**, defined as the mean of the lowest 90% of spectrum MSEs across all windows in the spectrogram. Filtering out the highest 10% makes **µ** more robust against any brief bouts of noisiness in the original audio signal.
+1. For each loop duration, compute the *biased mean spectrum MSE*, **µ**, defined as the mean of the lowest 90% of spectrum MSEs across all windows in the spectrogram. Filtering out the highest 10% makes **µ** more robust in the presence of brief bouts of noisiness in the original audio signal.
 2. For each loop duration, compute a *weight value*, **w = [(_e_<sup>µ</sup> - 1) + (_e_<sup>r</sup> - 1)]<sup>-1</sup>**, where **r = 2.5** is a regularization parameter. This formula was chosen empirically because **w** is roughly constant for low values of **µ** and exponentially decaying for high values of **µ**.
 3. Normalize each weight by the sum of all the weights. These normalized weights are the *confidence values*.
 
@@ -127,7 +127,7 @@ Before ranking, some quantities need to be computed.
 
 ### Overview
 
-Initial estimates provide a great deal of information. As such, the algorithm for this mode is significantly simpler than the no-estimate mode. Loop finding occurs over two stages:
+Initial estimates provide a great deal of information. As such, the algorithm for this mode is significantly simpler than the no-estimate mode. Loop finding involves two stages:
 
 1. [Identify the most promising candidates for loop duration value.](#loop-duration-estimation-1)
 2. [For each loop duration value, identify the best loop endpoints.](#loop-endpoint-selection-1)
@@ -140,8 +140,8 @@ The algorithm proceeds similarly regardless of whether a start estimate, end est
     - If a start (end) estimate was provided, the start (end) snippet is an asymmetric interval around the start (end) estimate. The interval has a length equal to the [*Minimum Duration*](loopfinder_settings.md#duration-search-restrictions), 10% of which is audio before the estimate and 90% of which is audio after the estimate.
     - If no end estimate was provided, the end snippet is set to the audio region between the start snippet and the end of the full audio track.
     - If no start estimate was provided, the start snippet is set to the audio region between the beginning of the audio track and the end snippet.
-2. Compute the normalized cross-MSE between the start and end snippets. Remove lag values are less than the [*Start Ignore*](loopfinder_settings.md#duration-search-restrictions) setting or greater than the track duration minus the [*End Ignore*](loopfinder_settings.md#duration-search-restrictions) setting.
-3. If *both* a start and end estimate were provided, calculate the base lag estimate **∆t** as the difference between the two estimates. Multiply the normalized cross-MSE values by a specific weights in order to penalize deviation from this base estimate. To determine the multipliers:
+2. Compute the normalized cross-MSE between the start and end snippets. Remove lag values that are less than the [*Start Ignore*](loopfinder_settings.md#duration-search-restrictions) setting or greater than the track duration minus the [*End Ignore*](loopfinder_settings.md#duration-search-restrictions) setting.
+3. If *both* a start and end estimate were provided, calculate the base lag estimate **∆t** as the difference between the two estimates. Multiply the normalized cross-MSE values by specific weights in order to penalize deviation from this base estimate. To determine the multipliers:
     1. Compute a slope value **m**. If the [*Loop Duration Estimate Deviation Penalty*](loopfinder_settings.md#estimate-deviation-penalties) is **p**, then **m = tan(p × π/2)**. The penalty **p** can be thought of as controlling the angle of a line, with **p = 0** being horizontal and **p = 1** being vertical.
     2. If the [*Loop Duration Estimate Window Radius*](loopfinder_settings.md#estimate-window-radii) is **R**, then the multiplier for a given lag value **l** is **w = 1 + m × |l - ∆t|** if both **w ≤ 2** *and* **|l - ∆t| ≤ R**, or infinity otherwise. In other words, if the multiplier gets too high (>2) or the lag deviates too far (>R), that lag value should not be considered as a potential candidate.
 4. Build a list of loop duration candidates using [the same procedure as in no-estimate mode](#loop-duration-estimation), using the normalized cross-MSE rather than the normalized auto-MSE. Additionally, do not enforce the *Minimum Duration* constraint; in no-estimate mode this constraint is primarily to prevent a lag of zero being selected, but the problem is already avoided here because of the way the start and end snippets are selected.
@@ -152,13 +152,13 @@ The algorithm proceeds similarly regardless of whether a start estimate, end est
 Loop endpoint selection in estimate mode is almost identical to [loop endpoint selection in no-estimate mode](#loop-endpoint-selection), with the following differences:
 
 1. There are no spectrograms to pick windows from, so all endpoint pairs separated by the given lag value start out as potential candidates (some could be filtered out in the next step).
-2. Multiply all sample differences by a specific weights in order to penalize endpoints that deviate from their estimates. The multipliers are computed analogously to the lag multipliers during [Loop Duration Estimation](#loop-duration-estimation-1), except using the [*Start/End Time Estimate Deviation Penalties*](loopfinder_settings.md#estimate-deviation-penalties) and the [*Start/End Time Estimate Window Radii*](loopfinder_settings.md#estimate-window-radii). If only one estimate was provided, use the multipliers for that endpoint. If both start and end estimates were provided, the total multiplier for a given sample duration is the product of the multipliers for each endpoint.
+2. Multiply all sample differences by specific weights in order to penalize endpoints that deviate from their estimates. The multipliers are computed analogously to the lag multipliers during [Loop Duration Estimation](#loop-duration-estimation-1), except using the [*Start/End Time Estimate Deviation Penalties*](loopfinder_settings.md#estimate-deviation-penalties) and the [*Start/End Time Estimate Window Radii*](loopfinder_settings.md#estimate-window-radii). If only one estimate was provided, use the multipliers for that endpoint. If both start and end estimates were provided, the total multiplier for a given sample difference is the product of the multipliers for each endpoint.
 
 Following loop endpoint selection, loop finding is complete.
 
 ## Miscellaneous Notes
 
-- In the algorithms described above, it is assumed that audio is represented in floating-point format with values normalized between -1 and 1. Under other normalizations, parameters will need to be retuned accordingly.
+- In the algorithms described above, it is assumed that audio is represented in floating-point format with waveform values normalized between -1 and 1. Under other normalizations, parameters will need to be retuned accordingly.
 - In the above descriptions, the terms "lag" and "loop duration" are used interchangeably.
 - The no-estimate mode works best if the track has at least 5-10 seconds of non-faded post-loop repetition. If there is less than 5 seconds of non-faded post-loop repetition, the initial loop duration might be estimated poorly, leading to incorrect results; in such cases, it is better to provide initial estimates.
 - Despite the precise formula, the confidence values computed by the Loop Finder are not particularly meaningful. They should only be used to gauge if a few of the loop durations are vastly better than the rest, or if the results are all similarly good.
