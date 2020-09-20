@@ -1,6 +1,6 @@
 # Loop Finder Algorithms - Core Techniques
 
-This page details the core techniques (and decision decisions, where applicable) underlying the algorithms used by the automatic Loop Finder. For details on the algorithms themselves, see the [Loop Finder Algorithms](loopfinder_algorithms.md) page.
+This page details the core techniques (and design decisions, where applicable) underlying the algorithms used by the automatic Loop Finder. For details on the algorithms themselves, see the [Loop Finder Algorithms](loopfinder_algorithms.md) page.
 
 ## Sliding Waveform Comparison Techniques
 
