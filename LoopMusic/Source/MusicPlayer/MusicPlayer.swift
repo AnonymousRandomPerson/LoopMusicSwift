@@ -47,8 +47,6 @@ class MusicPlayer {
     private(set) var audioBuffer: AudioBuffer?
     /// True if the current audio track was converted manually.
     private var manuallyAllocatedBuffer: Bool = false
-    /// The data type of the loaded audio data.
-    private(set) var audioType: AudioType = AudioType.int32
     
     /// Lock to prevent the audio buffer from being loaded and freed at the same time.
     private var bufferLock: DispatchSemaphore = DispatchSemaphore(value: 1)
@@ -61,7 +59,7 @@ class MusicPlayer {
     /// Audio data necessary for the loop finder.
     var audioData: AudioData {
         get {
-            return AudioData(audioBuffer: audioBuffer!, audioType: Int32(audioType.rawValue), numSamples: Int32(numSamples), sampleRate: sampleRate)
+            return AudioData(audioBuffer: audioBuffer!, numSamples: Int32(numSamples), sampleRate: sampleRate)
         }
     }
     
@@ -283,12 +281,10 @@ class MusicPlayer {
         
         let audioData: UnsafeMutableRawPointer = audioBuffer!.mData!
         // Check for the data type of the audio and load it in the audio engine accordingly.
-        error = loadFloatAudio(audioData, numSamples, convertedAudioDesc)
+        error = loadAudio(audioData, numSamples, convertedAudioDesc)
         if error != noErr {
             throw MessageError("Audio data is empty or not supported.", error)
         }
-        
-        audioType = AudioType.float
         
         let startReadSamples: Int = min(Int(audioLength), MusicPlayer.START_READ_SAMPLES)
         try loadAudioAsync(audioFile: audioFile, loadBuffer: loadBuffer, audioDesc: convertedAudioDesc, currentSamplesRead: startReadSamples, processUuid: trackUuid)

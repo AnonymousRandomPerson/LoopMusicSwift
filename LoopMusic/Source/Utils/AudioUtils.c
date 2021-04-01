@@ -69,20 +69,6 @@ long calcFramerateReductionFactor(long framerateReductionFactor, long numFrames,
     return framerateReductionFactor;
 }
 
-void audio16bitToAudioFloat(SInt16 *data16bit, vDSP_Stride stride, float *dataFloat, vDSP_Length n)
-{
-    float maxAmp = 1 << 15;
-    vDSP_vflt16(data16bit, stride, dataFloat, stride, n);
-    vDSP_vsdiv(dataFloat, stride, &maxAmp, dataFloat, stride, n);
-}
-
-void audio32bitToAudioFloat(SInt32 *data32bit, vDSP_Stride stride, float *dataFloat, vDSP_Length n)
-{
-    float maxAmp = 1 << 31;
-    vDSP_vflt32(data32bit, stride, dataFloat, stride, n);
-    vDSP_vsdiv(dataFloat, stride, &maxAmp, dataFloat, stride, n);
-}
-
 void reduceFramerate(float *dataFloat, vDSP_Stride stride, vDSP_Length n, long framerateReductionFactor, float *reducedData)
 {
     // reducedData should be floor(n/framerateReductionFactor) long.
@@ -112,23 +98,7 @@ void audioFormatToFloatFormat(const AudioData *audio, AudioDataFloat *audioFloat
     int numChannels = audio->audioBuffer.mNumberChannels;
     
     // Convert audio data to float if not already.
-    float *workArray;
-    if (audio->audioType == FLOAT)
-    {
-        workArray = audio->audioBuffer.mData;
-    }
-    else
-    {
-        workArray = malloc(audioFloat->numFrames * numChannels * sizeof(float));
-        if (audio->audioType == INT32)
-        {
-            audio32bitToAudioFloat((SInt32 *)audio->audioBuffer.mData, stride, workArray, audioFloat->numFrames * numChannels);
-        }
-        else
-        {
-            audio16bitToAudioFloat((SInt16 *)audio->audioBuffer.mData, stride, workArray, audioFloat->numFrames * numChannels);
-        }
-    }
+    float *workArray = audio->audioBuffer.mData;
     
     // Convert to non-interleaved audio to populate channels.
     float* channel0 = malloc(audioFloat->numFrames * sizeof(float));
@@ -141,11 +111,6 @@ void audioFormatToFloatFormat(const AudioData *audio, AudioDataFloat *audioFloat
     vDSP_vsadd(workArray + 1, numChannels, &zero, channel1, stride, audioFloat->numFrames);
     reduceFramerate(channel1, stride, audioFloat->numFrames, framerateReductionFactor, audioFloat->channel1);
     free(channel1);
-    
-    if (audio->audioType != FLOAT)
-    {
-        free(workArray);
-    }
     
     audioFloat->numFrames /= framerateReductionFactor;  // Integer division will floor.
 }

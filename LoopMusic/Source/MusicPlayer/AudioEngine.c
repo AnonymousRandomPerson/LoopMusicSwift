@@ -6,11 +6,8 @@
 /// The size of each buffer used in audio playback.
 #define BUFFER_SIZE 16384
 
-/// All types of audio that are supported.
-typedef enum _AudioType {INT32, INT16, FLOAT} AudioType;
-
 /// The currently loaded audio data to be fed into the audio buffer every update.
-void *_Nonnull audioData;
+float *_Nonnull audioData;
 /// The index of the currently playing sample within the audio data.
 int64_t sampleCounter;
 /// The total number of samples in the audio data.
@@ -19,8 +16,6 @@ int64_t numSamples;
 int64_t loopStart;
 /// The audio sample to end the loop at.
 int64_t loopEnd;
-/// The data type that the currently loaded audio is stored in.
-AudioType audioType;
 
 /// The audio queue currently being used to play audio.
 AudioQueueRef queue;
@@ -58,29 +53,28 @@ for (unsigned int i = 0; i < BUFFER_SIZE / sizeof(castedAudioData[0]); i++) { \
 
 /// Callback to load audio buffers with audio samples.
 void audioCallback(void *customData, AudioQueueRef queue, AudioQueueBufferRef buffer) {
-    void *bufferData = buffer->mAudioData;
-    switch (audioType) {
-        case INT32:
-            loadBuffer(((int32_t*) bufferData), ((int32_t*) audioData))
-            break;
-        case INT16:
-            loadBuffer(((int16_t*) bufferData), ((int16_t*) audioData))
-            break;
-        case FLOAT:
-            loadBuffer(((float*) bufferData), ((float*) audioData))
-            break;
+    float* bufferData = (float*) buffer->mAudioData;
+
+    for (unsigned int i = 0; i < BUFFER_SIZE / sizeof(audioData[0]); i++) {
+        if (sampleCounter >= numSamples) {
+            bufferData[i] = 0;
+        } else {
+            bufferData[i] = audioData[sampleCounter++] * volumeMultiplier;
+        }
+        if ((loopEnd > 0 && sampleCounter >= loopEnd && loopPlayback) || sampleCounter >= numSamples) {
+            sampleCounter = loopPlayback ? loopStart : 0;
+        }
     }
     
     AudioQueueEnqueueBuffer(queue, buffer, 0, NULL);
 }
 
 /// Loads audio data into the engine in preparation for audio playback.
-OSStatus loadAudio(void *_Nonnull newAudioData, int64_t newNumSamples, const AudioStreamBasicDescription audioDesc, AudioType newAudioType) {
-    if (newAudioType == audioType && areAudioDescsEqual(audioDesc, origAudioDesc)) {
+OSStatus loadAudio(void *_Nonnull newAudioData, int64_t newNumSamples, const AudioStreamBasicDescription audioDesc) {
+    if (areAudioDescsEqual(audioDesc, origAudioDesc)) {
         // If audio format is the same, no need to recreate the audio queue.
         audioData = newAudioData;
         numSamples = newNumSamples;
-        audioType = newAudioType;
         return 0;
     } else {
         if (queue != NULL) {
@@ -101,7 +95,6 @@ OSStatus loadAudio(void *_Nonnull newAudioData, int64_t newNumSamples, const Aud
         origAudioDesc = audioDesc;
         audioData = newAudioData;
         numSamples = newNumSamples;
-        audioType = newAudioType;
         
         // Initialize audio buffers according to the audio description.
         for (unsigned int i = 0; i < NUM_BUFFERS; i++) {
@@ -113,18 +106,6 @@ OSStatus loadAudio(void *_Nonnull newAudioData, int64_t newNumSamples, const Aud
         }
         return status;
     }
-}
-
-OSStatus load32BitAudio(void *_Nonnull newAudioData, int64_t newNumSamples, const AudioStreamBasicDescription audioDesc) {
-    return loadAudio(newAudioData, newNumSamples, audioDesc, INT32);
-}
-
-OSStatus load16BitAudio(void *_Nonnull newAudioData, int64_t newNumSamples, const AudioStreamBasicDescription audioDesc) {
-    return loadAudio(newAudioData, newNumSamples, audioDesc, INT16);
-}
-
-OSStatus loadFloatAudio(void *_Nonnull newAudioData, int64_t newNumSamples, const AudioStreamBasicDescription audioDesc) {
-    return loadAudio(newAudioData, newNumSamples, audioDesc, FLOAT);
 }
 
 void setSampleCounter(int64_t newSampleCounter) {

@@ -8,15 +8,11 @@
 /// Reference power level used in decibel calculation.
 extern const float DB_REFERENCE_POWER;
 
-typedef enum AudioType { INT32, INT16, FLOAT } AudioType;
-
 /// Contains data for an audio track.
 typedef struct AudioData
 {
     /// The sample data for the track.
     AudioBuffer audioBuffer;
-    /// The data type of the audio in the buffer.
-    int audioType;
     /// Number of samples in the audio data.
     int numSamples;
     /// The sample rate of the track.

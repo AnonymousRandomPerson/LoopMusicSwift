@@ -35,7 +35,6 @@
 		3973B5E524BA91FB00883011 /* LoopFinderAuto+analysis.m in Sources */ = {isa = PBXBuildFile; fileRef = 3973B5DD24BA91FB00883011 /* LoopFinderAuto+analysis.m */; };
 		3973B5E624BA91FB00883011 /* LoopFinderAuto.m in Sources */ = {isa = PBXBuildFile; fileRef = 3973B5DF24BA91FB00883011 /* LoopFinderAuto.m */; };
 		3973B5E724BA91FB00883011 /* LoopFinderAuto+spectra.m in Sources */ = {isa = PBXBuildFile; fileRef = 3973B5E024BA91FB00883011 /* LoopFinderAuto+spectra.m */; };
-		3973B5ED24BA95DF00883011 /* AudioType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3973B5EC24BA95DF00883011 /* AudioType.swift */; };
 		3973B5F224BAABF300883011 /* IntSettingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3973B5F124BAABF300883011 /* IntSettingView.swift */; };
 		3973B5F424BAB00F00883011 /* DoubleTextFieldSettingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3973B5F324BAB00F00883011 /* DoubleTextFieldSettingView.swift */; };
 		3973B5F624BAB04100883011 /* NumberUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3973B5F524BAB04100883011 /* NumberUtils.swift */; };
@@ -146,7 +145,6 @@
 		3973B5DF24BA91FB00883011 /* LoopFinderAuto.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LoopFinderAuto.m; sourceTree = "<group>"; };
 		3973B5E024BA91FB00883011 /* LoopFinderAuto+spectra.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "LoopFinderAuto+spectra.m"; sourceTree = "<group>"; };
 		3973B5E124BA91FB00883011 /* LoopFinderAuto+analysis.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "LoopFinderAuto+analysis.h"; sourceTree = "<group>"; };
-		3973B5EC24BA95DF00883011 /* AudioType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AudioType.swift; sourceTree = "<group>"; };
 		3973B5F124BAABF300883011 /* IntSettingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IntSettingView.swift; sourceTree = "<group>"; };
 		3973B5F324BAB00F00883011 /* DoubleTextFieldSettingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DoubleTextFieldSettingView.swift; sourceTree = "<group>"; };
 		3973B5F524BAB04100883011 /* NumberUtils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NumberUtils.swift; sourceTree = "<group>"; };
@@ -272,7 +270,6 @@
 				39BF34C9245FBA920063AEF1 /* AllTracksPlaylist.swift */,
 				39F1799922DBCD4800D3CDFF /* AudioEngine.c */,
 				3906880C22C1D28C00CE5292 /* AudioEngine.h */,
-				3973B5EC24BA95DF00883011 /* AudioType.swift */,
 				3925EE28248495900020B94C /* LoopScrubber.swift */,
 				3924EB8D24908F9E0087DDA6 /* LoopScrubberContainer.swift */,
 				39C03A68235BFB34004BD0DA /* MusicData.swift */,
@@ -631,7 +628,6 @@
 				39DCDA442480BE050049353D /* RepeatsShuffleSettingsViewController.swift in Sources */,
 				394269C6249B1B25001C4B8F /* TrackSettingsViewController.swift in Sources */,
 				398666C024514367008AC748 /* ShuffleSetting.swift in Sources */,
-				3973B5ED24BA95DF00883011 /* AudioType.swift in Sources */,
 				390D732F24BA2D8600F05BE8 /* BaseLoopFinderContainerViewController.swift in Sources */,
 				39A6B5B22483543B001A2B0B /* LoopFinderPerformanceSettingsViewController.swift in Sources */,
 				390A6C3C246118D300234882 /* FileUtils.swift in Sources */,

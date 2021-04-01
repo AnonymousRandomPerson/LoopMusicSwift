@@ -5,14 +5,8 @@
 #import <CoreAudio/CoreAudioTypes.h>
 #import <CoreFoundation/CFRunLoop.h>
 
-/// Loads 32-bit audio samples and playback metadata into the player.
-OSStatus load32BitAudio(void *_Nonnull, int64_t, AudioStreamBasicDescription);
-
-/// Loads 16-bit audio samples and playback metadata into the player.
-OSStatus load16BitAudio(void *_Nonnull, int64_t, AudioStreamBasicDescription);
-
 /// Loads 32-bit float audio samples and playback metadata into the player.
-OSStatus loadFloatAudio(void *_Nonnull, int64_t, AudioStreamBasicDescription);
+OSStatus loadAudio(void *_Nonnull, int64_t, AudioStreamBasicDescription);
 
 /// Sets the index of the currently playing sample within the audio data.
 void setSampleCounter(int64_t);
