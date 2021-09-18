@@ -106,7 +106,9 @@ class MusicPlayerViewController: UIViewController, LoopScrubberContainer, UIAdap
     
     /// Updates UI elements when starting, pausing, or stopping the current track.
     func updateOnPlay() {
-        loopScrubber?.updateValue() // Make sure the scrubber value is up to date
+        if MusicPlayer.player.trackLoaded {
+            loopScrubber?.updateValue() // Make sure the scrubber value is up to date
+        }
         if MusicPlayer.player.playing {
             loopScrubber?.playTrack()
         } else if MusicPlayer.player.paused {
