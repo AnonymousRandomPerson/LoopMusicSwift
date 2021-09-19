@@ -185,6 +185,7 @@
 		39EC8AE1245A6E0F00D5240D /* PlaylistListViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlaylistListViewController.swift; sourceTree = "<group>"; };
 		39F1799922DBCD4800D3CDFF /* AudioEngine.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = AudioEngine.c; sourceTree = "<group>"; };
 		92252D1424C025F80033A854 /* fa-solid-900.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "fa-solid-900.ttf"; sourceTree = "<group>"; };
+		92268BEF26F68D72004C9558 /* LoopMusic.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = LoopMusic.entitlements; sourceTree = "<group>"; };
 		9252279B24C419DC00E25C15 /* FontUtils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FontUtils.swift; sourceTree = "<group>"; };
 		9252AC9C24C9FFDE00310CF1 /* DataCleaner.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataCleaner.swift; sourceTree = "<group>"; };
 		9252AC9E24CA040E00310CF1 /* DataImporter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataImporter.swift; sourceTree = "<group>"; };
@@ -305,6 +306,7 @@
 		390BDA9D22AA0CE600E01411 /* LoopMusic */ = {
 			isa = PBXGroup;
 			children = (
+				92268BEF26F68D72004C9558 /* LoopMusic.entitlements */,
 				390BDAA822AA0CE700E01411 /* Assets.xcassets */,
 				92252D1324C025F80033A854 /* Fonts */,
 				390BDAAD22AA0CE700E01411 /* Info.plist */,
@@ -831,15 +833,20 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
+				CODE_SIGN_ENTITLEMENTS = LoopMusic/LoopMusic.entitlements;
+				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = CTR8N8VQUB;
 				INFOPLIST_FILE = LoopMusic/Info.plist;
+				"IPHONEOS_DEPLOYMENT_TARGET[sdk=macosx*]" = 14.2;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = LoopMusic.LoopMusicSwift;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "";
+				SUPPORTS_MACCATALYST = YES;
 				SWIFT_OBJC_BRIDGING_HEADER = "LoopMusic/Source/LoopMusic-Bridging-Header.h";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 5.0;
@@ -852,15 +859,20 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
+				CODE_SIGN_ENTITLEMENTS = LoopMusic/LoopMusic.entitlements;
+				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = CTR8N8VQUB;
 				INFOPLIST_FILE = LoopMusic/Info.plist;
+				"IPHONEOS_DEPLOYMENT_TARGET[sdk=macosx*]" = 14.2;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = LoopMusic.LoopMusicSwift;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "";
+				SUPPORTS_MACCATALYST = YES;
 				SWIFT_OBJC_BRIDGING_HEADER = "LoopMusic/Source/LoopMusic-Bridging-Header.h";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";

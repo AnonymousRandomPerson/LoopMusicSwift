@@ -22,10 +22,12 @@ struct MessageError: Error {
     init(_ message: String, _ statusCode: Int32) {
         self.message = String(format: "%@ Status code: %d", message, statusCode)
     }
-    
+}
+
+extension MessageError: LocalizedError {
     /// Gets the message describing the error. Mirrors NSError's localizedDescription().
     /// - returns: Message describing the error.
-    public var localizedDescription: String {
+    public var errorDescription: String? {
         return message
     }
 }

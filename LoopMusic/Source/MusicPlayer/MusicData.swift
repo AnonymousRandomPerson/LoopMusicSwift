@@ -54,6 +54,8 @@ class MusicData {
         /// The track to return.
         var track: MusicTrack = MusicTrack.BLANK_MUSIC_TRACK
         if let trackURL: URL = mediaItem.assetURL, let trackName: String = mediaItem.title {
+            /// Track url escaped for SQL queries. Only needed on macOS because the URL is a local file path. On iOS URLs are in a fixed, SQL-safe format.
+            let escapedUrlString = self.escapeStringForDb(trackURL.absoluteString)
             /// Track name escaped for SQL queries.
             let escapedTrackName = self.escapeStringForDb(trackName)
             let trackCallback = {(statement: OpaquePointer?) -> Void in
@@ -73,7 +75,7 @@ class MusicData {
                 }
             }
             try executeSql(
-                query: String(format: "SELECT loopStart, loopEnd, volumeMultiplier, name, id FROM Tracks WHERE url = '%@'", trackURL.absoluteString),
+                query: String(format: "SELECT loopStart, loopEnd, volumeMultiplier, name, id FROM Tracks WHERE url = '%@'", escapedUrlString),
                 stepCallback: trackCallback,
                 noResultCallback: {() -> Void in
                     // Try to fallback on name. If the track is changed at all, the URL may change.
@@ -82,13 +84,13 @@ class MusicData {
                         stepCallback: {(statement: OpaquePointer?) -> Void in
                             // Update the stored track URL if a name match is found.
                             try trackCallback(statement)
-                            try self.executeSql(query: String(format: "UPDATE Tracks SET url = '%@' WHERE id = '%i'", trackURL.absoluteString, sqlite3_column_int(statement, 3)),
+                            try self.executeSql(query: String(format: "UPDATE Tracks SET url = '%@' WHERE id = '%i'", escapedUrlString, sqlite3_column_int(statement, 3)),
                                                 errorMessage: String(format: "Failed to update URL for %@", trackName))
                         },
                         noResultCallback: {() -> Void in
                             // Save track as new if not found.
                             try self.executeSql(
-                                query: String(format: "INSERT INTO Tracks (url, name, volumeMultiplier) VALUES ('%@', '%@', '%f')", trackURL.absoluteString, escapedTrackName, MusicSettings.settings.defaultRelativeVolume),
+                                query: String(format: "INSERT INTO Tracks (url, name, volumeMultiplier) VALUES ('%@', '%@', '%f')", escapedUrlString, escapedTrackName, MusicSettings.settings.defaultRelativeVolume),
                                 lastInsertCallback: {(id: Int64) -> Void in
                                     track = MusicTrack(
                                         id: id,
