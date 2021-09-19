@@ -71,3 +71,4 @@ Containers/
 Icons/
 *.m4a
 *.db
+*.pyc
