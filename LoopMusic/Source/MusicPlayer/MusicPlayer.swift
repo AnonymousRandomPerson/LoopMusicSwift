@@ -182,7 +182,7 @@ class MusicPlayer {
         // Unload the buffer for the previous track.
         bufferLock.wait()
         if let audioBuffer: AudioBuffer = audioBuffer {
-            free(audioBuffer.mData)
+            free(audioBuffer.mData!)
         }
         trackUuid = UUID()
         bufferLock.signal()
@@ -357,7 +357,7 @@ class MusicPlayer {
         if error != noErr {
             throw MessageError("Failed to dispose audio file.", error)
         }
-        free(loadBuffer[0].mData)
+        free(loadBuffer[0].mData!)
         free(loadBuffer.unsafeMutablePointer)
     }
     
