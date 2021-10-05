@@ -69,26 +69,39 @@ long calcFramerateReductionFactor(long framerateReductionFactor, long numFrames,
     return framerateReductionFactor;
 }
 
-void reduceFramerate(float *dataFloat, vDSP_Stride stride, vDSP_Length n, long framerateReductionFactor, float *reducedData)
+void reduceFramerate(float *dataFloat, vDSP_Stride inputStride, vDSP_Length n, long framerateReductionFactor, float *reducedData, vDSP_Stride outputStride)
 {
-    // reducedData should be floor(n/framerateReductionFactor) long.
+    // reducedData should have a length of at least
+    // outputStride*floor(n/framerateReductionFactor) - (outputStride - 1)
+    // in order to fit floor(n/framerateReductionFactor) averaged windows strided
+    // by outputStride within reducedData
     
     // No reducing to be done if the factor is 1
     if (framerateReductionFactor == 1)
     {
-        memcpy(reducedData, dataFloat, n*sizeof(float));
+        if (inputStride == 1 && outputStride == 1)
+        {
+            // Common case in which a simple memcpy suffices
+            memcpy(reducedData, dataFloat, n*sizeof(float));
+        }
+        else
+        {
+            // Need to use vDSP to handle strided input/output
+            float zero = 0;
+            vDSP_vsadd(dataFloat, inputStride, &zero, reducedData, outputStride, n);
+        }
         return;
     }
-    
+
     vDSP_Length nWindows = max(0, (long)n - framerateReductionFactor + 1);
     if (nWindows == 0)  // Nothing to be done
         return;
     
     float *slidingSum = malloc(nWindows * sizeof(float));
-    vDSP_vswsum(dataFloat, stride, slidingSum, stride, nWindows, framerateReductionFactor);
+    vDSP_vswsum(dataFloat, inputStride, slidingSum, 1, nWindows, framerateReductionFactor);
     
     float divisor = (float)framerateReductionFactor;
-    vDSP_vsdiv(slidingSum, framerateReductionFactor*stride, &divisor, reducedData, stride, n / framerateReductionFactor);   // Integer division will floor n/framerateReductionFactor
+    vDSP_vsdiv(slidingSum, framerateReductionFactor, &divisor, reducedData, outputStride, n / framerateReductionFactor);   // Integer division will floor n/framerateReductionFactor
     
     free(slidingSum);
 }
@@ -104,12 +117,12 @@ void audioFormatToFloatFormat(const AudioData *audio, AudioDataFloat *audioFloat
     float* channel0 = malloc(audioFloat->numFrames * sizeof(float));
     float zero = 0;
     vDSP_vsadd(workArray, numChannels, &zero, channel0, stride, audioFloat->numFrames);
-    reduceFramerate(channel0, stride, audioFloat->numFrames, framerateReductionFactor, audioFloat->channel0);
+    reduceFramerate(channel0, stride, audioFloat->numFrames, framerateReductionFactor, audioFloat->channel0, stride);
     free(channel0);
     
     float* channel1 = malloc(audioFloat->numFrames * sizeof(float));
     vDSP_vsadd(workArray + 1, numChannels, &zero, channel1, stride, audioFloat->numFrames);
-    reduceFramerate(channel1, stride, audioFloat->numFrames, framerateReductionFactor, audioFloat->channel1);
+    reduceFramerate(channel1, stride, audioFloat->numFrames, framerateReductionFactor, audioFloat->channel1, stride);
     free(channel1);
     
     audioFloat->numFrames /= framerateReductionFactor;  // Integer division will floor.
