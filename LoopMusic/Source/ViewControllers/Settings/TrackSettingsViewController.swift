@@ -24,11 +24,13 @@ class TrackSettingsViewController: BaseSettingsSectionViewController {
     @IBAction func normalizeVolume() {
         // Compute the track's intrinsic average volume.
         var audioData = MusicPlayer.player.audioData
+        // Only use up to the loop end for the loudness calculation (loopEnd is exclusive). For reasons I don't understand, it appears that sometimes loopEnd and audioData.numSamples can get out of sync by the number of priming frames...so ensure that loopEnd <= audioData.numSamples.
+        let numSamples = min(MusicPlayer.player.loopEnd, Int(audioData.numSamples))
         // Never reduce the framerate by more than a factor of 4. For a standard 44.1 kHz signal, a factor of 4 reduction gives an effective framerate of 11.025 kHz, with a corresponding Nyquist frequency of 5.5125 kHz. Since the human ear is most sensitive to frequencies between 2 kHz and 5 kHz, reducing any further would seriously degrade the quality of the loudness calculation, which is designed to weight frequencies in a way that reflects human perception.
         let framerateReductionLimit: Int = min(4, Int(round(MusicSettings.settings.frameRateReductionLimit)))
         let lengthLimit: Int = Int(MusicSettings.settings.trackLengthLimit)
         var intrinsicLoudness: Double = 0
-        if (calcIntegratedLoudnessFromBufferFormat(&audioData, framerateReductionLimit, lengthLimit, &intrinsicLoudness) < 0) {
+        if (calcIntegratedLoudnessFromBufferFormat(&audioData, numSamples, framerateReductionLimit, lengthLimit, &intrinsicLoudness) < 0) {
             AlertUtils.showErrorMessage(error: "Failed to calculate integrated loudness.", viewController: self)
             return
         }

@@ -58,12 +58,16 @@ out:
     return rc;
 }
 
-int calcIntegratedLoudnessFromBufferFormat(const AudioData *audio, long framerateReductionLimit, long lengthLimit, double *loudness)
+int calcIntegratedLoudnessFromBufferFormat(const AudioData *audio, long numSamples, long framerateReductionLimit, long lengthLimit, double *loudness)
 {
+    if (numSamples > audio->numSamples) {
+        return -1;
+    }
+
     // Convert audio to 32-bit floating point audio, reducing framerate and truncating if necessary.
     AudioData_ebur128 processedAudio;
     processedAudio.numChannels = audio->audioBuffer.mNumberChannels;
-    processedAudio.numFrames = calcFrameLimit(audio->numSamples, framerateReductionLimit, lengthLimit);
+    processedAudio.numFrames = calcFrameLimit(numSamples, framerateReductionLimit, lengthLimit);
     long framerateReductionFactor = calcFramerateReductionFactor(1, processedAudio.numFrames, framerateReductionLimit, lengthLimit);
     processedAudio.framerate = round(audio->sampleRate / framerateReductionFactor);
     // This is an interleaved and potentially downsampled data buffer. Integer division will floor.

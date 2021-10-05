@@ -70,12 +70,13 @@ float calcAvgVolume(const AudioDataFloat *audioFloat);
 /*!
  * Computes the integrated loudness in LUFS of an audio track, in accordance with EBU R 128 (a.k.a. ITU-R BS.1770): https://www.itu.int/dms_pubrec/itu-r/rec/bs/R-REC-BS.1770-4-201510-I!!PDF-E.pdf
  * @param audio The input audio track in buffer format.
+ * @param numSamples The number of samples within audio to use for the loudness calculation. Must not exceed audio->numSamples.
  * @param framerateReductionLimit The highest allowable framerate reduction factor before resorting to truncation.
  * @param lengthLimit The highest allowable number of frames.
  * @param loudness The average loudness of the track in decibels when represented in floating-point format (normalized between -1 and 1).
  * @return Return code. 0 on success, -1 on failure.
 */
-int calcIntegratedLoudnessFromBufferFormat(const AudioData *audio, long framerateReductionLimit, long lengthLimit, double *loudness);
+int calcIntegratedLoudnessFromBufferFormat(const AudioData *audio, long numSamples, long framerateReductionLimit, long lengthLimit, double *loudness);
 
 /*!
  * Calculates the absolute limit on frames based on specified parameters.
@@ -97,7 +98,7 @@ long calcFrameLimit(long numFrames, long framerateReductionLimit, long lengthLim
 long calcFramerateReductionFactor(long framerateReductionFactor, long numFrames, long framerateReductionLimit, long lengthLimit);
 
 /*!
- * Converts audio data to a 32-bit floating point format between -1 and 1.
+ * Converts audio data to a 32-bit floating point format between -1 and 1. If audioFloat->numFrames < audio->numSamples, just convert the first audioFloat->numFrames.
  * @param audio The input audio track in buffer format.
  * @param audioFloat On output, the audio track in floating point format.
  * @param framerateReductionFactor The factor by which to reduce the audio framerate during conversion.
@@ -105,7 +106,7 @@ long calcFramerateReductionFactor(long framerateReductionFactor, long numFrames,
 void audioFormatToFloatFormat(const AudioData *audio, AudioDataFloat *audioFloat, long framerateReductionFactor);
 
 /*!
- * Converts audio data to a 32-bit floating point format for loudness calculation by libebur128.
+ * Converts audio data to a 32-bit floating point format for loudness calculation by libebur128. If audioOut->numFrames < audio->numSamples, just convert the first audioOut->numFrames.
  * @param audio The input audio track in buffer format.
  * @param audioOut On output, the audio track in the format libebur128 expects.
  * @param framerateReductionFactor The factor by which to reduce the audio framerate during conversion.
