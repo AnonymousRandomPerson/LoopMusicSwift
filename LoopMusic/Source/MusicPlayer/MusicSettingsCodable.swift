@@ -17,7 +17,7 @@ struct MusicSettingsCodable: Codable {
     var masterVolume: Double = 1
     /// Default relative volume for newly added tracks.
     var defaultRelativeVolume: Double = MusicTrack.DEFAULT_VOLUME_MULTIPLIER
-    /// Volume in decibels for automatic relative volume normalization.
+    /// Volume in LUFS for automatic relative volume normalization.
     var volumeNormalizationLevel: Double?
     
     /// For time shuffle, the base amount of time (minutes) to shuffle tracks at.

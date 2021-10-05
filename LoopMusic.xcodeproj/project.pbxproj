@@ -76,6 +76,8 @@
 		39F1799A22DBCD4800D3CDFF /* AudioEngine.c in Sources */ = {isa = PBXBuildFile; fileRef = 39F1799922DBCD4800D3CDFF /* AudioEngine.c */; };
 		920D66D6270A584D00B0F4FD /* Migrations.swift in Sources */ = {isa = PBXBuildFile; fileRef = 920D66D5270A584D00B0F4FD /* Migrations.swift */; };
 		92252D1524C025F80033A854 /* fa-solid-900.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 92252D1424C025F80033A854 /* fa-solid-900.ttf */; };
+		9251F816270C190400CA387E /* LICENSE in Resources */ = {isa = PBXBuildFile; fileRef = 9251F811270C190400CA387E /* LICENSE */; };
+		9251F817270C190400CA387E /* ebur128.c in Sources */ = {isa = PBXBuildFile; fileRef = 9251F812270C190400CA387E /* ebur128.c */; };
 		9252279C24C419DC00E25C15 /* FontUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9252279B24C419DC00E25C15 /* FontUtils.swift */; };
 		9252AC9D24C9FFDE00310CF1 /* DataCleaner.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9252AC9C24C9FFDE00310CF1 /* DataCleaner.swift */; };
 		9252AC9F24CA040E00310CF1 /* DataImporter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9252AC9E24CA040E00310CF1 /* DataImporter.swift */; };
@@ -188,6 +190,10 @@
 		920D66D5270A584D00B0F4FD /* Migrations.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Migrations.swift; sourceTree = "<group>"; };
 		92252D1424C025F80033A854 /* fa-solid-900.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "fa-solid-900.ttf"; sourceTree = "<group>"; };
 		92268BEF26F68D72004C9558 /* LoopMusic.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = LoopMusic.entitlements; sourceTree = "<group>"; };
+		9251F810270C190400CA387E /* ebur128.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ebur128.h; sourceTree = "<group>"; };
+		9251F811270C190400CA387E /* LICENSE */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = LICENSE; sourceTree = "<group>"; };
+		9251F812270C190400CA387E /* ebur128.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = ebur128.c; sourceTree = "<group>"; };
+		9251F815270C190400CA387E /* queue.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = queue.h; sourceTree = "<group>"; };
 		9252279B24C419DC00E25C15 /* FontUtils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FontUtils.swift; sourceTree = "<group>"; };
 		9252AC9C24C9FFDE00310CF1 /* DataCleaner.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataCleaner.swift; sourceTree = "<group>"; };
 		9252AC9E24CA040E00310CF1 /* DataImporter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataImporter.swift; sourceTree = "<group>"; };
@@ -241,6 +247,7 @@
 		390A6C3E2461190800234882 /* Utils */ = {
 			isa = PBXGroup;
 			children = (
+				9251F80F270C190400CA387E /* ebur128 */,
 				39A8D8FD24626DC600652E70 /* AlertUtils.swift */,
 				92A0B04224C687590017FFEF /* AudioUtils.c */,
 				92A0B04124C687590017FFEF /* AudioUtils.h */,
@@ -442,6 +449,33 @@
 			path = Fonts;
 			sourceTree = "<group>";
 		};
+		9251F80F270C190400CA387E /* ebur128 */ = {
+			isa = PBXGroup;
+			children = (
+				9251F810270C190400CA387E /* ebur128.h */,
+				9251F811270C190400CA387E /* LICENSE */,
+				9251F812270C190400CA387E /* ebur128.c */,
+				9251F813270C190400CA387E /* queue */,
+			);
+			path = ebur128;
+			sourceTree = "<group>";
+		};
+		9251F813270C190400CA387E /* queue */ = {
+			isa = PBXGroup;
+			children = (
+				9251F814270C190400CA387E /* sys */,
+			);
+			path = queue;
+			sourceTree = "<group>";
+		};
+		9251F814270C190400CA387E /* sys */ = {
+			isa = PBXGroup;
+			children = (
+				9251F815270C190400CA387E /* queue.h */,
+			);
+			path = sys;
+			sourceTree = "<group>";
+		};
 		926988D324C2238D00E4816C /* UIElements */ = {
 			isa = PBXGroup;
 			children = (
@@ -565,6 +599,7 @@
 				92252D1524C025F80033A854 /* fa-solid-900.ttf in Resources */,
 				390BDAA922AA0CE700E01411 /* Assets.xcassets in Resources */,
 				390BDAA422AA0CE600E01411 /* Main.storyboard in Resources */,
+				9251F816270C190400CA387E /* LICENSE in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -628,6 +663,7 @@
 				390BDAA122AA0CE600E01411 /* MusicPlayerViewController.swift in Sources */,
 				390BDAA722AA0CE600E01411 /* LoopMusic.xcdatamodeld in Sources */,
 				39B098D32468F64600526910 /* BaseSettingsSectionViewController.swift in Sources */,
+				9251F817270C190400CA387E /* ebur128.c in Sources */,
 				3973B5E424BA91FB00883011 /* LoopFinderAuto+synthesis.m in Sources */,
 				39EC8AE2245A6E0F00D5240D /* PlaylistListViewController.swift in Sources */,
 				39DCDA442480BE050049353D /* RepeatsShuffleSettingsViewController.swift in Sources */,
