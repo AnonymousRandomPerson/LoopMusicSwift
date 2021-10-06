@@ -52,6 +52,8 @@ class MusicPlayer {
     private var bufferLock: DispatchSemaphore = DispatchSemaphore(value: 1)
     /// Passed to the dispatch queue tasks so the audio loading task knows if the track changes while it's still loading.
     private var trackUuid: UUID = UUID()
+    /// Indicator for whether an asynchronous load of an audio file is in progress.
+    private var asyncLoadInProgress: Bool = false
     
     /// Volume multiplier used when fading out.
     private var fadeMultiplier: Double = 1
@@ -67,6 +69,13 @@ class MusicPlayer {
     var trackLoaded: Bool {
         get {
             return currentTrack.url != MusicTrack.BLANK_MUSIC_TRACK.url
+        }
+    }
+
+    /// True if the player has a fully loaded track in it.
+    var trackFullyLoaded: Bool {
+        get {
+            return trackLoaded && !asyncLoadInProgress
         }
     }
 
@@ -324,6 +333,7 @@ class MusicPlayer {
     /// - parameter currentSamplesRead: The number of audio samples that have been read so far.
     /// - parameter processUuid: The UUID of the audio track process. If the track changes, this will not match and the async task will cancel.
     private func loadAudioAsync(audioFile: ExtAudioFileRef, loadBuffer: UnsafeMutableAudioBufferListPointer, audioDesc: AudioStreamBasicDescription, currentSamplesRead: Int, processUuid: UUID) throws {
+        self.asyncLoadInProgress = true
         DispatchQueue.global(qos: DispatchQoS.background.qosClass).async {
             do {
                 /// Number of samples to read in this iteration.
@@ -342,10 +352,12 @@ class MusicPlayer {
                     // Recursively load audio until the file is fully read.
                     try self.loadAudioAsync(audioFile: audioFile, loadBuffer: loadBuffer, audioDesc: audioDesc, currentSamplesRead: currentSamplesRead + MusicPlayer.SAMPLE_READ_INCREMENT, processUuid: processUuid)
                 } else {
+                    self.asyncLoadInProgress = false
                     self.bufferLock.signal()
                     try self.disposeAudioFile(audioFile: audioFile, loadBuffer: loadBuffer)
                 }
             } catch {
+                self.asyncLoadInProgress = false
                 print("Error loading audio asynchronously:", error.localizedDescription)
                 return
             }
