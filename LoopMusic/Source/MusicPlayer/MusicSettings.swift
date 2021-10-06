@@ -309,7 +309,7 @@ class MusicSettings {
         useMonoAudio = true
         frameRateReduction = 6
         frameRateReductionLimit = 10
-        trackLengthLimit = Double(Int(1) << 21)
+        trackLengthLimit = Double(Int(1) << 22)
         durationValues = 12
         endpointPairs = 5
     }
