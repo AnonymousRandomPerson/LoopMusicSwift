@@ -24,20 +24,27 @@ class TrackSettingsViewController: BaseSettingsSectionViewController {
     @IBAction func normalizeVolume() {
         // Compute the track's intrinsic average volume.
         var audioData = MusicPlayer.player.audioData
-        let framerateReductionLimit: Int = Int(round(MusicSettings.settings.frameRateReductionLimit))
+        // Only use up to the loop end for the loudness calculation (loopEnd is exclusive). For reasons I don't understand, it appears that sometimes loopEnd and audioData.numSamples can get out of sync by the number of priming frames...so ensure that loopEnd <= audioData.numSamples.
+        let numSamples = min(MusicPlayer.player.loopEnd, Int(audioData.numSamples))
+        // Never reduce the framerate by more than a factor of 4. For a standard 44.1 kHz signal, a factor of 4 reduction gives an effective framerate of 11.025 kHz, with a corresponding Nyquist frequency of 5.5125 kHz. Since the human ear is most sensitive to frequencies between 2 kHz and 5 kHz, reducing any further would seriously degrade the quality of the loudness calculation, which is designed to weight frequencies in a way that reflects human perception.
+        let framerateReductionLimit: Int = min(4, Int(round(MusicSettings.settings.frameRateReductionLimit)))
         let lengthLimit: Int = Int(MusicSettings.settings.trackLengthLimit)
-        let intrinsicVolume = Double(calcAvgVolumeFromBufferFormat(&audioData, framerateReductionLimit, lengthLimit))
+        var intrinsicLoudness: Double = 0
+        if (calcIntegratedLoudnessFromBufferFormat(&audioData, numSamples, framerateReductionLimit, lengthLimit, &intrinsicLoudness) < 0) {
+            AlertUtils.showErrorMessage(error: "Failed to calculate integrated loudness.", viewController: self)
+            return
+        }
 
         if let normalizationLevel = MusicSettings.settings.volumeNormalizationLevel {
             // Try to shift the average volume to the desired level by setting the relative volume multiplier.
             // The shift must be nonpositive since we can't raise the volume higher than the intrinsic volume.
-            let dbShift = min(0, normalizationLevel - intrinsicVolume)
+            let dbShift = min(0, normalizationLevel - intrinsicLoudness)
             let relativeVolume = pow(10, dbShift/20)
             relativeVolumeSlider.value = Float(relativeVolume)
             relativeVolumeChanged(sender: relativeVolumeSlider)
         } else {
-            // If no normalization level was specified, set it so that the relative volume multiplier would remain unchanged. But don't let the level go negative!
-            let normalizationLevel = max(0, intrinsicVolume + 20*log10(MusicPlayer.player.volumeMultiplier))
+            // If no normalization level was specified, set it so that the relative volume multiplier would remain unchanged. But don't let the level go below the minimum; a minimum isn't strictly necessary, and dB can in theory go down to -infinity if the volume multiplier is 0, but it would be a bad interface to fill the text box with huge negative values for very low multipliers.
+            let normalizationLevel = max(Double(DB_REFERENCE_LUFS), intrinsicLoudness + 20*log10(MusicPlayer.player.volumeMultiplier))
             volumeNormalizationLevelField.text = NumberUtils.formatNumber(normalizationLevel)
             super.settingChanged(sender: volumeNormalizationLevelField)
         }

@@ -25,7 +25,7 @@ class MusicSettings {
     var masterVolume: Double = 1
     /// Default relative volume for newly added tracks.
     var defaultRelativeVolume: Double = MusicTrack.DEFAULT_VOLUME_MULTIPLIER
-    /// Volume in decibels for automatic relative volume normalization.
+    /// Volume in LUFS for automatic relative volume normalization.
     var volumeNormalizationLevel: Double?
     
     /// Setting for the time between shuffling tracks.
@@ -309,7 +309,7 @@ class MusicSettings {
         useMonoAudio = true
         frameRateReduction = 6
         frameRateReductionLimit = 10
-        trackLengthLimit = Double(Int(1) << 21)
+        trackLengthLimit = Double(Int(1) << 22)
         durationValues = 12
         endpointPairs = 5
     }

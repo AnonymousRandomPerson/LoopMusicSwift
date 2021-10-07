@@ -7,6 +7,7 @@
 
 /// Reference power level used in decibel calculation.
 extern const float DB_REFERENCE_POWER;
+extern const float DB_REFERENCE_LUFS;
 
 /// Contains data for an audio track.
 typedef struct AudioData
@@ -32,6 +33,19 @@ typedef struct AudioDataFloat
     float *mono;
 } AudioDataFloat;
 
+/// Contains 32-bit floating-point data for calculating a track's loudness via libebur128
+typedef struct AudioData_ebur128
+{
+    /// The number of channels in the audio.
+    unsigned int numChannels;
+    /// The framerate.
+    unsigned long framerate;
+    /// The number of relevant frames in the track.
+    UInt32 numFrames;
+    /// The interleaved channel data.
+    float *data;
+} AudioData_ebur128;
+
 /*!
  * Converts a power value to a decibel level.
  * @param power The input power for which to calculate a decibel level.
@@ -54,13 +68,15 @@ float calcAvgPow(const AudioDataFloat *audioFloat);
 float calcAvgVolume(const AudioDataFloat *audioFloat);
 
 /*!
- * Computes the average volume in decibels of an audio track.
+ * Computes the integrated loudness in LUFS of an audio track, in accordance with EBU R 128 (a.k.a. ITU-R BS.1770): https://www.itu.int/dms_pubrec/itu-r/rec/bs/R-REC-BS.1770-4-201510-I!!PDF-E.pdf
  * @param audio The input audio track in buffer format.
+ * @param numSamples The number of samples within audio to use for the loudness calculation. Must not exceed audio->numSamples.
  * @param framerateReductionLimit The highest allowable framerate reduction factor before resorting to truncation.
  * @param lengthLimit The highest allowable number of frames.
- * @return The average volume of the track in decibels when put represented in floating-point format (normalized between -1 and 1).
+ * @param loudness The average loudness of the track in decibels when represented in floating-point format (normalized between -1 and 1).
+ * @return Return code. 0 on success, -1 on failure.
 */
-float calcAvgVolumeFromBufferFormat(const AudioData *audio, long framerateReductionLimit, long lengthLimit);
+int calcIntegratedLoudnessFromBufferFormat(const AudioData *audio, long numSamples, long framerateReductionLimit, long lengthLimit, double *loudness);
 
 /*!
  * Calculates the absolute limit on frames based on specified parameters.
@@ -82,12 +98,20 @@ long calcFrameLimit(long numFrames, long framerateReductionLimit, long lengthLim
 long calcFramerateReductionFactor(long framerateReductionFactor, long numFrames, long framerateReductionLimit, long lengthLimit);
 
 /*!
- * Converts audio data to a 32-bit floating point format between -1 and 1.
+ * Converts audio data to a 32-bit floating point format between -1 and 1. If audioFloat->numFrames < audio->numSamples, just convert the first audioFloat->numFrames.
  * @param audio The input audio track in buffer format.
  * @param audioFloat On output, the audio track in floating point format.
  * @param framerateReductionFactor The factor by which to reduce the audio framerate during conversion.
 */
 void audioFormatToFloatFormat(const AudioData *audio, AudioDataFloat *audioFloat, long framerateReductionFactor);
+
+/*!
+ * Converts audio data to a 32-bit floating point format for loudness calculation by libebur128. If audioOut->numFrames < audio->numSamples, just convert the first audioOut->numFrames.
+ * @param audio The input audio track in buffer format.
+ * @param audioOut On output, the audio track in the format libebur128 expects.
+ * @param framerateReductionFactor The factor by which to reduce the audio framerate during conversion.
+*/
+void prepareAudioForLoudnessCalc(const AudioData *audio, AudioData_ebur128 *audioOut, long framerateReductionFactor);
 
 /*!
  * Computes the mono audio field of the input audio track from its stereo data.

@@ -54,7 +54,7 @@
     useMonoAudio = true;
     framerateReductionFactor = 6;
     
-    lengthLimit = 1 << 21;   // Anything above around 3200000 will lead to crashes.
+    lengthLimit = 1 << 22;   // Anything above this could lead to crashes under typical specs.
     framerateReductionLimit = 10; // Any lower and the typical human-audible frequencies will be unresolvable.
     
 //    nSetup = 0;

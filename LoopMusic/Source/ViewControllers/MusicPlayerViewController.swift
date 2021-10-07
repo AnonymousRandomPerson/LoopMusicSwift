@@ -229,4 +229,35 @@ class MusicPlayerViewController: UIViewController, LoopScrubberContainer, UIAdap
             self.loopScrubber.updateLoopBox()
         })
     }
+
+    /// Key press handler for the macOS version of the app.
+    override func pressesBegan(_ presses: Set<UIPress>, with event: UIPressesEvent?) {
+        var didHandleEvent = false
+        for press in presses {
+            guard let key = press.key else { continue }
+            // Detect arrow keys by text value, since there's a sort of semantic meaning to them in the context of media control.
+            if key.charactersIgnoringModifiers == UIKeyCommand.inputRightArrow {
+                nextTrack()
+                didHandleEvent = true
+            }
+            if key.charactersIgnoringModifiers == UIKeyCommand.inputLeftArrow {
+                rewind()
+                didHandleEvent = true
+            }
+            if key.charactersIgnoringModifiers == UIKeyCommand.inputDownArrow {
+                randomizeTrack()
+                didHandleEvent = true
+            }
+            // Detect the space bar by the HID code, since its meaning in media control is more tied to its position as the big ol' bar at the bottom of the keyboard rather than a directional indicator like the arrow keys.
+            if key.keyCode == .keyboardSpacebar {
+                toggleAudio()
+                didHandleEvent = true
+            }
+        }
+
+        if !didHandleEvent {
+            // Didn't handle this key press, so pass the event to the next responder.
+            super.pressesBegan(presses, with: event)
+        }
+    }
 }
