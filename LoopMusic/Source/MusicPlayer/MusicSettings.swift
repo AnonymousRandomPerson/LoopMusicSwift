@@ -221,27 +221,41 @@ class MusicSettings {
             }
         } else {
             if let shuffleRepeats: Double = shuffleRepeats {
-                trackShuffleTime = shuffleRepeats * repeatLength + track.loopStart
+                trackShuffleTime = repeatsToTime(repeats: shuffleRepeats, repeatOffset: track.loopStart, repeatLength: repeatLength)
             } else {
                 return nil
             }
         }
         
-        if let minShuffleTime: Double = calculateMinShuffleTime(repeatLength: repeatLength) {
-            trackShuffleTime = max(trackShuffleTime, minShuffleTime)
+        let shuffleVariance: Double = calculateShuffleVariance(repeatLength: repeatLength) ?? 0
+        if let minShuffleTime: Double = calculateMinShuffleTime(repeatOffset: track.loopStart, repeatLength: repeatLength) {
+            // Shift the minimum time up by shuffleVariance to ensure that the real minimum will be respected after
+            // shuffle variance is actually applied.
+            trackShuffleTime = max(trackShuffleTime, minShuffleTime + shuffleVariance)
         }
         
-        if let maxShuffleTime: Double = calculateMaxShuffleTime(repeatLength: repeatLength) {
-            trackShuffleTime = min(trackShuffleTime, maxShuffleTime)
+        if let maxShuffleTime: Double = calculateMaxShuffleTime(repeatOffset: track.loopStart, repeatLength: repeatLength) {
+            // Shift the maximum time down by shuffleVariance to ensure that the real maximum will be respected after
+            // shuffle variance is actually applied, but also make sure the max doesn't drop below 0.
+            trackShuffleTime = min(trackShuffleTime, max(0, maxShuffleTime - shuffleVariance))
         }
         
-        if let shuffleVariance: Double = calculateShuffleVariance(repeatLength: repeatLength) {
+        if shuffleVariance != 0 {
             trackShuffleTime = max(0, trackShuffleTime + Double.random(in: -shuffleVariance...shuffleVariance))
         }
         
         return trackShuffleTime
     }
     
+    /// Converts a number of repeats to a time length.
+    /// - parameter repeats: The number of repeats.
+    /// - parameter repeatOffset: The time offset of the repeated section in the track loop.
+    /// - parameter repeatLength: The length of the track loop.
+    /// - returns: Time length corresponding to the number of repeats.
+    func repeatsToTime(repeats: Double, repeatOffset: Double, repeatLength: Double) -> Double {
+        return repeats * repeatLength + repeatOffset
+    }
+
     /// Calculates shuffle variance time based on the track and shuffle settings.
     /// - parameter repeatLength: The length of the track loop.
     /// - returns: Shuffle variance time based on settings.
@@ -259,12 +273,13 @@ class MusicSettings {
     }
     
     /// Calculates minimum shuffle time based on the track and shuffle settings.
+    /// - parameter repeatOffset: The time offset of the repeated section in the track loop.
     /// - parameter repeatLength: The length of the track loop.
     /// - returns: Minimum shuffle time based on settings.
-    func calculateMinShuffleTime(repeatLength: Double) -> Double? {
+    func calculateMinShuffleTime(repeatOffset: Double, repeatLength: Double) -> Double? {
         if shuffleSetting == ShuffleSetting.time {
             if let minShuffleRepeats: Double = minShuffleRepeats {
-                return minShuffleRepeats * repeatLength
+                return repeatsToTime(repeats: minShuffleRepeats, repeatOffset: repeatOffset, repeatLength: repeatLength)
             }
         } else if shuffleSetting == ShuffleSetting.repeats {
             if let minShuffleTime: Double = minShuffleTime {
@@ -275,12 +290,13 @@ class MusicSettings {
     }
     
     /// Calculates maximum shuffle time based on the track and shuffle settings.
+    /// - parameter repeatOffset: The time offset of the repeated section in the track loop.
     /// - parameter repeatLength: The length of the track loop.
     /// - returns: Maximum shuffle time based on settings.
-    func calculateMaxShuffleTime(repeatLength: Double) -> Double? {
+    func calculateMaxShuffleTime(repeatOffset: Double, repeatLength: Double) -> Double? {
         if shuffleSetting == ShuffleSetting.time {
             if let maxShuffleRepeats: Double = maxShuffleRepeats {
-                return maxShuffleRepeats * repeatLength
+                return repeatsToTime(repeats: maxShuffleRepeats, repeatOffset: repeatOffset, repeatLength: repeatLength)
             }
         } else if shuffleSetting == ShuffleSetting.repeats {
             if let maxShuffleTime: Double = maxShuffleTime {

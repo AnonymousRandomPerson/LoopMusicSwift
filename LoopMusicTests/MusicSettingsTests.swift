@@ -9,6 +9,8 @@ class MusicSettingsTests: XCTestCase {
     /// Constant test music track.
     let TEST_TRACK: MusicTrack = MusicTrack(id: 0, url: URL(fileURLWithPath: ""), name: "", loopStart: 5, loopEnd: 20, volumeMultiplier: 1)
     
+    /// Pre-calculated repeat offset of TEST_TRACK
+    let REPEAT_OFFSET: Double = 5
     /// Pre-calculated repeat length of TEST_TRACK.
     let REPEAT_LENGTH: Double = 15
     
@@ -105,7 +107,7 @@ class MusicSettingsTests: XCTestCase {
     
     /// Tests that calculateMinShuffleTime() returns nil if shuffle setting is none.
     func testCalculateMinShuffleTimeNone() {
-        XCTAssertNil(settings.calculateMinShuffleTime(repeatLength: REPEAT_LENGTH))
+        XCTAssertNil(settings.calculateMinShuffleTime(repeatOffset: REPEAT_OFFSET, repeatLength: REPEAT_LENGTH))
     }
     
     /// Tests that calculateMinShuffleTime() returns the configured min time.
@@ -113,7 +115,7 @@ class MusicSettingsTests: XCTestCase {
         settings.minShuffleTime = 5
         settings.minShuffleRepeats = 2
         settings.shuffleSetting = ShuffleSetting.repeats
-        XCTAssertEqual(300, settings.calculateMinShuffleTime(repeatLength: REPEAT_LENGTH)!, accuracy: EPSILON)
+        XCTAssertEqual(300, settings.calculateMinShuffleTime(repeatOffset: REPEAT_OFFSET, repeatLength: REPEAT_LENGTH)!, accuracy: EPSILON)
     }
     
     /// Tests that calculateMinShuffleTime() returns the configured min repeats.
@@ -121,14 +123,14 @@ class MusicSettingsTests: XCTestCase {
         settings.minShuffleTime = 5
         settings.minShuffleRepeats = 2
         settings.shuffleSetting = ShuffleSetting.time
-        XCTAssertEqual(30, settings.calculateMinShuffleTime(repeatLength: REPEAT_LENGTH)!, accuracy: EPSILON)
+        XCTAssertEqual(35, settings.calculateMinShuffleTime(repeatOffset: REPEAT_OFFSET, repeatLength: REPEAT_LENGTH)!, accuracy: EPSILON)
     }
     
     /// Tests that calculateMaxShuffleTime() returns nil if shuffle setting is none.
     func testCalculateMaxShuffleTimeNone() {
         settings.maxShuffleTime = 5
         settings.maxShuffleRepeats = 2
-        XCTAssertNil(settings.calculateMaxShuffleTime(repeatLength: REPEAT_LENGTH))
+        XCTAssertNil(settings.calculateMaxShuffleTime(repeatOffset: REPEAT_OFFSET, repeatLength: REPEAT_LENGTH))
     }
     
     /// Tests that calculateMaxShuffleTime() returns the configured max time.
@@ -136,7 +138,7 @@ class MusicSettingsTests: XCTestCase {
         settings.maxShuffleTime = 5
         settings.maxShuffleRepeats = 2
         settings.shuffleSetting = ShuffleSetting.repeats
-        XCTAssertEqual(300, settings.calculateMaxShuffleTime(repeatLength: REPEAT_LENGTH)!, accuracy: EPSILON)
+        XCTAssertEqual(300, settings.calculateMaxShuffleTime(repeatOffset: REPEAT_OFFSET, repeatLength: REPEAT_LENGTH)!, accuracy: EPSILON)
     }
     
     /// Tests that calculateMaxShuffleTime() returns the configured max repeats.
@@ -144,7 +146,7 @@ class MusicSettingsTests: XCTestCase {
         settings.maxShuffleTime = 5
         settings.maxShuffleRepeats = 2
         settings.shuffleSetting = ShuffleSetting.time
-        XCTAssertEqual(30, settings.calculateMaxShuffleTime(repeatLength: REPEAT_LENGTH)!, accuracy: EPSILON)
+        XCTAssertEqual(35, settings.calculateMaxShuffleTime(repeatOffset: REPEAT_OFFSET, repeatLength: REPEAT_LENGTH)!, accuracy: EPSILON)
     }
 
     /// Tests that calculateShuffleTime() raises the shuffle time to the min time if shuffle time is lower.
@@ -152,7 +154,7 @@ class MusicSettingsTests: XCTestCase {
         settings.shuffleSetting = ShuffleSetting.time
         settings.shuffleTime = 1
         settings.minShuffleRepeats = 5
-        XCTAssertEqual(75, settings.calculateShuffleTime(track: TEST_TRACK)!, accuracy: EPSILON)
+        XCTAssertEqual(80, settings.calculateShuffleTime(track: TEST_TRACK)!, accuracy: EPSILON)
     }
 
     /// Tests that calculateShuffleTime() lowers the shuffle time to the max time if shuffle time is higher.
@@ -160,7 +162,7 @@ class MusicSettingsTests: XCTestCase {
         settings.shuffleSetting = ShuffleSetting.time
         settings.shuffleTime = 1
         settings.maxShuffleRepeats = 2
-        XCTAssertEqual(30, settings.calculateShuffleTime(track: TEST_TRACK)!, accuracy: EPSILON)
+        XCTAssertEqual(35, settings.calculateShuffleTime(track: TEST_TRACK)!, accuracy: EPSILON)
     }
 
     /// Tests that calculateShuffleTime() returns a shuffle time within the variance range on time shuffle if time variance is set.
