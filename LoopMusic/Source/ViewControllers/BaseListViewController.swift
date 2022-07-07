@@ -14,14 +14,14 @@ class BaseListViewController<Item>: UIViewController, UITableViewDelegate, UITab
     /// Items to display based on search, or all items if there's no search value.
     var filteredItems: [Item] = []
     /// Name of the subclass. Used to index the searchValues dictionary.
-    private var className: String = ""
+    private var _className: String = ""
 
     override func viewDidLoad() {
         super.viewDidLoad()
         items = getItems()
         filteredItems = items;
-        className = String(describing: type(of: self))
-        if let savedSearchValue: String = SearchValueStore.searchValues[className] {
+        _className = String(describing: type(of: self))
+        if let savedSearchValue: String = SearchValueStore.searchValues[_className] {
             itemSearchBar.text = savedSearchValue
             filterItems(savedSearchValue)
         }
@@ -52,7 +52,7 @@ class BaseListViewController<Item>: UIViewController, UITableViewDelegate, UITab
             searchBarCancelButtonClicked(searchBar)
         } else {
             filterItems(searchText)
-            SearchValueStore.searchValues[className] = searchText
+            SearchValueStore.searchValues[_className] = searchText
             table.reloadData()
         }
     }
@@ -67,7 +67,7 @@ class BaseListViewController<Item>: UIViewController, UITableViewDelegate, UITab
 
     func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {
         filteredItems = items
-        SearchValueStore.searchValues[className] = nil
+        SearchValueStore.searchValues[_className] = nil
         table.reloadData()
     }
     
