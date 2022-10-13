@@ -95,7 +95,7 @@ class Migrations: XCTestCase {
         let NORMALIZATION_LEVEL: Double = -23
         let tracksInDb = try getAllTracksInDatabase()
 
-        for track in tracksInDb {
+        for (i, track) in tracksInDb.enumerated() {
             try player.loadTrack(mediaItem: track, updateHistory: false)
 
             // Compute the track's intrinsic average volume.
@@ -119,7 +119,7 @@ class Migrations: XCTestCase {
             // The shift must be nonpositive since we can't raise the volume higher than the intrinsic volume.
             let dbShift = min(0, NORMALIZATION_LEVEL - intrinsicLoudness)
             let relativeVolume = pow(10, dbShift/20)
-            print("\(track.title!): \(player.volumeMultiplier) -> \(relativeVolume)")
+            print("[\(i+1)/\(tracksInDb.count)] \(track.title!): \(player.volumeMultiplier) -> \(relativeVolume)")
             player.volumeMultiplier = relativeVolume
             try player.saveVolumeMultiplier()
         }
