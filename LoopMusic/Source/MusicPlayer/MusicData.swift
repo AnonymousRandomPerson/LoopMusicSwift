@@ -215,6 +215,6 @@ class MusicData {
     /// - parameter string: The string to escape.
     /// - returns: The escaped string.
     func escapeStringForDb(_ string: String) -> String {
-        return string.replacingOccurrences(of: "'", with: "''")
+        return string.replacingOccurrences(of: "'", with: "''").replacingOccurrences(of: "é", with: "é")
     }
 }
