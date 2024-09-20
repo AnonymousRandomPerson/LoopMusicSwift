@@ -54,24 +54,25 @@ class MusicData {
         /// The track to return.
         var track: MusicTrack = MusicTrack.BLANK_MUSIC_TRACK
         if let trackURL: URL = mediaItem.assetURL, let trackName: String = mediaItem.title {
+            let fixedTrackName = trackName.replacingOccurrences(of: "é", with: "é");
             /// Track url escaped for SQL queries. Only needed on macOS because the URL is a local file path. On iOS URLs are in a fixed, SQL-safe format.
             let escapedUrlString = self.escapeStringForDb(trackURL.absoluteString)
             /// Track name escaped for SQL queries.
-            let escapedTrackName = self.escapeStringForDb(trackName)
+            let escapedTrackName = self.escapeStringForDb(fixedTrackName)
             let trackCallback = {(statement: OpaquePointer?) -> Void in
                 track = MusicTrack(
                     id: sqlite3_column_int64(statement, 4),
                     url: trackURL,
-                    name: trackName,
+                    name: fixedTrackName,
                     loopStart: sqlite3_column_double(statement, 0),
                     loopEnd: sqlite3_column_double(statement, 1),
                     volumeMultiplier: sqlite3_column_double(statement, 2))
                 let dbTrackName: String = String(cString: sqlite3_column_text(statement, 3))
-                if dbTrackName != trackName {
+                if dbTrackName != fixedTrackName {
                     // If the media item name has changed since last loaded from the database, update it.
                     // This can happen if the item is renamed outside the app.
                     try self.executeSql(query: String(format: "UPDATE Tracks SET name = '%@' WHERE id = '%i'", escapedTrackName, track.id),
-                                        errorMessage: String(format: "Failed to update name for %@", trackName))
+                                        errorMessage: String(format: "Failed to update name for %@", fixedTrackName))
                 }
             }
             try executeSql(
@@ -85,7 +86,7 @@ class MusicData {
                             // Update the stored track URL if a name match is found.
                             try trackCallback(statement)
                             try self.executeSql(query: String(format: "UPDATE Tracks SET url = '%@' WHERE id = '%i'", escapedUrlString, sqlite3_column_int(statement, 3)),
-                                                errorMessage: String(format: "Failed to update URL for %@", trackName))
+                                                errorMessage: String(format: "Failed to update URL for %@", fixedTrackName))
                         },
                         noResultCallback: {() -> Void in
                             // Save track as new if not found.
@@ -95,17 +96,17 @@ class MusicData {
                                     track = MusicTrack(
                                         id: id,
                                         url: trackURL,
-                                        name: trackName,
+                                        name: fixedTrackName,
                                         loopStart: 0,
                                         loopEnd: 0,
                                         volumeMultiplier: MusicSettings.settings.defaultRelativeVolume)
                                 },
-                                errorMessage: String(format: "Failed to save %@ as new track.", trackName))
+                                errorMessage: String(format: "Failed to save %@ as new track.", fixedTrackName))
                             
                         },
-                        errorMessage: String(format: "Failed to load track: %@.", trackName))
+                        errorMessage: String(format: "Failed to load track: %@.", fixedTrackName))
                 },
-                errorMessage: String(format: "Failed to load track: %@.", trackName))
+                errorMessage: String(format: "Failed to load track: %@.", fixedTrackName))
         } else {
             throw MessageError(String(format: "Attempted to load track without URL or title."))
         }
@@ -215,6 +216,6 @@ class MusicData {
     /// - parameter string: The string to escape.
     /// - returns: The escaped string.
     func escapeStringForDb(_ string: String) -> String {
-        return string.replacingOccurrences(of: "'", with: "''").replacingOccurrences(of: "é", with: "é")
+        return string.replacingOccurrences(of: "'", with: "''")
     }
 }
