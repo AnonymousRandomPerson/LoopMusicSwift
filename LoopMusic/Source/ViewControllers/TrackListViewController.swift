@@ -16,7 +16,9 @@ class TrackListViewController: BaseListViewController<MPMediaItem> {
     }
     
     override func getItems() -> [MPMediaItem] {
-        return MediaPlayerUtils.getTracksInPlaylist()
+        return MediaPlayerUtils.getTracksInPlaylist().sorted {
+            return $0.title!.compare($1.title!).rawValue < 0
+        }
     }
     
     override func getItemName(_ item: MPMediaItem) -> String {
