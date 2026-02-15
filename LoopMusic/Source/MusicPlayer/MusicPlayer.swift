@@ -576,7 +576,7 @@ class MusicPlayer {
             shuffleTimer = Timer.scheduledTimer(withTimeInterval: shuffleTime, repeats: false) { [weak self] _ in
                 do {
                     if let fadeDuration: Double = MusicSettings.settings.fadeDuration {
-                        if fadeDuration > 0 {
+                        if fadeDuration > 0 && self?.currentTrack.loopInShuffle != nil {
                             self?.fadeTimer = Timer.scheduledTimer(withTimeInterval: MusicPlayer.FADE_DECREMENT_TIME, repeats: true) { [weak self] _ in
                                 do {
                                     guard let self = self else { return }
