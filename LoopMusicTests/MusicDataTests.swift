@@ -37,6 +37,7 @@ class MusicDataTests: XCTestCase {
         XCTAssertEqual(TRACK_NAME, loadedTrack.name)
         XCTAssertEqual(2, loadedTrack.loopStart, accuracy: EPSILON)
         XCTAssertEqual(3, loadedTrack.loopEnd, accuracy: EPSILON)
+        XCTAssertTrue(loadedTrack.loopInShuffle)
         XCTAssertEqual(0.5, loadedTrack.volumeMultiplier, accuracy: EPSILON)
     }
     
@@ -86,19 +87,21 @@ class MusicDataTests: XCTestCase {
             noResultCallback: nil, errorMessage: "")
     }
     
-    /// Tests that volume multiplier is updated correctly.
-    func testUpdateVolumeMultiplier() throws {
+    /// Tests that track settings are updated correctly.
+    func testUpdateTrackSettings() throws {
         try data.executeSql(query: String(format: "INSERT INTO Tracks (url, name, loopStart, loopEnd, volumeMultiplier) VALUES ('%@', '%@', 2, 3, 0.5)", TRACK_URL, TRACK_NAME), errorMessage: "")
         
         /// Loaded track to assert on from the database.
         var loadedTrack: LoopMusic.MusicTrack = try data.loadTrack(mediaItem: TestMPMediaItem())
         loadedTrack.volumeMultiplier = 0.7
-        try data.updateVolumeMultiplier(track: loadedTrack)
+        loadedTrack.loopInShuffle = false;
+        try data.updateTrackSettings(track: loadedTrack)
         
         try data.executeSql(
-            query: String(format: "SELECT volumeMultiplier FROM Tracks WHERE url = '%@'", TRACK_URL),
+            query: String(format: "SELECT volumeMultiplier, loopInShuffle FROM Tracks WHERE url = '%@'", TRACK_URL),
             stepCallback: { (statement) in
                 XCTAssertEqual(0.7, sqlite3_column_double(statement, 0), accuracy: EPSILON)
+                XCTAssertEqual(0, sqlite3_column_int(statement, 1))
             },
             noResultCallback: nil, errorMessage: "")
     }

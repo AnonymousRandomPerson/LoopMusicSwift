@@ -7,10 +7,13 @@ class TrackSettingsViewController: BaseSettingsSectionViewController {
     @IBOutlet weak var relativeVolumeSlider: UISlider!
     /// Text field for volume normalization level.
     @IBOutlet weak var volumeNormalizationLevelField: UITextField!
+    /// Switch for enabling/disabling looping.
+    @IBOutlet weak var enableLoopSwitch: UISwitch!
 
     override func viewDidLoad() {
         super.viewDidLoad()
         relativeVolumeSlider.value = Float(MusicPlayer.player.volumeMultiplier)
+        enableLoopSwitch.isOn = MusicPlayer.player.loopInShuffle
         registerSetting(settingView: DoubleTextFieldOptionalSettingView(setting: &MusicSettings.settings.volumeNormalizationLevel, settingModifier: volumeNormalizationLevelField))
     }
     
@@ -18,6 +21,12 @@ class TrackSettingsViewController: BaseSettingsSectionViewController {
     @IBAction func relativeVolumeChanged(sender: UISlider) {
         super.settingChanged(sender: sender)
         MusicPlayer.player.volumeMultiplier = Double(sender.value)
+    }
+    
+    /// Updates the relative volume setting.
+    @IBAction func enableLoopChanged(sender: UISwitch) {
+        super.settingChanged(sender: sender)
+        MusicPlayer.player.loopInShuffle = sender.isOn
     }
     
     /// Automatically normalizes the relative volume setting.
@@ -54,7 +63,7 @@ class TrackSettingsViewController: BaseSettingsSectionViewController {
         super.unload(destination: destination)
         if changed {
             do {
-                try MusicPlayer.player.saveVolumeMultiplier()
+                try MusicPlayer.player.saveTrackSettings()
             } catch {
                 AlertUtils.showErrorMessage(error: error, viewController: self)
             }

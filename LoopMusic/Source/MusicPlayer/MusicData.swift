@@ -31,7 +31,7 @@ class MusicData {
         
         try validateSqlResult(statusCode: sqlite3_open(dbUrl.path, &db), errorMessage: "Failed to open DB.")
         
-        try executeSql(query: String(format: "CREATE TABLE IF NOT EXISTS Tracks (id INTEGER PRIMARY KEY, url TEXT NOT NULL, name TEXT NOT NULL, loopStart NUMERIC DEFAULT 0, loopEnd NUMERIC DEFAULT 0, volumeMultiplier NUMERIC DEFAULT %d)", MusicTrack.DEFAULT_VOLUME_MULTIPLIER),
+        try executeSql(query: String(format: "CREATE TABLE IF NOT EXISTS Tracks (id INTEGER PRIMARY KEY, url TEXT NOT NULL, name TEXT NOT NULL, loopStart NUMERIC DEFAULT 0, loopEnd NUMERIC DEFAULT 0, volumeMultiplier NUMERIC DEFAULT %d, loopInShuffle INTEGER DEFAULT TRUE)", MusicTrack.DEFAULT_VOLUME_MULTIPLIER),
                        errorMessage: "Failed to create tracks table.")
         
         open = true
@@ -66,6 +66,7 @@ class MusicData {
                     name: fixedTrackName,
                     loopStart: sqlite3_column_double(statement, 0),
                     loopEnd: sqlite3_column_double(statement, 1),
+                    loopInShuffle: sqlite3_column_int(statement, 5) != 0,
                     volumeMultiplier: sqlite3_column_double(statement, 2))
                 let dbTrackName: String = String(cString: sqlite3_column_text(statement, 3))
                 if dbTrackName != fixedTrackName {
@@ -76,12 +77,12 @@ class MusicData {
                 }
             }
             try executeSql(
-                query: String(format: "SELECT loopStart, loopEnd, volumeMultiplier, name, id FROM Tracks WHERE url = '%@'", escapedUrlString),
+                query: String(format: "SELECT loopStart, loopEnd, volumeMultiplier, name, id, loopInShuffle FROM Tracks WHERE url = '%@'", escapedUrlString),
                 stepCallback: trackCallback,
                 noResultCallback: {() -> Void in
                     // Try to fallback on name. If the track is changed at all, the URL may change.
                     try self.executeSql(
-                        query: String(format: "SELECT loopStart, loopEnd, volumeMultiplier, id FROM Tracks WHERE name = '%@'", escapedTrackName),
+                        query: String(format: "SELECT loopStart, loopEnd, volumeMultiplier, id, loopInShuffle FROM Tracks WHERE name = '%@'", escapedTrackName),
                         stepCallback: {(statement: OpaquePointer?) -> Void in
                             // Update the stored track URL if a name match is found.
                             try trackCallback(statement)
@@ -99,6 +100,7 @@ class MusicData {
                                         name: fixedTrackName,
                                         loopStart: 0,
                                         loopEnd: 0,
+                                        loopInShuffle: true,
                                         volumeMultiplier: MusicSettings.settings.defaultRelativeVolume)
                                 },
                                 errorMessage: String(format: "Failed to save %@ as new track.", fixedTrackName))
@@ -113,10 +115,10 @@ class MusicData {
         return track
     }
     
-    /// Updates the volume multiplier for a track.
+    /// Updates the track settings for a track.
     /// - parameter track: The track to update.
-    func updateVolumeMultiplier(track: MusicTrack) throws {
-        try executeSql(query: String(format: "UPDATE Tracks SET volumeMultiplier = '%f' WHERE id = '%i'", track.volumeMultiplier, track.id), errorMessage: String(format: "Failed to update volume multiplier for track: %@.", track.name))
+    func updateTrackSettings(track: MusicTrack) throws {
+        try executeSql(query: String(format: "UPDATE Tracks SET volumeMultiplier = '%f', loopInShuffle = '%d' WHERE id = '%i'", track.volumeMultiplier, track.loopInShuffle, track.id), errorMessage: String(format: "Failed to update track settings for track: %@.", track.name))
     }
     
     /// Updates the loop points for a track.

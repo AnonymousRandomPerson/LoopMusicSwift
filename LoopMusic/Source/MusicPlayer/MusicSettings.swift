@@ -227,6 +227,10 @@ class MusicSettings {
             }
         }
         
+        if !track.loopInShuffle {
+            return min(trackShuffleTime, track.loopEnd - 0.01)
+        }
+        
         let shuffleVariance: Double = calculateShuffleVariance(repeatLength: repeatLength) ?? 0
         if let minShuffleTime: Double = calculateMinShuffleTime(repeatOffset: track.loopStart, repeatLength: repeatLength) {
             // Shift the minimum time up by shuffleVariance to ensure that the real minimum will be respected after

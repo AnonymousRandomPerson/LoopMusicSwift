@@ -23,12 +23,12 @@ class DataImporter: XCTestCase {
         try data.openConnection(dbUrl: dbUrl)
 
         /// Query for inserting tracks into the new database.
-        var insertQuery: String = "INSERT INTO Tracks (url, name, loopStart, loopEnd, volumeMultiplier) VALUES "
+        var insertQuery: String = "INSERT INTO Tracks (url, name, loopStart, loopEnd, volumeMultiplier, loopInShuffle) VALUES "
         /// True for the first track. Used for comma formatting.
         var first: Bool = true
 
         try data.executeSql(
-            query: "SELECT url, name, loopStart, loopEnd, volumeMultiplier FROM Tracks",
+            query: "SELECT url, name, loopStart, loopEnd, volumeMultiplier, loopInShuffle FROM Tracks",
             stepCallback: {(statement: OpaquePointer?) -> Void in
                 if (first) {
                     first = false
@@ -37,7 +37,7 @@ class DataImporter: XCTestCase {
                 }
                 /// Current track name.
                 let name: String = self.data.escapeStringForDb(String(cString: sqlite3_column_text(statement, 1)))
-                insertQuery += String(format: "('%s', '%@', %f, %f, %f)", sqlite3_column_text(statement, 0), name, sqlite3_column_double(statement, 2), sqlite3_column_double(statement, 3), sqlite3_column_double(statement, 4))
+                insertQuery += String(format: "('%s', '%@', %f, %f, %f, %d)", sqlite3_column_text(statement, 0), name, sqlite3_column_double(statement, 2), sqlite3_column_double(statement, 3), sqlite3_column_double(statement, 4), sqlite3_column_int(statement, 5))
             },
             noResultCallback: nil,
             errorMessage: String(format: "Failed to select tracks."))

@@ -121,7 +121,7 @@ class Migrations: XCTestCase {
             let relativeVolume = pow(10, dbShift/20)
             print("[\(i+1)/\(tracksInDb.count)] \(track.title!): \(player.volumeMultiplier) -> \(relativeVolume)")
             player.volumeMultiplier = relativeVolume
-            try player.saveVolumeMultiplier()
+            try player.saveTrackSettings()
         }
     }
 }

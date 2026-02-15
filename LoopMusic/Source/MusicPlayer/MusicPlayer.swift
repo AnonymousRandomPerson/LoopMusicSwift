@@ -177,6 +177,15 @@ class MusicPlayer {
         }
     }
     
+    var loopInShuffle: Bool {
+        get {
+            return currentTrack.loopInShuffle;
+        }
+        set {
+            currentTrack.loopInShuffle = newValue
+        }
+    }
+    
     /// Sets up audio playback.
     func initialize() throws {
         try enableBackgroundAudio()
@@ -430,9 +439,9 @@ class MusicPlayer {
         setVolumeMultiplier(currentTrack.volumeMultiplier * MusicSettings.settings.masterVolume * fadeMultiplier)
     }
     
-    /// Saves the currently configured volume multiplier to the database.
-    func saveVolumeMultiplier() throws {
-        try MusicData.data.updateVolumeMultiplier(track: currentTrack)
+    /// Saves the currently configured track settings to the database.
+    func saveTrackSettings() throws {
+        try MusicData.data.updateTrackSettings(track: currentTrack)
     }
     
     /// Saves the currently configured loop points to the database.

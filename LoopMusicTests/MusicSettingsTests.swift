@@ -7,7 +7,7 @@ class MusicSettingsTests: XCTestCase {
     /// Music settings instance.
     var settings: MusicSettings = MusicSettings.settings
     /// Constant test music track.
-    let TEST_TRACK: MusicTrack = MusicTrack(id: 0, url: URL(fileURLWithPath: ""), name: "", loopStart: 5, loopEnd: 20, volumeMultiplier: 1)
+    let TEST_TRACK: MusicTrack = MusicTrack(id: 0, url: URL(fileURLWithPath: ""), name: "", loopStart: 5, loopEnd: 20, loopInShuffle: true, volumeMultiplier: 1)
     
     /// Pre-calculated repeat offset of TEST_TRACK
     let REPEAT_OFFSET: Double = 5
@@ -174,6 +174,22 @@ class MusicSettingsTests: XCTestCase {
         let shuffleTime = settings.calculateShuffleTime(track: TEST_TRACK)!
         XCTAssertLessThanOrEqual(60, shuffleTime)
         XCTAssertGreaterThanOrEqual(180, shuffleTime)
+    }
+    
+    /// Tests that calculateShuffleTime() returns the shuffle time if it is less than the loop duration and loop on shuffle is disabled.
+    func testCalculateShuffleTimeWithTimeLessThanDurationAndNoLoopOnShuffle() {
+        let testTrack: MusicTrack = MusicTrack(id: 0, url: URL(fileURLWithPath: ""), name: "", loopStart: 5, loopEnd: 120, loopInShuffle: false, volumeMultiplier: 1)
+        settings.shuffleSetting = ShuffleSetting.time
+        settings.shuffleTime = 1
+        XCTAssertEqual(60, settings.calculateShuffleTime(track: testTrack)!, accuracy: EPSILON)
+    }
+    
+    /// Tests that calculateShuffleTime() returns the shuffle time if it is less than the loop duration and loop on shuffle is disabled.
+    func testCalculateShuffleTimeWithTimeMoreThanDurationAndNoLoopOnShuffle() {
+        let testTrack: MusicTrack = MusicTrack(id: 0, url: URL(fileURLWithPath: ""), name: "", loopStart: 5, loopEnd: 120, loopInShuffle: false, volumeMultiplier: 1)
+        settings.shuffleSetting = ShuffleSetting.time
+        settings.shuffleTime = 3
+        XCTAssertEqual(119.99, settings.calculateShuffleTime(track: testTrack)!, accuracy: EPSILON)
     }
     
     /// Tests that the settings file can be loaded.
