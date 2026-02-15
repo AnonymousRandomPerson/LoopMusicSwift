@@ -280,12 +280,16 @@ class MusicPlayer {
         
         /// Size of the audio buffer in bytes.
         let bufferSize: UInt32 = convertedAudioDesc.mBytesPerFrame * UInt32(numSamples)
-        audioBuffer = AudioBuffer(mNumberChannels: convertedAudioDesc.mChannelsPerFrame, mDataByteSize: bufferSize, mData: malloc(Int(bufferSize)))
+        let audioBufferData: UnsafeMutableRawPointer = malloc(Int(bufferSize));
+        audioBufferData.initializeMemory(as: UInt8.self, repeating: 0, count: Int(bufferSize))
+        audioBuffer = AudioBuffer(mNumberChannels: convertedAudioDesc.mChannelsPerFrame, mDataByteSize: bufferSize, mData: audioBufferData)
         
         /// Size of the load buffer in bytes.
         let loadBufferSize: Int = MusicPlayer.START_READ_SAMPLES * Int(convertedAudioDesc.mBytesPerFrame)
         let loadBuffer: UnsafeMutableAudioBufferListPointer = AudioBufferList.allocate(maximumBuffers: 1)
-        loadBuffer[0] = AudioBuffer(mNumberChannels: 2, mDataByteSize: UInt32(loadBufferSize), mData: malloc(loadBufferSize))
+        let loadBufferData: UnsafeMutableRawPointer = malloc(loadBufferSize);
+        loadBufferData.initializeMemory(as: UInt8.self, repeating: 0, count: Int(loadBufferSize))
+        loadBuffer[0] = AudioBuffer(mNumberChannels: 2, mDataByteSize: UInt32(loadBufferSize), mData: loadBufferData)
         
         /// Initial number of samples to read.
         var numReadSamples: UInt32 = UInt32(MusicPlayer.START_READ_SAMPLES)
